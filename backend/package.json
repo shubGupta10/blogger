@@ -1,0 +1,37 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "build/index.js",
+  "scripts": {
+    "start": "node build/index.js",
+    "build": "tsc",
+    "dev": "concurrently \"tsc --watch\" \"nodemon build/index.js\""
+  },
+  "keywords": [],
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@apollo/server": "^4.11.0",
+    "@graphql-tools/merge": "^9.0.7",
+    "bcryptjs": "^2.4.3",
+    "connect-mongodb-session": "^5.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "graphql": "^16.9.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.7.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^22.7.5",
+    "concurrently": "^9.0.1",
+    "typescript": "^5.6.3"
+  }
+}
