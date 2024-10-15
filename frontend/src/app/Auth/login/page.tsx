@@ -19,6 +19,7 @@ import { LoginMutation, LoginMutationVariables, LoginDocument } from "@/gql/grap
 import { useMutation } from "@apollo/client";
 import toast from "react-hot-toast";
 import Router from "next/router";
+import { useMyContext } from "@/context/ContextProvider";
 
 
 const SignupForm = () => {
@@ -30,6 +31,7 @@ const SignupForm = () => {
         }
     });
 
+    const {setToken} = useMyContext()
     const [login, {loading, error}] = useMutation<LoginMutation, LoginMutationVariables>(LoginDocument)
 
     const onSubmit = async (data: z.infer<typeof SignInSchema>) => {
@@ -44,7 +46,7 @@ const SignupForm = () => {
                 })
 
                 if(response?.login){
-                    console.log(response);
+                    setToken(response.login.token)
                     Router.push("/dashboard")
                     toast.success("User creation successfull")
                 }else{
@@ -69,7 +71,7 @@ const SignupForm = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
             >
-                <h2 className="text-2xl font-bold text-black text-center">Sign Up</h2>
+                <h2 className="text-2xl font-bold text-black text-center">Login</h2>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 

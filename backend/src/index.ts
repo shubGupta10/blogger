@@ -4,8 +4,8 @@ import cors from 'cors'
 import express from 'express'
 import {ApolloServerPluginDrainHttpServer} from '@apollo/server/plugin/drainHttpServer'
 import http from 'http'
-import userResolver from './resolvers/userResolvers.js';
-import userTypeDefs from './typeDefs/userTypeDefs.js';
+import mergedResolvers from './resolvers/mergedResolvers.js';
+import mergedTypeDefs from './typeDefs/mergedTypeDefs.js';
 import connect from './DbConfig/Connect.js';
 import authMiddleware from './Middlewares/authMiddlewares.js';
 
@@ -19,8 +19,8 @@ const app = express()
 const httpServer = http.createServer(app)
 
 const server = new ApolloServer<MyContext>({
-    typeDefs: userTypeDefs,
-    resolvers: userResolver,
+    typeDefs: mergedTypeDefs,
+    resolvers: mergedResolvers,
     introspection: true,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
