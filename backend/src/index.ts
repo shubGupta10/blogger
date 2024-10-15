@@ -30,7 +30,7 @@ await server.start();
 
 
 app.use("/", cors<cors.CorsRequest>({
-    origin: '*',
+    origin: 'http://localhost:3000',
     credentials: true
 }),
 express.json(),
@@ -42,7 +42,7 @@ expressMiddleware(server, {
     context: async ({req, res}) => {
         const user = await authMiddleware(req, res);
         console.log("ye mera index.ts wala", user); 
-        return {req, res, user}
+        return {req, res, user} as MyContext;
     }
 }));
 

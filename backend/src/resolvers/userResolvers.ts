@@ -1,6 +1,7 @@
 import User from "../model/userModel.js";
 import bcrypt from 'bcryptjs';
 import generateToken from "../utils/jwt.js";
+import { Request, Response } from 'express';
 
 interface SignUpInput {
   firstName: string;
@@ -18,6 +19,12 @@ interface SignInInput {
 
 interface UserData {
   _id: string;
+}
+
+export interface MyContext {
+  user?: any;
+  req: Request;
+  res: Response;
 }
 
 const userResolver = {
@@ -154,12 +161,18 @@ const userResolver = {
     },
   
     Query: {
-      authenticatedUser: async (_parent: unknown, _args: unknown, context: any) => {
+      authenticatedUser: async (_parent: unknown, _args: unknown, context: MyContext) => {
         try {
-          const user = await context.getUser();
+          if (!context.user) {
+            throw new Error("User not authenticated");
+          }
+          const user = await User.findById(context.user._id);
+          if (!user) {
+            throw new Error("User not found");
+          }
           return user;
         } catch (error: any) {
-          console.error("User is not authenticated", error);
+          console.error("Failed to get authenticated user", error);
           throw new Error(error.message || "Internal Server error");
         }
       },
