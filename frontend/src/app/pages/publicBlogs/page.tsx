@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_BLOGS } from '@/Graphql/queries/blogQueries';
 import { GetBlogsQuery } from '@/gql/graphql';
@@ -11,11 +11,10 @@ import { useRouter } from 'next/navigation';
 
 const PublicBlogs: React.FC = () => {
   const { loading, error, data } = useQuery<GetBlogsQuery>(GET_BLOGS);
-  const router = useRouter()
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false); 
 
-  if (loading) return <div >
-    <Loader/>
-  </div>;
+  if (loading) return <div><Loader /></div>;
   if (error) return <div className="text-red-500 text-center mt-10">Error: {error.message}</div>;
 
   const containerVariants = {
@@ -36,9 +35,10 @@ const PublicBlogs: React.FC = () => {
     }
   };
 
-
-  const handleOpenBlogs = (BlogId: string) => {
-    router.push(`/pages/viewBlog/${BlogId}`)
+  const handleOpenBlogs = async (BlogId: string) => {
+    setIsLoading(true); 
+    await router.push(`/pages/viewBlog/${BlogId}`);
+    setIsLoading(false);
   }
 
   return (
@@ -83,13 +83,13 @@ const PublicBlogs: React.FC = () => {
                     </span>
                   </div>
                   <motion.button
-                 
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="flex items-center justify-center w-full bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800 transition-colors duration-300"
+                    onClick={() => handleOpenBlogs(blog._id)} 
                   >
-                    <div className='flex justify-center items-center' onClick={() => handleOpenBlogs(blog._id)}>
-                    Read More <ArrowRight size={16} className="ml-2" />
+                    <div className='flex justify-center items-center'>
+                      {isLoading ? <Loader /> : <>Read More <ArrowRight size={16} className="ml-2" /></>}
                     </div>
                   </motion.button>
                 </div>

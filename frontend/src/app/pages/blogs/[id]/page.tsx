@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { GET_SINGLEBLOG } from '@/Graphql/queries/blogQueries';
 import { GetBlogQuery, GetBlogQueryVariables } from '@/gql/graphql';
 import { ChevronDown, Calendar, User } from 'lucide-react';
+import Loader from '@/components/Loader';
 
 const BlogDetails = ({ params }: { params: { id: string } }) => {
   const { id } = params;
@@ -16,11 +17,7 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
 
   if (loading) return (
     <div className="flex justify-center items-center h-screen bg-black">
-      <motion.div
-        className="w-20 h-20 border-t-4 border-white rounded-full"
-        animate={{ rotate: 360 }}
-        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-      />
+      <Loader/>
     </div>
   );
 

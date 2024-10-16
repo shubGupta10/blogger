@@ -81,9 +81,6 @@ const Dashboard: React.FC = () => {
           transition={{ delay: 0.3, duration: 0.5 }}
           className="bg-white rounded-2xl shadow-lg p-6"
         >
-          <h2 className="text-2xl sm:text-3xl font-bold text-black mb-6">
-            Your Blogs
-          </h2>
           <div className="text-gray-800">
             <UserBlogs />
           </div>
