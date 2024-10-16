@@ -44,9 +44,9 @@ const Dashboard = () => {
         >
           <h2 className="text-2xl font-semibold text-gray-700 mb-4">Your Blogs</h2>
           <div className="bg-white rounded-lg shadow-lg p-6">
-            <p className="text-gray-600">
+            <div className="text-gray-600">
               <UserBlogs/>
-            </p>
+            </div>
           </div>
         </motion.div>
       </div>
