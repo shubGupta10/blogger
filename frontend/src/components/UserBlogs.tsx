@@ -1,10 +1,12 @@
 'use client'
+
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_BLOGS_BY_USER } from '@/Graphql/queries/blogQueries';
 import { Trash2, Edit3 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { DeleteBlogDocument, DeleteBlogMutation, DeleteBlogMutationVariables } from '@/gql/graphql';
 import { useRouter } from 'next/navigation';
+import { motion, Variants } from 'framer-motion';
 
 interface Blog {
   _id: string;
@@ -13,6 +15,12 @@ interface Blog {
   blogContent: string;
   createdAt: string;
 }
+
+const buttonVariants: Variants = {
+  initial: { scale: 1, boxShadow: '0px 0px 0px rgba(0, 0, 0, 0)' },
+  hover: { scale: 1.19, boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)' },
+  tap: { scale: 0.95 }
+};
 
 const UserBlogs = () => {
   const { data, loading, error } = useQuery(GET_BLOGS_BY_USER);
@@ -25,7 +33,6 @@ const UserBlogs = () => {
   if (error) return <p className="text-center text-red-500">Error loading blogs: {error.message}</p>;
 
   const blogs = data?.blogsByUser || [];
-  console.log(blogs);
 
   const handleDelete = async (blogId: string) => {
     try {
@@ -37,8 +44,8 @@ const UserBlogs = () => {
   };
 
   const handleEdit = (blogId: string) => {
-    router.push(`/pages/EditBlogs/${blogId}`)
-  }
+    router.push(`/pages/EditBlogs/${blogId}`);
+  };
 
   const handleOpen = (blogId: string) => {
     router.push(`/pages/blogs/${blogId}`);
@@ -64,26 +71,40 @@ const UserBlogs = () => {
               <p className="text-sm text-gray-500">Created at: {new Date(blog.createdAt).toLocaleDateString()}</p>
             </div>
             <div className="flex space-x-4 mt-4 md:mt-0">
-              <button
-                className="flex items-center space-x-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-200"
+              <motion.button
+                className="flex items-center space-x-2 bg-black text-white px-4 py-2 rounded-lg  transition duration-200"
                 onClick={() => handleOpen(blog._id)}
+                variants={buttonVariants} 
+                initial="initial"
+                whileHover="hover"
+                whileTap="tap"
               >
                 <span>Open</span>
-              </button>
-              <button
-                className="flex items-center space-x-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-200"
+              </motion.button>
+
+              <motion.button
+                className="flex items-center space-x-2 bg-black text-white px-4 py-2 rounded-lg  transition duration-200"
                 onClick={() => handleEdit(blog._id)}
+                variants={buttonVariants} 
+                initial="initial"
+                whileHover="hover"
+                whileTap="tap"
               >
                 <Edit3 className="w-5 h-5" />
                 <span>Edit</span>
-              </button>
-              <button
-                className="flex items-center space-x-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-200"
+              </motion.button>
+
+              <motion.button
+                className="flex items-center space-x-2 bg-black text-white px-4 py-2 rounded-lg  transition duration-200"
                 onClick={() => handleDelete(blog._id)}
+                variants={buttonVariants} // Use the button variants
+                initial="initial"
+                whileHover="hover"
+                whileTap="tap"
               >
                 <Trash2 className="w-5 h-5" />
                 <span>Delete</span>
-              </button>
+              </motion.button>
             </div>
           </div>
         ))}

@@ -56,7 +56,7 @@ const SignupForm = () => {
                 if(response?.signUp){
                     console.log(response);
                     setToken(response.signUp.token);
-                    router.push("/Dashboard")
+                    router.push("/pages/Dashboard")
                     toast.success("User creation successfull")
                 }else{
                     toast.error("User creation failed")
