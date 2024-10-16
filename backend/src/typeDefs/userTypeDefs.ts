@@ -9,6 +9,7 @@ const userTypeDefs = `#graphql
     password: String!
     profilePicture: String!
     gender: String!
+    blogs: [Blog!]
   }
 
   type AuthPayload {

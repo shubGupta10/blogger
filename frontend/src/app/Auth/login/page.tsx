@@ -18,9 +18,8 @@ import { motion } from 'framer-motion';
 import { LoginMutation, LoginMutationVariables, LoginDocument } from "@/gql/graphql";
 import { useMutation } from "@apollo/client";
 import toast from "react-hot-toast";
-import Router from "next/router";
+import { useRouter } from "next/navigation";
 import { useMyContext } from "@/context/ContextProvider";
-
 
 const SignupForm = () => {
     const form = useForm<z.infer<typeof SignInSchema>>({
@@ -31,30 +30,35 @@ const SignupForm = () => {
         }
     });
 
-    const {setToken} = useMyContext()
-    const [login, {loading, error}] = useMutation<LoginMutation, LoginMutationVariables>(LoginDocument)
+    const { setToken } = useMyContext();
+    const [login, { loading }] = useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
+    const router = useRouter(); 
 
     const onSubmit = async (data: z.infer<typeof SignInSchema>) => {
-            try {
-                const {data: response} = await login({
-                    variables: {
-                        input: {
+        try {
+            const { data: response } = await login({
+                variables: {
+                    input: {
                         email: data.email,
                         password: data.password,
-                        }
                     }
-                })
-
-                if(response?.login){
-                    setToken(response.login.token)
-                    Router.push("/dashboard")
-                    toast.success("User creation successfull")
-                }else{
-                    toast.error("User creation failed")
                 }
-            } catch (error) {
-                
+            });
+
+            console.log("Before", response);
+
+            if (response?.login) {
+                setToken(response.login.token);
+                console.log("After", response);
+                toast.success("User login successful");
+                await router.push("/pages/Dashboard"); 
+            } else {
+                toast.error("User login failed");
             }
+        } catch (error) {
+            console.error("Login error:", error); 
+            toast.error("An error occurred during login.");
+        }
     };
 
     return (
@@ -74,7 +78,6 @@ const SignupForm = () => {
                 <h2 className="text-2xl font-bold text-black text-center">Login</h2>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-
                         <FormField
                             name="email"
                             control={form.control}
@@ -104,8 +107,9 @@ const SignupForm = () => {
                         />
 
                         <Button type="submit" className="w-full bg-black hover:bg-gray-700 text-white">
-                            {loading ? "Login..." : "login"}
+                            {loading ? "Login..." : "Login"}
                         </Button>
+                        <p>Didn't have an account? Create one <a href="/Auth/signUp" className="text-blue-500">SignUp</a></p>
                     </form>
                 </Form>
             </motion.div>

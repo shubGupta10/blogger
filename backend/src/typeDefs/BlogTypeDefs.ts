@@ -6,11 +6,13 @@ const blogTypeDefs = `#graphql
     blogContent: String! 
     createdAt: String!
     userId: String!
+    user: User!
  }
 
  type Query {
     blogs: [Blog!]!
     blog(blogId: ID!): Blog
+    blogsByUser: [Blog]
  }
 
  type Mutation {

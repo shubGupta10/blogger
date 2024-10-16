@@ -4,7 +4,9 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import ApolloWrapper from "@/components/ui/ApolloWrapper";
 import { MyProvider } from "@/context/ContextProvider";
+import Navbar from "@/components/Navbar"
 
+// Importing custom fonts
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -28,13 +30,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link
+          href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css"
+          rel="stylesheet"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"
+          defer
+        ></script>
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ApolloWrapper>
           <MyProvider>
-        {children}
-        </MyProvider>
+            <Navbar />
+            {children}
+          </MyProvider>
         </ApolloWrapper>
         <Toaster position="top-center" />
       </body>

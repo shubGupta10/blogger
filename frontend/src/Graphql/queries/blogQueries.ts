@@ -8,6 +8,11 @@ export const GET_BLOGS = gql`
       blogImage
       blogContent
       createdAt
+      user {
+        _id
+        firstName
+        lastName
+      }
     }
   }
 `;
@@ -20,6 +25,26 @@ export const GET_SINGLEBLOG = gql`
       blogImage
       blogContent
       createdAt
+      user {
+        _id
+        firstName
+        lastName
+        email
+        profilePicture
+      }
     }
   }
+`;
+
+
+export const GET_BLOGS_BY_USER = gql`
+ query GetBlogsByUser {
+    blogsByUser {
+        _id
+        title
+        blogImage
+        blogContent
+        createdAt
+    }
+}
 `;

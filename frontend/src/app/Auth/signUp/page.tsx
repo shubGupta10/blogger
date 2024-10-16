@@ -18,7 +18,8 @@ import { motion } from 'framer-motion';
 import { SignUpMutation, SignUpMutationVariables, SignUpDocument } from "@/gql/graphql";
 import { useMutation } from "@apollo/client";
 import toast from "react-hot-toast";
-import Router from "next/router";
+import { useRouter } from "next/navigation";
+import { useMyContext } from "@/context/ContextProvider";
 
 
 const SignupForm = () => {
@@ -36,6 +37,8 @@ const SignupForm = () => {
 
     const [signup, {loading, error}] = useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument)
 
+    const {setToken} = useMyContext()
+    const router = useRouter()
     const onSubmit = async (data: z.infer<typeof SignupSchema>) => {
             try {
                 const {data: response} = await signup({
@@ -52,7 +55,8 @@ const SignupForm = () => {
 
                 if(response?.signUp){
                     console.log(response);
-                    Router.push("/dashboard")
+                    setToken(response.signUp.token);
+                    router.push("/Dashboard")
                     toast.success("User creation successfull")
                 }else{
                     toast.error("User creation failed")
@@ -166,6 +170,7 @@ const SignupForm = () => {
                         <Button type="submit" className="w-full bg-black hover:bg-gray-700 text-white">
                             {loading ? "Signing Up..." : "Sign Up"}
                         </Button>
+                        <p>Already have account? <a href="/Auth/login" className="text-blue-500">Login here</a> </p>
                     </form>
                 </Form>
             </motion.div>
