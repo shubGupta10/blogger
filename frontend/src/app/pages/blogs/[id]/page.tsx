@@ -1,37 +1,122 @@
-'use client';
-
+'use client'
+import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
+import { motion, AnimatePresence } from 'framer-motion';
 import { GET_SINGLEBLOG } from '@/Graphql/queries/blogQueries';
 import { GetBlogQuery, GetBlogQueryVariables } from '@/gql/graphql';
+import { ChevronDown, Calendar, User } from 'lucide-react';
 
 const BlogDetails = ({ params }: { params: { id: string } }) => {
-  const { id } = params; 
+  const { id } = params;
+  const [isContentExpanded, setIsContentExpanded] = useState(false);
 
   const { data, loading, error } = useQuery<GetBlogQuery, GetBlogQueryVariables>(GET_SINGLEBLOG, {
     variables: { blogId: id },
   });
 
-  if (loading) return <p className="text-center text-gray-500">Loading...</p>;
-  if (error) return <p className="text-center text-red-500">Error loading blog: {error.message}</p>;
+  if (loading) return (
+    <div className="flex justify-center items-center h-screen bg-black">
+      <motion.div
+        className="w-20 h-20 border-t-4 border-white rounded-full"
+        animate={{ rotate: 360 }}
+        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+      />
+    </div>
+  );
+
+  if (error) return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="text-center text-red-500 p-6 bg-black min-h-screen flex items-center justify-center"
+    >
+      <div className="bg-white p-8 rounded-lg shadow-lg">
+        <h2 className="text-2xl font-bold mb-4">Error</h2>
+        <p>{error.message}</p>
+      </div>
+    </motion.div>
+  );
 
   const blog = data?.blog;
 
-  if (!blog) return <p className="text-center">Blog not found</p>;
+  if (!blog) return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="text-center p-6 bg-black min-h-screen flex items-center justify-center text-white"
+    >
+      <h2 className="text-3xl font-bold">Blog not found</h2>
+    </motion.div>
+  );
 
   return (
-    <div className="min-h-screen bg-white text-black p-6">
-      <h1 className="text-4xl font-bold mb-8">{blog.title}</h1>
-      <img src={blog.blogImage} alt={blog.title} className="w-full h-64 object-cover rounded-lg mb-6" />
-      <p className="text-gray-700 text-lg mb-6">{blog.blogContent}</p>
-      <div className="text-sm text-gray-500 mt-4">
-        <p>Created at: {new Date(blog.createdAt).toLocaleDateString()}</p>
-        <div className="flex items-center space-x-2 mt-4">
-          <img src={blog.user?.profilePicture || '/default-avatar.png'} alt={blog.user?.firstName} className="w-10 h-10 rounded-full" />
-          <div>
-            <p className="font-semibold">{`${blog.user?.firstName} ${blog.user?.lastName}`}</p>
-            <p className="text-xs text-gray-400">{blog.user?.email}</p>
-          </div>
+    <div className="min-h-screen bg-black text-white">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="relative h-screen"
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black z-10" />
+        <img src={blog.blogImage} alt={blog.title} className="w-full h-full object-cover" />
+        <div className="absolute bottom-0 left-0 right-0 p-8 z-20">
+          <motion.h1
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-4xl md:text-6xl font-bold mb-4"
+          >
+            {blog.title}
+          </motion.h1>
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="flex items-center space-x-4"
+          >
+            <img 
+              src={blog.user?.profilePicture || '/api/placeholder/100/100'} 
+              alt={blog.user?.firstName} 
+              className="w-12 h-12 rounded-full object-cover border-2 border-white"
+            />
+            <div>
+              <p className="font-semibold">{`${blog.user?.firstName} ${blog.user?.lastName}`}</p>
+              <p className="text-sm text-gray-300">{blog.user?.email}</p>
+            </div>
+          </motion.div>
         </div>
+      </motion.div>
+
+      <div className="max-w-4xl mx-auto px-6 py-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="flex items-center space-x-4 mb-8 text-gray-400"
+        >
+          <Calendar size={20} />
+          <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
+          <User size={20} />
+          <span>{`${blog.user?.firstName} ${blog.user?.lastName}`}</span>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8 }}
+          className={`prose prose-lg prose-invert max-w-none mb-8 ${isContentExpanded ? '' : 'line-clamp-5'}`}
+          dangerouslySetInnerHTML={{ __html: blog.blogContent }}
+        />
+
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setIsContentExpanded(!isContentExpanded)}
+          className="flex items-center justify-center w-full py-4 bg-white text-black rounded-lg font-semibold mt-4 transition-colors duration-300 hover:bg-gray-200"
+        >
+          {isContentExpanded ? 'Read Less' : 'Read More'}
+          <ChevronDown className={`ml-2 transform transition-transform duration-300 ${isContentExpanded ? 'rotate-180' : ''}`} />
+        </motion.button>
       </div>
     </div>
   );
