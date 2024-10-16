@@ -65,20 +65,20 @@ const UserBlogs = () => {
             </div>
             <div className="flex space-x-4 mt-4 md:mt-0">
               <button
-                className="flex items-center space-x-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-200"
+                className="flex items-center space-x-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-200"
                 onClick={() => handleOpen(blog._id)}
               >
                 <span>Open</span>
               </button>
               <button
-                className="flex items-center space-x-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200"
+                className="flex items-center space-x-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-200"
                 onClick={() => handleEdit(blog._id)}
               >
                 <Edit3 className="w-5 h-5" />
                 <span>Edit</span>
               </button>
               <button
-                className="flex items-center space-x-2 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-200"
+                className="flex items-center space-x-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-200"
                 onClick={() => handleDelete(blog._id)}
               >
                 <Trash2 className="w-5 h-5" />
