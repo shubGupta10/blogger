@@ -45,7 +45,7 @@ const UserBlogs = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white text-black p-6">
+    <div className="min-h-screen bg-white text-black overflow-scroll p-6">
       <h1 className="text-4xl font-bold mb-8 text-center">My Blogs</h1>
       <div className="space-y-6">
         {blogs.map((blog: Blog) => (
@@ -61,24 +61,25 @@ const UserBlogs = () => {
             <div className="flex-grow">
               <h2 className="text-2xl font-bold mb-2">{blog.title}</h2>
               <p className="text-gray-700 mb-4">{blog.blogContent.substring(0, 150)}...</p>
-              <p className="text-sm text-gray-500">Created at: {new Date(blog.createdAt).toLocaleDateString()}</p>
+              <p className="text-sm text-gray-500">Created at: {new Date(blog.createdAt).toLocaleDateString()};
+              </p>
             </div>
             <div className="flex space-x-4 mt-4 md:mt-0">
               <button
-                className="flex items-center space-x-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-200"
+                className="flex items-center space-x-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-200"
                 onClick={() => handleOpen(blog._id)}
               >
                 <span>Open</span>
               </button>
               <button
-                className="flex items-center space-x-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200"
+                className="flex items-center space-x-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-200"
                 onClick={() => handleEdit(blog._id)}
               >
                 <Edit3 className="w-5 h-5" />
                 <span>Edit</span>
               </button>
               <button
-                className="flex items-center space-x-2 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-200"
+                className="flex items-center space-x-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-200"
                 onClick={() => handleDelete(blog._id)}
               >
                 <Trash2 className="w-5 h-5" />

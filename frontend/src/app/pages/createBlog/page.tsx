@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -7,11 +7,12 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-
 import { CreateBlogMutation, CreateBlogDocument, CreateBlogMutationVariables } from '@/gql/graphql';
+import { uploadImage } from '@/Firebase/firebaseStorage'
 
 const CreateBlog = () => {
     const [isPublishing, setIsPublishing] = useState(false);
+    const [imageFile, setImageFile] = useState<File | null>(null); 
     const form = useForm({
         defaultValues: {
             title: '',
@@ -26,6 +27,11 @@ const CreateBlog = () => {
     const onSubmit = async (data: any) => {
         setIsPublishing(true);
         try {
+            if (imageFile) {
+                const downloadURL = await uploadImage(imageFile); 
+                data.blogImage = downloadURL; 
+            }
+
             await createBlog({ variables: { input: data } });
             toast.success('Blog published successfully!');
             router.push('/');
@@ -36,9 +42,15 @@ const CreateBlog = () => {
         }
     };
 
+    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files[0]) {
+            setImageFile(event.target.files[0]); 
+        }
+    };
+
     return (
         <div className="min-h-screen bg-white text-black pt-14"> 
-            <header className="relative  left-0 right-0 bg-white z-10 border-b border-gray-200"> 
+            <header className="relative left-0 right-0 bg-white z-10 border-b border-gray-200"> 
                 <div className="max-w-screen-xl mx-auto px-4 py-3 flex justify-between items-center">
                     <input
                         {...form.register('title')}
@@ -59,6 +71,12 @@ const CreateBlog = () => {
 
             <main className="pt-10 pb-10 px-4 max-w-screen-xl mx-auto"> 
                 <div className="mb-6">
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="w-full mb-4 border border-gray-300 rounded-md focus:outline-none"
+                    />
                     <input
                         {...form.register('blogImage')}
                         placeholder="Enter blog image URL (optional)"
