@@ -17,6 +17,7 @@ const documents = {
     "\n  mutation CreateBlog($input: createBlogInput!) {\n    createBlog(input: $input) {\n      _id\n      title\n      blogImage\n      blogContent\n      createdAt\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n": types.CreateBlogDocument,
     "\n  mutation UpdateBlog($input: updateBlogInput!) {\n    updateBlog(input: $input) {\n      _id\n      title\n      blogImage\n      blogContent\n      createdAt\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n": types.UpdateBlogDocument,
     "\n  mutation DeleteBlog($blogId: ID!) {\n    deleteBlog(blogId: $blogId) {\n      _id\n      title\n    }\n  }\n": types.DeleteBlogDocument,
+    "\n  mutation GenerateStory($prompt: String!){\n    generateStory(prompt: $prompt)\n  }\n": types.GenerateStoryDocument,
     "\n mutation SignUp($input: SignUpInput!){\n    signUp(input: $input){\n        user{\n         _id\n         firstName\n         lastName\n         email\n         profilePicture\n         gender\n        }\n        token\n    }\n }\n": types.SignUpDocument,
     "\n mutation Login($input: LoginInput!){\n   login(input: $input){\n      user {\n      _id\n      firstName\n      lastName\n      email\n      profilePicture\n      gender\n    }\n    token\n  }\n   }\n": types.LoginDocument,
     "\n  mutation Logout{\n   logout{\n      message\n   }\n  }\n": types.LogoutDocument,
@@ -54,6 +55,10 @@ export function graphql(source: "\n  mutation UpdateBlog($input: updateBlogInput
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation DeleteBlog($blogId: ID!) {\n    deleteBlog(blogId: $blogId) {\n      _id\n      title\n    }\n  }\n"): (typeof documents)["\n  mutation DeleteBlog($blogId: ID!) {\n    deleteBlog(blogId: $blogId) {\n      _id\n      title\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation GenerateStory($prompt: String!){\n    generateStory(prompt: $prompt)\n  }\n"): (typeof documents)["\n  mutation GenerateStory($prompt: String!){\n    generateStory(prompt: $prompt)\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

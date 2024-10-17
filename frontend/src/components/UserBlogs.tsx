@@ -118,7 +118,7 @@ const UserBlogs = () => {
                     className="text-gray-600 mb-4 line-clamp-2"
                     dangerouslySetInnerHTML={{ __html: blog.blogContent }}
                   />
-                  <p className="text-sm text-gray-500 mb-4">Created: {new Date(blog.createdAt).toLocaleDateString()}</p>
+                  <p className="text-sm text-gray-500 mb-4">Created: {new Date(parseInt(blog.createdAt)).toLocaleDateString()}</p>
                   <div className="flex flex-wrap gap-2">
                     <motion.button
                       className="flex items-center space-x-1 bg-black text-white px-3 py-2 rounded-md text-sm"

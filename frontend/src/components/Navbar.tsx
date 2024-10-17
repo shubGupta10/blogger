@@ -4,8 +4,8 @@ import { useQuery, useMutation } from '@apollo/client';
 import { GET_AUTHENTICATED_USER } from '@/Graphql/queries/userQueries';
 import Loader from "@/components/Loader";
 import toast from 'react-hot-toast';
-import { LogoutDocument } from '@/gql/graphql'; 
-import { LogoutMutation, LogoutMutationVariables } from '@/gql/graphql'; 
+import { LogoutDocument } from '@/gql/graphql';
+import { LogoutMutation, LogoutMutationVariables } from '@/gql/graphql';
 
 const Navbar = () => {
   interface User {
@@ -35,8 +35,8 @@ const Navbar = () => {
     try {
       const response = await logout();
       if (response.data?.logout) {
+        window.location.href = '/Auth/login';
         toast.success("Logout successful!");
-        window.location.href = '/Auth/login'; 
       }
     } catch (error) {
       console.error("Logout failed:", error);
@@ -45,7 +45,7 @@ const Navbar = () => {
   };
 
   if (loading) {
-    return <Loader />;  
+    return <Loader />;
   }
 
   return (
@@ -68,7 +68,7 @@ const Navbar = () => {
                 <img className="w-8 h-8 rounded-full" src={user?.profilePicture} alt={`${user?.firstName} ${user?.lastName}`} />
               </button>
               {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
+                <div className="absolute right-0 mt-2 w-48 bg-white divide-y divide-gray-100 rounded-lg shadow-lg z-50 dark:bg-gray-700 dark:divide-gray-600">
                   <div className="px-4 py-3">
                     <span className="block text-sm text-gray-900 dark:text-white">{`${user?.firstName} ${user?.lastName}`}</span>
                     <span className="block text-sm text-gray-500 truncate dark:text-gray-400">{user?.email}</span>
@@ -78,7 +78,7 @@ const Navbar = () => {
                       <a href="/pages/Dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Dashboard</a>
                     </li>
                     <li>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Settings</a>
+                      <a href="/pages/settings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Settings</a>
                     </li>
                     <li>
                       <a href="#" onClick={handleLogout} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</a>
@@ -95,13 +95,13 @@ const Navbar = () => {
           <button
             type="button"
             className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-            onClick={() => setIsNavbarOpen(!isNavbarOpen)} // Use setIsNavbarOpen here
+            onClick={() => setIsNavbarOpen(!isNavbarOpen)}
             aria-controls="navbar-user"
-            aria-expanded={isNavbarOpen} // Use isNavbarOpen here
+            aria-expanded={isNavbarOpen}
           >
             <span className="sr-only">Open main menu</span>
             <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15"/>
+              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15" />
             </svg>
           </button>
         </div>
@@ -120,7 +120,7 @@ const Navbar = () => {
               <a href="/pages/createBlog" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Create Blog</a>
             </li>
             <li>
-              <a href="#" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contact</a>
+              <a href="https://shubgupta.vercel.app" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contact</a>
             </li>
           </ul>
         </div>

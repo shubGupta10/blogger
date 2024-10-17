@@ -116,7 +116,7 @@ const PublicBlogs: React.FC = () => {
                       </span>
                       <Calendar size={16} className="mr-2" />
                       <span>
-                        {new Date(blog.createdAt).toLocaleDateString()}
+                        {new Date(parseInt(blog.createdAt)).toLocaleDateString()}
                       </span>
                     </div>
                     <motion.button

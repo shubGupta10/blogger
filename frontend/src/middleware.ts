@@ -28,5 +28,7 @@ export const config = {
         '/pages/createBlog',
         '/pages/Dashboard',
         '/pages/EditBlogs/:id',
+        '/pages/settings',
+        '/pages/userProfile/:id'
     ],
 };

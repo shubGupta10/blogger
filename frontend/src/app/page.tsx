@@ -5,10 +5,10 @@ import { ArrowRight, Pen, Globe, ChartBar, Users, Zap, BookOpen } from 'lucide-r
 
 const Home = () => {
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-100 text-gray-800">
+    <div className="flex flex-col min-h-screen  bg-gradient-to-b from-gray-50 via-white to-gray-100 text-gray-800">
 
 <motion.div
-        className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-800 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
+        className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-800 px-4 sm:px-6 lg:px-8 relative "
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}

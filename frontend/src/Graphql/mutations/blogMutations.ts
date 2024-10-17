@@ -42,3 +42,10 @@ export const DELETEBLOG = gql`
     }
   }
 `;
+
+
+export const GENERATE_STORY = gql`
+  mutation GenerateStory($prompt: String!){
+    generateStory(prompt: $prompt)
+  }
+`

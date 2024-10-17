@@ -19,6 +19,7 @@ const blogTypeDefs = `#graphql
     createBlog(input: createBlogInput!): Blog!
     updateBlog(input: updateBlogInput!): Blog!
     deleteBlog(blogId: ID!): Blog!
+    generateStory(prompt: String!): String
  }
 
  input createBlogInput {

@@ -1,3 +1,4 @@
+import generateContent from "../geminiIntegration/generateContent.js";
 import Blog from "../model/BlogModel.js";
 import User from "../model/userModel.js";
 import { Request, Response } from "express";
@@ -106,6 +107,15 @@ const blogResolver = {
                 console.error("Failed to delete blog", error);
                 throw new Error(error.message || "Failed to delete blog");
             }
+        },
+
+        generateStory: async (_parent: unknown, {prompt}: {prompt: string}, context: MyContext) => {
+            const userId = context.user._id
+
+            if(!userId){
+                throw new Error("User should be authenticated!")
+            }
+            return await generateContent(prompt)
         },
     },
 

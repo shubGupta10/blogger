@@ -28,6 +28,8 @@ const Dashboard: React.FC = () => {
 
   const toggleMenu = (): void => setIsMenuOpen(!isMenuOpen);
 
+  
+
   return (
     <div className="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
@@ -44,7 +46,6 @@ const Dashboard: React.FC = () => {
             <div className="hidden md:flex space-x-4">
               <NavButton href="/pages/createBlog">New Post</NavButton>
               <NavButton href="/pages/publicBlogs">Public Blogs</NavButton>
-              <NavButton href="#">Analytics</NavButton>
               <NavButton href="/pages/settings">Settings</NavButton>
             </div>
             <button
@@ -67,7 +68,6 @@ const Dashboard: React.FC = () => {
                 <div className="flex flex-col space-y-2">
                   <NavButton href="/pages/createBlog" onClick={toggleMenu}>New Post</NavButton>
                   <NavButton href="/pages/publicBlogs" onClick={toggleMenu}>Public Blogs</NavButton>
-                  <NavButton href="#" onClick={toggleMenu}>Analytics</NavButton>
                   <NavButton href="/settings" onClick={toggleMenu}>Settings</NavButton>
                 </div>
               </motion.div>
