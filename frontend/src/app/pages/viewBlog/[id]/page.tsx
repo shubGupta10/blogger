@@ -1,15 +1,26 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { motion } from 'framer-motion';
 import { GET_SINGLEBLOG } from '@/Graphql/queries/blogQueries';
 import { GetBlogQuery, GetBlogQueryVariables } from '@/gql/graphql';
 import { ChevronDown, Calendar, User } from 'lucide-react';
 import Loader from '@/components/Loader';
+import { useRouter } from 'next/navigation';
 
 const BlogDetails = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const [isContentExpanded, setIsContentExpanded] = useState(false);
+  const [userId, setUserId] = useState('')
+  const router = useRouter()
+
+  useEffect(() => {
+    setUserId(id)
+  },[id])
+
+  const handleOpenPublicProfile = (userId: string) => {
+    router.push(`/pages/publicUserProfile/${userId}`)
+  }
 
   const { data, loading, error } = useQuery<GetBlogQuery, GetBlogQueryVariables>(GET_SINGLEBLOG, {
     variables: { blogId: id },
@@ -61,7 +72,7 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="text-4xl md:text-6xl font-bold text-white"
+            className="text-4xl md:text-6xl mb-8 font-bold text-white"
           >
             {blog.title}
           </motion.h1>
@@ -69,7 +80,8 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="flex items-center space-x-4 text-white"
+            className="flex items-center space-x-4 cursor-pointer text-white"
+            onClick={() => handleOpenPublicProfile(userId)}
           >
             <img
               src={blog.user?.profilePicture || '/api/placeholder/100/100'}

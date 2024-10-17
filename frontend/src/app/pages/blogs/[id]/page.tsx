@@ -1,15 +1,30 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GET_SINGLEBLOG } from '@/Graphql/queries/blogQueries';
 import { GetBlogQuery, GetBlogQueryVariables } from '@/gql/graphql';
 import { ChevronDown, Calendar, User } from 'lucide-react';
 import Loader from '@/components/Loader';
+import { useRouter } from 'next/navigation';
 
 const BlogDetails = ({ params }: { params: { id: string } }) => {
+  const [userId, setUserId] = useState('');
   const { id } = params;
+  const router = useRouter()
+
+  useEffect(() => {
+    setUserId(id)
+  }, [id])
+
+
+  const handleOpenProfile = (userId: string) => {
+    router.push(`/pages/userProfile/${userId}`)
+  }
+  
+  
   const [isContentExpanded, setIsContentExpanded] = useState(false);
+  
 
   const { data, loading, error } = useQuery<GetBlogQuery, GetBlogQueryVariables>(GET_SINGLEBLOG, {
     variables: { blogId: id },
@@ -54,7 +69,7 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
         transition={{ duration: 0.5 }}
         className="relative h-screen"
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black z-10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent  to-black z-10" />
         <img src={blog.blogImage} alt={blog.title} className="w-full h-full object-cover" />
         <div className="absolute bottom-0 left-0 right-0 p-8 z-20">
           <motion.h1
@@ -69,7 +84,8 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="flex items-center space-x-4"
+            className="flex items-center cursor-pointer mt-8 space-x-4"
+            onClick={() => handleOpenProfile(userId)}
           >
             <img 
               src={blog.user?.profilePicture || '/api/placeholder/100/100'} 

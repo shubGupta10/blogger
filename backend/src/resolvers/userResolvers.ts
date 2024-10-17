@@ -211,6 +211,23 @@ const userResolver = {
                 throw new Error(error.message || "Internal Server error");
             }
         },
+
+        fetchUserByID: async (_parent: unknown, {userId}: {userId: string}) => {
+            try {
+                if(!userId){
+                    throw new Error("User is not authenticated")
+                }
+
+                const user = await User.findById(userId);
+                if(!user){
+                    throw new Error("User not found")
+                }
+                return user;
+            } catch (error: any) {
+                console.error("Failed to fetch user", error);
+                throw new Error(error.message || "Internal Server error");
+            }
+        }
     }
 };
   

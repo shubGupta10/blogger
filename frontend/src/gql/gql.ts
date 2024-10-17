@@ -25,6 +25,7 @@ const documents = {
     "\n query GetBlogsByUser {\n    blogsByUser {\n        _id\n        title\n        blogImage\n        blogContent\n        createdAt\n    }\n}\n": types.GetBlogsByUserDocument,
     "\n  query GetAuthenticatedUser {\n    authenticatedUser {\n      _id\n      firstName\n      lastName\n      email\n      profilePicture\n      gender\n      blogs {\n        _id\n        title\n      }\n    }\n  }\n": types.GetAuthenticatedUserDocument,
     "\n  query GetUser($userId: ID!) {\n    user(userId: $userId) {\n      _id\n      firstName\n      lastName\n      email\n      profilePicture\n      gender\n      blogs {\n        _id\n        title\n        blogImage\n        blogContent\n        createdAt\n      }\n    }\n  }\n": types.GetUserDocument,
+    "\n  query FetchUserByID($userId: ID!) {\n    fetchUserByID(userId: $userId) {\n      _id\n      firstName\n      lastName\n      email\n      profilePicture\n      gender\n      blogs {\n        _id\n        title\n        blogImage\n        blogContent\n        createdAt\n      }\n    }\n  }\n": types.FetchUserByIdDocument,
 };
 
 /**
@@ -85,6 +86,10 @@ export function graphql(source: "\n  query GetAuthenticatedUser {\n    authentic
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query GetUser($userId: ID!) {\n    user(userId: $userId) {\n      _id\n      firstName\n      lastName\n      email\n      profilePicture\n      gender\n      blogs {\n        _id\n        title\n        blogImage\n        blogContent\n        createdAt\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetUser($userId: ID!) {\n    user(userId: $userId) {\n      _id\n      firstName\n      lastName\n      email\n      profilePicture\n      gender\n      blogs {\n        _id\n        title\n        blogImage\n        blogContent\n        createdAt\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query FetchUserByID($userId: ID!) {\n    fetchUserByID(userId: $userId) {\n      _id\n      firstName\n      lastName\n      email\n      profilePicture\n      gender\n      blogs {\n        _id\n        title\n        blogImage\n        blogContent\n        createdAt\n      }\n    }\n  }\n"): (typeof documents)["\n  query FetchUserByID($userId: ID!) {\n    fetchUserByID(userId: $userId) {\n      _id\n      firstName\n      lastName\n      email\n      profilePicture\n      gender\n      blogs {\n        _id\n        title\n        blogImage\n        blogContent\n        createdAt\n      }\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

@@ -22,6 +22,7 @@ const userTypeDefs = `#graphql
     users: [User!]
     authenticatedUser: User
     user(userId: ID!): User
+    fetchUserByID(userId: ID!): User
   }
 
   #Step 3: what mutuation will u perfrom, like (manipulation data)

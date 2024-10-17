@@ -36,3 +36,24 @@ export const GET_SINGLEUSER = gql`
     }
   }
 `;
+
+
+export const FETCH_USER_BY_ID = gql`
+  query FetchUserByID($userId: ID!) {
+    fetchUserByID(userId: $userId) {
+      _id
+      firstName
+      lastName
+      email
+      profilePicture
+      gender
+      blogs {
+        _id
+        title
+        blogImage
+        blogContent
+        createdAt
+      }
+    }
+  }
+`;
