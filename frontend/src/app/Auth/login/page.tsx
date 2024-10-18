@@ -44,19 +44,26 @@ const LoginForm = () => {
                     }
                 }
             });
-
+    
             if (response?.login) {
                 setToken(response.login.token);
+                localStorage.setItem('userAuth', 'true'); // Store authentication status
                 toast.success("Login successful");
-                router.push("/pages/Dashboard"); 
+    
+                // Debug the redirection
+                router.push('/pages/Dashboard');
+                window.location.reload() 
             } else {
                 toast.error("Login failed");
             }
         } catch (error) {
-            console.error("Login error:", error); 
+            console.error("Login error:", error);
             toast.error("An error occurred during login.");
         }
     };
+    
+    
+    
 
     return (
         <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-gray-100 p-4 md:p-8">

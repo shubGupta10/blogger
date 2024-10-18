@@ -54,10 +54,13 @@ const SignupForm = () => {
                 })
 
                 if(response?.signUp){
-                    console.log(response);
                     setToken(response.signUp.token);
+                    localStorage.setItem('userAuth', 'true');
                     router.push("/pages/Dashboard")
                     toast.success("User creation successfull")
+                    setTimeout(() => {
+                        window.location.reload(); 
+                    }, 3000);
                 }else{
                     toast.error("User creation failed")
                 }

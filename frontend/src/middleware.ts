@@ -2,16 +2,19 @@ import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
     const token = request.cookies.get('token')?.value;
-    const { pathname } = request.nextUrl;
+    const userAuth = request.cookies.get('userAuth')?.value === 'true';
+    const path = request.nextUrl.pathname;
 
     const publicPages = ['/', '/Auth/login', '/Auth/signUp'];
 
+    // If there's no token, check userAuth
     if (!token) {
-        if (!publicPages.includes(pathname)) {
+        if (!publicPages.includes(path) && !userAuth) {
             return NextResponse.redirect(new URL('/Auth/login', request.url));
         }
     } else {
-        if (pathname === '/Auth/login' || pathname === '/Auth/signUp') {
+        // If the user is authenticated and tries to access public pages, redirect to Dashboard
+        if (path === '/Auth/login' || path === '/Auth/signUp') {
             return NextResponse.redirect(new URL('/pages/Dashboard', request.url));
         }
     }
