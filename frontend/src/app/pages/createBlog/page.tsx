@@ -86,7 +86,7 @@ const CreateBlog = () => {
         
         <GenerativeContent 
           setBlogContent={setGeneratedContent} 
-          blogTitle={form.watch('title')} // Pass blog title to GenerativeContent
+          blogTitle={form.watch('title')} 
         />
         
         <Controller

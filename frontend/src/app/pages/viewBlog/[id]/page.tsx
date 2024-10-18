@@ -11,6 +11,7 @@ import toast from 'react-hot-toast';
 import { addComment, fetchCommentsByPostId } from '@/Firebase/FirebaseComments';
 import { FETCH_USER_BY_ID } from '@/Graphql/queries/userQueries';
 import { useMyContext } from '@/context/ContextProvider';
+import { Button } from '@/components/ui/button';
 
 interface User {
   userId: string;
@@ -80,6 +81,10 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
 
   const blog = blogData?.blog;
   const user = userData?.fetchUserByID;
+
+  const handleSubmit = () => {
+    router.push(`/pages/SummarisePage/${blog?._id}`)
+  }
 
   if (!blog || !user) return (
     <motion.div
@@ -177,7 +182,7 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
               <p className="text-sm text-gray-300">{user.email}</p>
             </div>
           </motion.div>
-          <motion.div 
+          <motion.div
             {...fadeIn}
             className='flex justify-end items-center gap-6 mt-4'
           >
@@ -185,24 +190,30 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
               <MessageCircle className="cursor-pointer" />
             </motion.div>
             <motion.div onClick={ShareBlog} className='relative' whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}><Share2Icon className="cursor-pointer" />
-            {isCopied && (
-              <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              className="absolute -top-10  bg-white text-black px-1 py-1 rounded text-xs whitespace-nowrap"
-            >
-              Copied!
+              {isCopied && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  className="absolute -top-10  bg-white text-black px-1 py-1 rounded text-xs whitespace-nowrap"
+                >
+                  Copied!
+                </motion.div>
+              )}
             </motion.div>
-            )}
-            </motion.div>
+            <div >
+              <Button onClick={handleSubmit} className='bg-white hover:bg-white text-black rounded '>Summarise Blog</Button>
+            </div>
+
           </motion.div>
+
         </div>
       </motion.div>
 
+
       <div className="max-w-4xl mx-auto px-6 py-12">
         {isCommentSectionOpen ? (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -228,8 +239,8 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
             </form>
             <div className="space-y-6">
               {comments.map((comment) => (
-                <motion.div 
-                  key={comment.id} 
+                <motion.div
+                  key={comment.id}
                   className="bg-gray-800 p-6 rounded-lg"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}

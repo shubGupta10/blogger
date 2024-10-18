@@ -13,6 +13,33 @@ export const GenerativeContent: React.FC<GenerativeContentProps> = ({ setBlogCon
   const [generateStory, { loading, error }] = useMutation<GenerateStoryMutation, GenerateStoryMutationVariables>(GENERATE_STORY);
   const [prompt, setPrompt] = useState("");
 
+  const beautifyContent = (content: string) => {
+    return content
+        .trim()
+        .replace(/###### (.+)$/gm, '<h6>$1</h6>')
+        .replace(/##### (.+)$/gm, '<h5>$1</h5>')
+        .replace(/#### (.+)$/gm, '<h4>$1</h4>')
+        .replace(/### (.+)$/gm, '<h3>$1</h3>')
+        .replace(/## (.+)$/gm, '<h2>$1</h2>')
+        .replace(/# (.+)$/gm, '<h1>$1</h1>')
+        
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>') 
+        .replace(/\*(.+?)\*/g, '<em>$1</em>') 
+
+        .replace(/^- (.+)$/gm, '<li>$1</li>') 
+        .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
+        .replace(/(<li>.*<\/li>)/g, '<ul>$1</ul>') 
+
+        .replace(/\n\s*\n/g, '</p><p>')
+        .replace(/\n/g, '<br>') 
+
+        .replace(/^(?!<h[1-6]>|<li>|<\/ul>|<\/ol>)(.+)$/gm, '<p>$1</p>')
+
+        .replace(/<p><br><\/p>/g, '') 
+        .replace(/<p><\/p>/g, ''); 
+};
+
+
   const handleGenerateStory = async () => {
     if (!prompt.trim()) return;
     try {
@@ -29,33 +56,7 @@ export const GenerativeContent: React.FC<GenerativeContentProps> = ({ setBlogCon
     }
   };
 
-  const beautifyContent = (content: string) => {
-    return content
-      // Convert headers
-      .replace(/^###### (.+)$/gm, '<h6>$1</h6>') 
-      .replace(/^# (.+)$/gm, '<h1>$1</h1>')
-      .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-      .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-      .replace(/^#### (.+)$/gm, '<h4>$1</h4>') 
-      .replace(/^### (.+)$/gm, '<h5>$1</h5>')
 
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.+?)\*/g, '<em>$1</em>')
-
-      .replace(/^- (.+)$/gm, '<li>$1</li>')
-      .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
-
-      .replace(/(<li>.*<\/li>)/g, '<ul>$1</ul>')
-
-      .replace(/\n\n/g, '</p><p>')
-      .replace(/\n/g, '<br>')
-
-      .replace(/^(.+)$/gm, '<p>$1</p>')
-
-      .replace(/<p><br><\/p>/g, '') 
-      .replace(/<\/ul>\s*<li>/g, '<ul><li>') 
-      .replace(/<\/ol>\s*<li>/g, '<ol><li>'); 
-  };
 
   const handleUseBlogTitle = () => {
     if (blogTitle) {
