@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node build/index.js",
     "build": "tsc",
-    "dev": "concurrently \"tsc --watch\" \"nodemon build/index.js\""
+    "dev": "node build/index.js\""
   },
   "keywords": [],
   "type": "module",
