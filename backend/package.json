@@ -2,11 +2,11 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "build/index.js",
- "scripts": {
-    "start": "node build/index.js", 
-    "build": "tsc",                
-    "dev": "concurrently \"tsc --watch\" \"nodemon build/index.js\"" 
-},
+  "scripts": {
+    "start": "node build/index.js",
+    "build": "tsc",
+    "dev": "concurrently \"tsc --watch\" \"nodemon build/index.js\""
+  },
   "keywords": [],
   "type": "module",
   "author": "",
@@ -24,7 +24,7 @@
     "express-session": "^1.18.1",
     "graphql": "^16.9.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.7.1"
+    "mongoose": "^8.7.2"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

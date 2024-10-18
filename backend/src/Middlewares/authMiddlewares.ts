@@ -1,6 +1,5 @@
-// authMiddlewares.ts
 import jwt from 'jsonwebtoken';
-import { Request as ExpressRequest, Response } from 'express';
+import { Request as ExpressRequest, Response, NextFunction } from 'express';
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
@@ -11,22 +10,22 @@ interface Request extends ExpressRequest {
     };
 }
 
-const authMiddleware = async (req: Request, res: Response) => {
+const authMiddleware = async (req: Request, res: Response, next: NextFunction) => { 
     const token = req.headers.cookie?.split('; ').find(cookie => cookie.startsWith('token='))?.split('=')[1];
     
     console.log("Extracted token:", token);
 
     if (!token) {
-        return null; 
+        return res.status(401).json({ message: "No token provided" });
     }
 
     try {
         const userData = jwt.verify(token, JWT_SECRET);
         req.user = userData; 
-        return userData; 
+        next(); 
     } catch (error: any) {
         console.error("Token verification error:", error);
-        return null; 
+        return res.status(401).json({ message: "Invalid token" }); 
     }
 };
 
