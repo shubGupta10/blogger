@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import ApolloWrapper from "@/components/ui/ApolloWrapper";
 import { MyProvider } from "@/context/ContextProvider";
 import Navbar from "@/components/Navbar"
+import Footer from "@/components/Footer";
 
 // Importing custom fonts
 const geistSans = localFont({
@@ -47,6 +48,7 @@ export default function RootLayout({
           <MyProvider>
             <Navbar />
             {children}
+            <Footer/>
           </MyProvider>
         </ApolloWrapper>
         <Toaster position="top-center" />

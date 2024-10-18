@@ -1,169 +1,189 @@
 'use client'
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Pen, Globe, ChartBar, Users, Zap, BookOpen } from 'lucide-react';
+import { ArrowRight, Cpu, Edit, Lock, BarChart, Zap, Type, MessageSquare, FileText, Search } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const Home = () => {
-  return (
-    <div className="flex flex-col min-h-screen  bg-gradient-to-b from-gray-50 via-white to-gray-100 text-gray-800">
+  const router = useRouter();
 
-<motion.div
-        className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-800 px-4 sm:px-6 lg:px-8 relative "
+  const handleGetStarted = () => {
+    router.push("/signup");
+  };
+
+  const fadeInUp = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6 }
+  };
+
+  return (
+    <div className="flex flex-col min-h-screen bg-white text-black">
+      {/* Hero Section */}
+      <motion.section
+        className="relative h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gray-50"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
-        <motion.div
-          className="absolute inset-0 z-0"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.1 }}
-          transition={{ delay: 0.5, duration: 1 }}
-        >
-          <div className="absolute top-20 left-20 w-40 h-40 bg-gray-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-          <div className="absolute top-40 right-20 w-40 h-40 bg-gray-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-          <div className="absolute bottom-20 left-1/2 w-40 h-40 bg-gray-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-        </motion.div>
-        
-        <div className="z-10 text-center">
-          <motion.h1 
-            className="text-5xl sm:text-7xl font-bold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-gray-700 to-gray-900"
-            initial={{ y: -50 }}
-            animate={{ y: 0 }}
-            transition={{ delay: 0.2, type: 'spring', stiffness: 120 }}
-          >
-            Elevate Your Voice
-          </motion.h1>
-          <motion.h2 
-            className="text-2xl sm:text-3xl mb-8 text-center max-w-2xl text-gray-600"
-            initial={{ y: -30 }}
-            animate={{ y: 0 }}
-            transition={{ delay: 0.4, type: 'spring', stiffness: 120 }}
-          >
-            Create, Share, and Inspire with Blogger's Modern Platform
-          </motion.h2>
+        <div className="absolute inset-0 z-0">
           <motion.div
-            className="flex justify-center"
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-          >
-            <button className="bg-gray-800 text-white py-3 px-8 rounded-full text-lg font-semibold shadow-lg hover:bg-gray-700 transition duration-300 flex items-center">
-              Start Writing <ArrowRight className="ml-2" />
-            </button>
-          </motion.div>
+            className="absolute top-1/4 left-1/4 w-64 h-64 bg-gray-100 rounded-full mix-blend-multiply filter blur-xl"
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.2, 0.3]
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              repeatType: "reverse"
+            }}
+          />
+          <motion.div
+            className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-gray-200 rounded-full mix-blend-multiply filter blur-xl"
+            animate={{
+              scale: [1, 1.1, 1],
+              opacity: [0.2, 0.3, 0.2]
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              repeatType: "reverse"
+            }}
+          />
         </div>
-      </motion.div>
 
-      <motion.div
-        className="py-20 bg-white"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
+        <div className="z-10 text-center">
+          <motion.h1
+            className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-black to-gray-700 leading-snug py-2"
+            {...fadeInUp}
+          >
+            Elevate Your Blogging Experience
+          </motion.h1>
+          <motion.p
+            className="text-lg sm:text-xl mb-8 max-w-2xl mx-auto text-gray-700 leading-relaxed"
+            {...fadeInUp}
+          >
+            Seamlessly create and share captivating content that resonates with your audience.
+          </motion.p>
+          <motion.button
+            className="bg-black text-white py-3 px-8 rounded-full text-lg font-semibold shadow-lg hover:bg-gray-800 transition duration-300 flex items-center mx-auto"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleGetStarted}
+          >
+            Get Started <ArrowRight className="ml-2" />
+          </motion.button>
+        </div>
+      </motion.section>
+
+
+
+
+
+
+      {/* Features Section */}
+      <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold mb-12 text-center text-gray-800">Why Choose Blogger?</h2>
+          <motion.h2
+            className="text-3xl sm:text-4xl font-bold mb-12 text-center"
+            {...fadeInUp}
+          >
+            Some features of Blogger
+          </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              { icon: Pen, title: 'Intuitive Editor', description: 'Write and format your posts with ease' },
-              { icon: Globe, title: 'Global Reach', description: 'Connect with readers worldwide' },
-              { icon: ChartBar, title: 'Powerful Analytics', description: 'Gain insights into your audience' },
-              { icon: Users, title: 'Community Building', description: 'Foster a loyal readership' },
-              { icon: Zap, title: 'Fast Performance', description: 'Optimized for speed and efficiency' },
-              { icon: BookOpen, title: 'Rich Media Support', description: 'Embed images, videos, and more' }
+              { icon: Cpu, title: 'AI Integration', description: 'Harness the power of AI to generate ideas, outlines, and even full blog posts' },
+              { icon: Edit, title: 'Rich Editor', description: 'Intuitive and powerful editing tools for crafting perfect content' },
+              { icon: Lock, title: 'Secure Authentication', description: 'Secure user authentication to keep your account safe' },
+              { icon: BarChart, title: 'Comprehensive Dashboard', description: 'Track your blogs performance with detailed analytics' },
+              { icon: Zap, title: 'Interactive UI', description: 'Enjoy a smooth, responsive interface for effortless blogging' },
+              { icon: Search, title: 'Search Functionality', description: 'Integrated search functionality, users can search their favorite blogs' }
             ].map((feature, index) => (
               <motion.div
                 key={index}
-                className="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200"
-                whileHover={{ scale: 1.05, backgroundColor: '#f8f8f8', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
-                transition={{ type: 'spring', stiffness: 100 }}
+                className="bg-white p-6 rounded-lg text-center shadow-md border border-gray-200"
+                whileHover={{ scale: 1.03, boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <feature.icon className="w-12 h-12 mb-4 text-gray-700" />
-                <h3 className="text-xl font-semibold mb-2 text-gray-800">{feature.title}</h3>
+                <div className="flex justify-center mb-4">
+                  <feature.icon className="w-12 h-12 text-black" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
                 <p className="text-gray-600">{feature.description}</p>
               </motion.div>
             ))}
           </div>
         </div>
-      </motion.div>
+      </section>
 
-      <motion.div
-        className="py-20 bg-gradient-to-b from-gray-50 to-white"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-      >
+
+      {/* How It Works Section */}
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold mb-12 text-center text-gray-800">What Our Users Say</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <motion.h2
+            className="text-3xl sm:text-4xl font-bold mb-12 text-center"
+            {...fadeInUp}
+          >
+            How AI Enhances Your Blogging
+          </motion.h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { name: 'Sarah L.', quote: 'Blogger transformed my writing experience. It\'s intuitive and powerful!' },
-              { name: 'John D.', quote: 'The analytics feature helped me understand my audience better.' },
-              { name: 'Emma W.', quote: 'I\'ve connected with so many like-minded individuals through Blogger.' }
-            ].map((testimonial, index) => (
+              { icon: Type, step: '1', title: 'Create Blog Title', description: 'Start by crafting a compelling title for your blog post' },
+              { icon: MessageSquare, step: '2', title: 'Write Prompt', description: 'Enter a detailed prompt or use your blog title to guide the AI' },
+              { icon: FileText, step: '3', title: 'Generate Content', description: 'Let AI create a draft based on your title or prompt' },
+              { icon: Edit, step: '4', title: 'Edit and Refine', description: 'Review, edit, and enhance the AI-generated content' }
+            ].map((item, index) => (
               <motion.div
                 key={index}
-                className="bg-white p-6 rounded-lg shadow-md border border-gray-200"
-                whileHover={{ scale: 1.03, boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
-                transition={{ type: 'spring', stiffness: 300 }}
+                className="text-center"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <p className="text-lg mb-4 text-gray-600">"{testimonial.quote}"</p>
-                <p className="font-semibold text-gray-800">- {testimonial.name}</p>
+                <div className="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center text-2xl font-bold mb-4 mx-auto">
+                  {item.step}
+                </div>
+                <item.icon className="w-8 h-8 mb-4 mx-auto text-gray-700" />
+                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                <p className="text-gray-600">{item.description}</p>
               </motion.div>
             ))}
           </div>
         </div>
-      </motion.div>
+      </section>
 
-      <motion.div
-        className="py-20 bg-gradient-to-r from-gray-800 to-gray-900 text-white"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.6 }}
-      >
+
+
+      {/* CTA Section */}
+      <section className="py-20 bg-white text-black">
         <div className="container mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold mb-4">Ready to Start Your Journey?</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">Join our community of passionate writers and readers. Your story matters.</p>
-          <motion.button 
-            className="bg-white text-gray-800 py-3 px-8 rounded-full text-lg font-semibold shadow-lg hover:bg-gray-100 transition duration-300"
+          <motion.h2
+            className="text-3xl sm:text-4xl font-bold mb-4"
+            {...fadeInUp}
+          >
+            Ready to Supercharge Your Blog?
+          </motion.h2>
+          <motion.p
+            className="text-xl mb-8 max-w-2xl mx-auto"
+            {...fadeInUp}
+          >
+            Join  bloggers, leveraging AI to create outstanding content. Your AI writing journey starts here.
+          </motion.p>
+          <motion.button
+            className="bg-black text-white py-3 px-8 rounded-full text-lg font-semibold shadow-lg hover:bg-gray-200 transition duration-300"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={handleGetStarted}
           >
-            Get Started Now
+            Begin your Journey
           </motion.button>
         </div>
-      </motion.div>
+      </section>
 
-      <footer className="bg-gray-800 text-white py-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Blogger</h3>
-              <p>Empowering voices since 2024</p>
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="hover:text-gray-300 transition">About Us</a></li>
-                <li><a href="#" className="hover:text-gray-300 transition">Features</a></li>
-                <li><a href="#" className="hover:text-gray-300 transition">Pricing</a></li>
-                <li><a href="#" className="hover:text-gray-300 transition">Contact</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Connect</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="hover:text-gray-300 transition">Twitter</a></li>
-                <li><a href="#" className="hover:text-gray-300 transition">Facebook</a></li>
-                <li><a href="#" className="hover:text-gray-300 transition">Instagram</a></li>
-                <li><a href="#" className="hover:text-gray-300 transition">LinkedIn</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="mt-8 pt-8 border-t border-gray-700 text-center">
-            <p>&copy; 2024 Blogger. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+
     </div>
   );
 };

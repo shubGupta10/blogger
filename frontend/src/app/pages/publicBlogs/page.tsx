@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_BLOGS } from '@/Graphql/queries/blogQueries';
 import { GetBlogsQuery } from '@/gql/graphql';
@@ -10,47 +10,63 @@ import Loader from '@/components/Loader';
 import { useRouter } from 'next/navigation';
 
 const PublicBlogs: React.FC = () => {
-  const { loading, error, data } = useQuery<GetBlogsQuery>(GET_BLOGS);
+  const { loading, error, data, refetch } = useQuery<GetBlogsQuery>(GET_BLOGS);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  if (loading) return (
-    <div className="flex justify-center items-center h-screen">
-      <Loader />
-    </div>
-  );
-  if (error) return (
-    <div className="text-red-500 text-center mt-10 p-4 bg-white rounded-lg shadow">
-      Error: {error.message}
-    </div>
-  );
+  // Handle refetch if needed for specific cases (e.g., after a mutation)
+  useEffect(() => {
+    // Optionally call refetch here if you need to refresh data on some event
+    // refetch();
+  }, []); // Add specific dependencies if required
 
+  // Display loader while fetching the data from Apollo
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loader />
+      </div>
+    );
+  }
+
+  // Display error message if the query fails
+  if (error) {
+    return (
+      <div className="text-red-500 text-center mt-10 p-4 bg-white rounded-lg shadow">
+        Error: {error.message}
+      </div>
+    );
+  }
+
+  // Variants for the animation
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
-      opacity: 1
-    }
+      opacity: 1,
+    },
   };
 
+  // Handle navigating to the blog detail page
   const handleOpenBlogs = async (BlogId: string) => {
-    setIsLoading(true);
-    await router.push(`/pages/viewBlog/${BlogId}`);
-    setIsLoading(false);
-  }
+    setIsLoading(true); // Start custom loader for navigation
+    await router.push(`/pages/viewBlog/${BlogId}`); // Navigate to the blog page
+    setIsLoading(false); // Stop custom loader after navigation
+  };
 
-  const filteredBlogs = data?.blogs.filter(blog =>
+  // Filter blogs based on the search term
+  const filteredBlogs = data?.blogs.filter((blog) =>
     blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     blog.blogContent.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -62,25 +78,29 @@ const PublicBlogs: React.FC = () => {
           Explore Our Blogs
         </h1>
 
+        {/* Search input */}
         <div className="mb-8 max-w-md mx-auto">
           <div className="relative">
             <input
               type="text"
               placeholder="Search blogs..."
-              className="w-full  px-4 py-2 pl-10 pr-4 rounded-full border border-gray-700 focus:outline-none focus:ring-2 focus:ring-black"
+              className="w-full px-4 py-2 pl-10 pr-4 rounded-full border border-gray-700 focus:outline-none focus:ring-2 focus:ring-black"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <Search className="absolute  left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
           </div>
         </div>
 
+        {/* Display message when no blogs are found */}
         {filteredBlogs && filteredBlogs.length === 0 ? (
-          <p className="text-center text-gray-500  text-xl bg-white p-6 rounded-lg shadow">No blogs found.</p>
+          <p className="text-center text-gray-500 text-xl bg-white p-6 rounded-lg shadow">
+            No blogs found.
+          </p>
         ) : (
           <AnimatePresence>
             <motion.div
-              className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-8"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
               variants={containerVariants}
               initial="hidden"
               animate="visible"
@@ -115,9 +135,7 @@ const PublicBlogs: React.FC = () => {
                         {blog.user.firstName} {blog.user.lastName ?? ''}
                       </span>
                       <Calendar size={16} className="mr-2" />
-                      <span>
-                        {new Date(parseInt(blog.createdAt)).toLocaleDateString()}
-                      </span>
+                      <span>{new Date(parseInt(blog.createdAt)).toLocaleDateString()}</span>
                     </div>
                     <motion.button
                       whileHover={{ scale: 1.03 }}
@@ -126,7 +144,7 @@ const PublicBlogs: React.FC = () => {
                       onClick={() => handleOpenBlogs(blog._id)}
                     >
                       {isLoading ? (
-                        <Loader />
+                        <Loader /> // Show custom loader for navigation only
                       ) : (
                         <>
                           Read More

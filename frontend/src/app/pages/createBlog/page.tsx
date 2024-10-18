@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -83,9 +83,12 @@ const CreateBlog = () => {
             className="w-full mb-4 border border-gray-300 rounded-md focus:outline-none"
           />
         </div>
-
-        <GenerativeContent setBlogContent={setGeneratedContent} />
-
+        
+        <GenerativeContent 
+          setBlogContent={setGeneratedContent} 
+          blogTitle={form.watch('title')} // Pass blog title to GenerativeContent
+        />
+        
         <Controller
           name="blogContent"
           control={form.control}
