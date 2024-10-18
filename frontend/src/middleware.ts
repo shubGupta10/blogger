@@ -21,9 +21,6 @@ export function middleware(request: NextRequest) {
 
 export const config = {
     matcher: [
-        '/',
-        '/Auth/login',
-        '/Auth/signUp',
         '/pages/blogs/:id',
         '/pages/createBlog',
         '/pages/Dashboard',
