@@ -8,6 +8,9 @@ import mergedResolvers from './resolvers/mergedResolvers.js';
 import mergedTypeDefs from './typeDefs/mergedTypeDefs.js';
 import connect from './DbConfig/Connect.js';
 import authMiddleware from './Middlewares/authMiddlewares.js';
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 
 interface MyContext {
@@ -30,7 +33,7 @@ await server.start();
 
 
 app.use("/", cors<cors.CorsRequest>({
-    origin: 'http://localhost:3000',
+    origin: process.env.NEXT_PUBLIC_FRONTEND_URL,
     credentials: true
 }),
 express.json(),
