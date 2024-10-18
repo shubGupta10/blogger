@@ -1,15 +1,17 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import dynamic from 'next/dynamic'; // Use dynamic import
 import { CreateBlogMutation, CreateBlogDocument, CreateBlogMutationVariables } from '@/gql/graphql';
 import { uploadImage } from '@/Firebase/firebaseStorage';
 import GenerativeContent from '@/components/GenerativeContent';
+
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false }); // Dynamic import
+import 'react-quill/dist/quill.snow.css';
 
 const CreateBlog = () => {
   const [isPublishing, setIsPublishing] = useState(false);
