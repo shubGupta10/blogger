@@ -15,7 +15,6 @@ const Footer = () => {
                 <li><a href="#" className="hover:text-gray-300 transition">About AI Blogging</a></li>
                 <li><a href="#" className="hover:text-gray-300 transition">Features</a></li>
                 <li><a href="#" className="hover:text-gray-300 transition">Pricing</a></li>
-                <li><a href="#" className="hover:text-gray-300 transition">AI Ethics</a></li>
               </ul>
             </div>
             <div>
@@ -24,7 +23,6 @@ const Footer = () => {
                 <li><a href="#" className="hover:text-gray-300 transition">Twitter</a></li>
                 <li><a href="#" className="hover:text-gray-300 transition">LinkedIn</a></li>
                 <li><a href="#" className="hover:text-gray-300 transition">YouTube</a></li>
-                <li><a href="#" className="hover:text-gray-300 transition">Community Forum</a></li>
               </ul>
             </div>
           </div>

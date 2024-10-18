@@ -202,7 +202,7 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
               )}
             </motion.div>
             <div >
-              <Button onClick={handleSubmit} className='bg-white hover:bg-white text-black rounded '>Summarise Blog</Button>
+              <Button onClick={handleSubmit} className='bg-white hover:bg-white text-black rounded-full '>Summarise Blog</Button>
             </div>
 
           </motion.div>

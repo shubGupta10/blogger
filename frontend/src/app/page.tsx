@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Cpu, Edit, Lock, BarChart, Zap, Type, MessageSquare, FileText, Search } from 'lucide-react';
+import { ArrowRight, Cpu, Edit, Lock, BarChart, Zap, Type, MessageSquare, FileText, Search, Filter } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 const Home = () => {
@@ -94,9 +94,9 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               { icon: Cpu, title: 'AI Integration', description: 'Harness the power of AI to generate ideas, outlines, and even full blog posts' },
+              { icon: FileText, title: 'Summarise Blog', description: 'Summarise your blogs using gemini to read the blog effectively' },
               { icon: Edit, title: 'Rich Editor', description: 'Intuitive and powerful editing tools for crafting perfect content' },
               { icon: Lock, title: 'Secure Authentication', description: 'Secure user authentication to keep your account safe' },
-              { icon: BarChart, title: 'Comprehensive Dashboard', description: 'Track your blogs performance with detailed analytics' },
               { icon: Zap, title: 'Interactive UI', description: 'Enjoy a smooth, responsive interface for effortless blogging' },
               { icon: Search, title: 'Search Functionality', description: 'Integrated search functionality, users can search their favorite blogs' }
             ].map((feature, index) => (
@@ -134,7 +134,7 @@ const Home = () => {
               { icon: Type, step: '1', title: 'Create Blog Title', description: 'Start by crafting a compelling title for your blog post' },
               { icon: MessageSquare, step: '2', title: 'Write Prompt', description: 'Enter a detailed prompt or use your blog title to guide the AI' },
               { icon: FileText, step: '3', title: 'Generate Content', description: 'Let AI create a draft based on your title or prompt' },
-              { icon: Edit, step: '4', title: 'Edit and Refine', description: 'Review, edit, and enhance the AI-generated content' }
+              { icon: Filter, step: '4', title: 'Summarise Blogs', description: 'Summarise your blog for the best understanding' }
             ].map((item, index) => (
               <motion.div
                 key={index}

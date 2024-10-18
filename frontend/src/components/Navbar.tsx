@@ -52,6 +52,7 @@ const Navbar = () => {
       if (response.data?.logout) {
        router.push('/Auth/login'); 
         toast.success('Logout successful!');
+        window.location.reload()
       }
     } catch (error) {
       console.error('Logout failed:', error);

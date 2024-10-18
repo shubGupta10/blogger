@@ -7,9 +7,11 @@ import { GetBlogQuery, GetBlogQueryVariables } from '@/gql/graphql';
 import { ChevronDown, Calendar, User } from 'lucide-react';
 import Loader from '@/components/Loader';
 import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 
 const BlogDetails = ({ params }: { params: { id: string } }) => {
   const [userId, setUserId] = useState('');
+  const [blogId, setBlogId] = useState('')
   const { id } = params;
   const router = useRouter()
 
@@ -17,14 +19,27 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
     setUserId(id)
   }, [id])
 
+  useEffect(() => {
+    setBlogId(id)
+  }, [id])
+
+
+  const handleSubmit = (blogId: string) => {
+    console.log("working");
+    console.log("Ths is here blogid", blogId);
+
+    router.push(`/pages/SummarisePage/${blogId}`)
+  }
+
+
 
   const handleOpenProfile = (userId: string) => {
     router.push(`/pages/userProfile/${userId}`)
   }
-  
-  
+
+
   const [isContentExpanded, setIsContentExpanded] = useState(false);
-  
+
 
   const { data, loading, error } = useQuery<GetBlogQuery, GetBlogQueryVariables>(GET_SINGLEBLOG, {
     variables: { blogId: id },
@@ -32,7 +47,7 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
 
   if (loading) return (
     <div className="flex justify-center items-center h-screen bg-black">
-      <Loader/>
+      <Loader />
     </div>
   );
 
@@ -87,9 +102,9 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
             className="flex items-center cursor-pointer mt-8 space-x-4"
             onClick={() => handleOpenProfile(userId)}
           >
-            <img 
-              src={blog.user?.profilePicture || '/api/placeholder/100/100'} 
-              alt={blog.user?.firstName} 
+            <img
+              src={blog.user?.profilePicture || '/api/placeholder/100/100'}
+              alt={blog.user?.firstName}
               className="w-12 h-12 rounded-full object-cover border-2 border-white"
             />
             <div>
@@ -97,6 +112,14 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
               <p className="text-sm text-gray-300">{blog.user?.email}</p>
             </div>
           </motion.div>
+
+        </div>
+        <div className='flex justify-end mr-10'>
+          <Button
+            onClick={() => handleSubmit(blogId)} 
+            className='bg-white hover:bg-white text-black rounded-full text-end'>
+            Summarise Blog
+          </Button>
         </div>
       </motion.div>
 
@@ -108,7 +131,7 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
           className="flex items-center space-x-4 mb-8 text-gray-400"
         >
           <Calendar size={20} />
-          <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
+          <span>{new Date(parseInt(blog.createdAt)).toLocaleDateString()}</span>
           <User size={20} />
           <span>{`${blog.user?.firstName} ${blog.user?.lastName}`}</span>
         </motion.div>

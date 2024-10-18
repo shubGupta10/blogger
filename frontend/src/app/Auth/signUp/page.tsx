@@ -58,6 +58,7 @@ const SignupForm = () => {
                     setToken(response.signUp.token);
                     router.push("/pages/Dashboard")
                     toast.success("User creation successfull")
+                    window.location.reload()
                 }else{
                     toast.error("User creation failed")
                 }
@@ -67,58 +68,65 @@ const SignupForm = () => {
     };
 
     return (
-        <div className="flex flex-row items-center justify-center min-h-screen bg-gradient-to-br from-gray-800 via-slate-300 to-black px-4 md:px-0">
-            <div className="hidden md:block max-w-lg md:text-3xl text-white mb-6 lg:mb-0 lg:mr-6">
-                <p>
-                    Unlock your voice and connect with readers around the world. Whether you're a seasoned blogger or just starting your journey, our platform empowers you to share your thoughts, stories, and experiences with an engaged audience. Create your account now and start writing today. It's free, simple, and your words have the power to inspire!
+        <div className="flex flex-col md:flex-row items-center  justify-center min-h-screen bg-gray-100 p-4 md:p-8">
+            <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5 }}
+                className="w-full md:w-1/2 max-w-lg text-black mb-8 md:mb-0 md:mr-8"
+            >
+                <h1 className="text-4xl md:text-5xl font-bold mb-6">Join Our Community</h1>
+                <p className="text-xl md:text-2xl text-gray-700">
+                    Unlock your voice and connect with readers around the world. Create your account now and start writing today. It's free, simple, and your words have the power to inspire!
                 </p>
-            </div>
+            </motion.div>
 
             <motion.div
-                className="w-full max-w-md p-6 md:p-8 space-y-6 bg-white rounded-lg shadow-md"
-                initial={{ opacity: 0, y: -20 }}
+                className="w-full md:w-1/2 max-w-md p-8 space-y-6 border-2  bg-gray-200 rounded-lg shadow-xl"
+                initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
             >
-                <h2 className="text-2xl font-bold text-black text-center">Sign Up</h2>
+                <h2 className="text-3xl font-bold text-black text-center mb-6">Sign Up</h2>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                        <FormField
-                            name="firstName"
-                            control={form.control}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="text-black">First Name</FormLabel>
-                                    <FormControl>
-                                        <Input className="bg-white text-black placeholder-black" placeholder="Peter" {...field} />
-                                    </FormControl>
-                                    <FormMessage className="text-red-500" />
-                                </FormItem>
-                            )}
-                        />
-
-                        <FormField
-                            name="lastName"
-                            control={form.control}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="text-black">Last Name</FormLabel>
-                                    <FormControl>
-                                        <Input className="bg-white text-black placeholder-black" placeholder="Griffin" {...field} />
-                                    </FormControl>
-                                    <FormMessage className="text-red-500" />
-                                </FormItem>
-                            )}
-                        />
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <FormField
+                                name="firstName"
+                                control={form.control}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-gray-800">First Name</FormLabel>
+                                        <FormControl>
+                                            <Input className="bg-white text-black placeholder-gray-400 border-gray-300 rounded-md focus:border-black focus:ring-black" placeholder="Peter" {...field} />
+                                        </FormControl>
+                                        <FormMessage className="text-red-500" />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                name="lastName"
+                                control={form.control}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-gray-800">Last Name</FormLabel>
+                                        <FormControl>
+                                            <Input className="bg-white text-black placeholder-gray-400 border-gray-300 rounded-md focus:border-black focus:ring-black" placeholder="Griffin" {...field} />
+                                        </FormControl>
+                                        <FormMessage className="text-red-500" />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
 
                         <FormField
                             name="email"
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-black">Email</FormLabel>
+                                    <FormLabel className="text-gray-700">Email</FormLabel>
                                     <FormControl>
-                                        <Input className="bg-white text-black placeholder-black" type="email" placeholder="petergriffin@gmail.com" {...field} />
+                                        <Input className="bg-white text-black placeholder-gray-400 border-gray-300 rounded-md focus:border-black focus:ring-black" type="email" placeholder="petergriffin@gmail.com" {...field} />
                                     </FormControl>
                                     <FormMessage className="text-red-500" />
                                 </FormItem>
@@ -130,9 +138,9 @@ const SignupForm = () => {
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-black">Password</FormLabel>
+                                    <FormLabel className="text-gray-700">Password</FormLabel>
                                     <FormControl>
-                                        <Input className="bg-white text-black placeholder-black" type="password" placeholder="*****" {...field} />
+                                        <Input className="bg-white text-black placeholder-gray-400 border-gray-300 rounded-md focus:border-black focus:ring-black" type="password" placeholder="*****" {...field} />
                                     </FormControl>
                                     <FormMessage className="text-red-500" />
                                 </FormItem>
@@ -144,9 +152,9 @@ const SignupForm = () => {
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-black">Confirm Password</FormLabel>
+                                    <FormLabel className="text-gray-700">Confirm Password</FormLabel>
                                     <FormControl>
-                                        <Input className="bg-white text-black placeholder-black" type="password" placeholder="*****" {...field} />
+                                        <Input className="bg-white text-black placeholder-gray-400 border-gray-300 rounded-md focus:border-black focus:ring-black" type="password" placeholder="*****" {...field} />
                                     </FormControl>
                                     <FormMessage className="text-red-500" />
                                 </FormItem>
@@ -158,19 +166,26 @@ const SignupForm = () => {
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-black">Gender</FormLabel>
+                                    <FormLabel className="text-gray-700">Gender</FormLabel>
                                     <FormControl>
-                                        <Input className="bg-white text-black placeholder-black" placeholder="male or female" {...field} />
+                                        <Input className="bg-white text-black placeholder-gray-400 border-gray-300 rounded-md focus:border-black focus:ring-black" placeholder="male or female" {...field} />
                                     </FormControl>
                                     <FormMessage className="text-red-500" />
                                 </FormItem>
                             )}
                         />
 
-                        <Button type="submit" className="w-full bg-black hover:bg-gray-700 text-white">
-                            {loading ? "Signing Up..." : "Sign Up"}
-                        </Button>
-                        <p>Already have account? <a href="/Auth/login" className="text-blue-500">Login here</a> </p>
+                        <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                        >
+                            <Button type="submit" className="w-full bg-black hover:bg-gray-800 text-white py-2 rounded-md transition-colors duration-300 font-semibold">
+                                {loading ? "Signing Up..." : "Sign Up"}
+                            </Button>
+                        </motion.div>
+                        <p className="text-center text-gray-600 mt-4">
+                            Already have an account? <a href="/Auth/login" className="text-black font-semibold hover:underline">Login here</a>
+                        </p>
                     </form>
                 </Form>
             </motion.div>
