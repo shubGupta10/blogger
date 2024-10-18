@@ -58,7 +58,6 @@ const SignupForm = () => {
                     setToken(response.signUp.token);
                     router.push("/pages/Dashboard")
                     toast.success("User creation successfull")
-                    window.location.reload()
                 }else{
                     toast.error("User creation failed")
                 }

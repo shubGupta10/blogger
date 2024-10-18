@@ -48,8 +48,7 @@ const LoginForm = () => {
             if (response?.login) {
                 setToken(response.login.token);
                 toast.success("Login successful");
-                await router.push("/pages/Dashboard"); 
-                window.location.reload()
+                router.push("/pages/Dashboard"); 
             } else {
                 toast.error("Login failed");
             }
