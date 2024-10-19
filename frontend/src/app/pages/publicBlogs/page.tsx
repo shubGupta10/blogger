@@ -17,9 +17,8 @@ const PublicBlogs: React.FC = () => {
 
   // Handle refetch if needed for specific cases (e.g., after a mutation)
   useEffect(() => {
-    // Optionally call refetch here if you need to refresh data on some event
-    // refetch();
-  }, []); // Add specific dependencies if required
+    refetch();
+  }, []); 
 
   // Display loader while fetching the data from Apollo
   if (loading) {
@@ -58,14 +57,12 @@ const PublicBlogs: React.FC = () => {
     },
   };
 
-  // Handle navigating to the blog detail page
   const handleOpenBlogs = async (BlogId: string) => {
-    setIsLoading(true); // Start custom loader for navigation
-    await router.push(`/pages/viewBlog/${BlogId}`); // Navigate to the blog page
-    setIsLoading(false); // Stop custom loader after navigation
+    setIsLoading(true); 
+    router.push(`/pages/viewBlog/${BlogId}`); 
+    setIsLoading(false); 
   };
 
-  // Filter blogs based on the search term
   const filteredBlogs = data?.blogs.filter((blog) =>
     blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     blog.blogContent.toLowerCase().includes(searchTerm.toLowerCase())

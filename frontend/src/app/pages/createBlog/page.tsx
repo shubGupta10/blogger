@@ -12,6 +12,7 @@ import GenerativeContent from '@/components/GenerativeContent';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false }); // Dynamic import
 import 'react-quill/dist/quill.snow.css';
+import { GET_BLOGS_BY_USER } from '@/Graphql/queries/blogQueries';
 
 const CreateBlog = () => {
   const [isPublishing, setIsPublishing] = useState(false);
@@ -24,7 +25,9 @@ const CreateBlog = () => {
     },
   });
 
-  const [createBlog] = useMutation<CreateBlogMutation, CreateBlogMutationVariables>(CreateBlogDocument);
+  const [createBlog] = useMutation<CreateBlogMutation, CreateBlogMutationVariables>(CreateBlogDocument, {
+    refetchQueries: [{query: GET_BLOGS_BY_USER}],
+  });
   const router = useRouter();
 
   const onSubmit = async (data: any) => {
@@ -37,7 +40,8 @@ const CreateBlog = () => {
 
       await createBlog({ variables: { input: data } });
       toast.success('Blog published successfully!');
-      router.push('/');
+      router.push('/pages/Dashboard');
+      form.reset()
     } catch (error) {
       toast.error('Failed to publish blog');
     } finally {
