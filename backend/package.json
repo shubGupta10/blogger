@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node build/index.js",
     "build": "tsc",
-    "dev": "nodemon build/index.js"
+    "dev": "npx nodemon build/index.js"
   },
   "keywords": [],
   "type": "module",
