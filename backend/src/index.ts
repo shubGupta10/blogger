@@ -47,4 +47,4 @@ app.use('/graphql', expressMiddleware(server, {
 const PORT = process.env.PORT || 4000; 
 await new Promise<void>((resolve) => httpServer.listen({ port: PORT }, resolve));
 await connect();
-console.log(`🚀 Server ready at http://localhost:${PORT}/`);
+console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
