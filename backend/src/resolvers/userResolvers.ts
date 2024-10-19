@@ -133,9 +133,13 @@ const userResolver = {
                 }
       
                 context.res.cookie('token', token, {
-                    httpOnly: true,
-                    maxAge: 3600 * 1000
+                    httpOnly: true,           
+                    secure: process.env.NODE_ENV === 'production',  
+                    sameSite: 'strict',     
+                    maxAge: 3600 * 1000,     
+                    path: '/'                
                 });
+                
       
                 return {
                     user: {
