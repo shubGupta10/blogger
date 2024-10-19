@@ -2,13 +2,14 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "build/index.js",
+  "types": "module",
+  "type": "module",
   "scripts": {
     "start": "node build/index.js",
     "build": "tsc",
-    "dev": "npx nodemon build/index.js"
+    "dev": "tsc && node build/index.js"
   },
   "keywords": [],
-  "type": "module",
   "author": "",
   "license": "ISC",
   "description": "",
