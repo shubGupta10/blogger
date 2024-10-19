@@ -9,11 +9,12 @@ import mergedTypeDefs from './typeDefs/mergedTypeDefs.js';
 import connect from './DbConfig/Connect.js';
 import authMiddleware from './Middlewares/authMiddlewares.js';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
 interface MyContext {
-    user?: any; 
+    user?: any;
     req: express.Request;
     res: express.Response;
 }
@@ -30,11 +31,14 @@ const server = new ApolloServer<MyContext>({
 
 await server.start();
 
-app.use(cors({
+const corsOptions = {
     origin: process.env.NEXT_PUBLIC_FRONTEND_URL,
-    credentials: true
-}));
+    credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cookieParser());
 
 app.use('/graphql', expressMiddleware(server, {
     context: async ({ req, res }) => {
@@ -43,8 +47,8 @@ app.use('/graphql', expressMiddleware(server, {
     }
 }));
 
+const PORT = process.env.PORT || 4000;
 
-const PORT = process.env.PORT || 4000; 
 await new Promise<void>((resolve) => httpServer.listen({ port: PORT }, resolve));
 await connect();
 console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);

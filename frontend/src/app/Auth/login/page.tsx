@@ -48,12 +48,14 @@ const LoginForm = () => {
             if (response?.login) {
                 setToken(response.login.token);
                 localStorage.setItem('userAuth', 'true');
-router.push('/pages/Dashboard');
+                router.push('/pages/Dashboard');
                 toast.success("Login successful");
     
-                // Debug the redirection
                 
-                window.location.reload() 
+                setTimeout(() => {
+                    window.location.reload()    
+                }, 5000);
+                 
             } else {
                 toast.error("Login failed");
             }
