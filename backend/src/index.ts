@@ -36,13 +36,13 @@ app.use(cors({
 }));
 app.use(express.json());
 
-app.use(expressMiddleware(server, {
+app.use('/graphql', expressMiddleware(server, {
     context: async ({ req, res }) => {
         const user = await authMiddleware(req, res);
-        console.log("ye mera index.ts wala", user); 
         return { req, res, user } as MyContext;
     }
 }));
+
 
 const PORT = process.env.PORT || 4000; 
 await new Promise<void>((resolve) => httpServer.listen({ port: PORT }, resolve));
