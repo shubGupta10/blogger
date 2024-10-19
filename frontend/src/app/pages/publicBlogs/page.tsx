@@ -59,7 +59,7 @@ const PublicBlogs: React.FC = () => {
 
   const handleOpenBlogs = async (BlogId: string) => {
     setIsLoading(true); 
-    router.push(`/pages/viewBlog/${BlogId}`); 
+    router.push(`/viewBlog/${BlogId}`);
     setIsLoading(false); 
   };
 
