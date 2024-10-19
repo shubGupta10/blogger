@@ -47,11 +47,12 @@ const LoginForm = () => {
     
             if (response?.login) {
                 setToken(response.login.token);
-                localStorage.setItem('userAuth', 'true'); // Store authentication status
+                localStorage.setItem('userAuth', 'true');
+router.push('/pages/Dashboard');
                 toast.success("Login successful");
     
                 // Debug the redirection
-                router.push('/pages/Dashboard');
+                
                 window.location.reload() 
             } else {
                 toast.error("Login failed");
