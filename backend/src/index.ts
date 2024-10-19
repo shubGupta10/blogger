@@ -43,6 +43,8 @@ app.use(cookieParser());
 app.use('/graphql', expressMiddleware(server, {
     context: async ({ req, res }) => {
         const user = await authMiddleware(req, res);
+        console.log("Index.ts user", user);
+        
         return { req, res, user } as MyContext;
     }
 }));
