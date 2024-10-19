@@ -14,7 +14,7 @@ import cookieParser from 'cookie-parser';
 dotenv.config();
 
 interface MyContext {
-    user?: any;
+    user?: any;  // Consider specifying a type instead of 'any'
     req: express.Request;
     res: express.Response;
 }
@@ -51,6 +51,6 @@ app.use('/graphql', expressMiddleware(server, {
 
 const PORT = process.env.PORT || 4000;
 
+await connect(); // Ensure this connects successfully
 await new Promise<void>((resolve) => httpServer.listen({ port: PORT }, resolve));
-await connect();
 console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);

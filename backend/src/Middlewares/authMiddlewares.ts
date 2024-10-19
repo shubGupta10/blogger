@@ -25,7 +25,7 @@ const authMiddleware = async (req: AuthenticatedRequest, res: Response) => {
 
   try {
     const userData = jwt.verify(token, JWT_SECRET);
-    req.user = userData;
+    req.user = userData; // Attach user data to the request object
     return userData;
   } catch (error) {
     console.error("Token verification error:", error);
