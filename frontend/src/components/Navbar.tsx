@@ -50,10 +50,8 @@ const Navbar = () => {
     try {
       const response = await logout();
       if (response.data?.logout) {
-        localStorage.setItem('userAuth', 'false');
        router.push('/Auth/login'); 
         toast.success('Logout successful!');
-        window.location.reload()
       }
     } catch (error) {
       console.error('Logout failed:', error);
