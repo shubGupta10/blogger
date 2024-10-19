@@ -170,10 +170,9 @@ const userResolver = {
     Query: {
         authenticatedUser: async (_parent: unknown, _args: unknown, context: MyContext) => {
             try {
-                if (!context.user) {
-                    throw new Error("User not authenticated");
-                }
                 const user = await User.findById(context.user._id);
+                console.log("Context wala id", context.user._id);
+                
                 if (!user) {
                     throw new Error("User not found");
                 }
