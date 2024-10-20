@@ -7,6 +7,7 @@ import { MyProvider } from "@/context/ContextProvider";
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer";
 import { Analytics } from "@vercel/analytics/react"
+import ReloadComponent from "@/components/ReloadFunction";
 
 // Importing custom fonts
 const geistSans = localFont({
@@ -49,6 +50,7 @@ export default function RootLayout({
           <MyProvider>
             <Navbar />
             <Analytics/>
+            <ReloadComponent url={process.env.NEXT_PUBLIC_BACKEND_URL}/>
             {children}
             <Footer/>
           </MyProvider>

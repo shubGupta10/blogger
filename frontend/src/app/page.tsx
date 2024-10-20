@@ -7,26 +7,7 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 
 const Home = () => {
-  const url = process.env.NEXT_PUBLIC_BACKEND_URL;
-  const interval = 60000; 
 
-  function reloadWebsite() {
-    axios.get(url)
-      .then(response => {
-        console.log(`Reloaded at ${new Date().toISOString()}: Status Code ${response.status}`);
-      })
-      .catch(error => {
-        console.error(`Error reloading at ${new Date().toISOString()}:`, error.message);
-      });
-  }
-
-  useEffect(() => {
-    const intervalId = setInterval(reloadWebsite, interval);
-
-    return () => {
-      clearInterval(intervalId); 
-    };
-  }, [url]);
 
   const router = useRouter();
 
