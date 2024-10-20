@@ -135,7 +135,12 @@ const userResolver = {
                 context.res.cookie('token', token, {
                     httpOnly: true, 
                     secure: true,
+                    sameSite: 'None',
+                    domain: 'https://goblogerly.vercel.app'
                 });
+                
+                
+      
                 return {
                     user: {
                         _id: user._id,

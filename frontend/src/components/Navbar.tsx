@@ -1,4 +1,4 @@
-'use client';
+'use client'
 import React, { useState, useCallback } from 'react';
 import { useMutation } from '@apollo/client';
 import Link from 'next/link';
@@ -24,8 +24,7 @@ const Navbar = () => {
     setIsSidebarOpen(false);
   }, []);
 
-  // Check local storage for token
-  const isAuthenticated = !!authUser || !!localStorage.getItem('token');
+  const isAuthenticated = !!authUser;
 
   const handleLogout = async () => {
     try {
@@ -50,7 +49,9 @@ const Navbar = () => {
   const getLinkStyle = (href: string) => {
     const isActive = pathname === href;
     return `transition-colors duration-200 ${
-      isActive ? 'text-black font-semibold' : 'text-gray-600 hover:text-black'
+      isActive
+        ? 'text-black font-semibold'
+        : 'text-gray-600 hover:text-black'
     }`;
   };
 
@@ -84,7 +85,7 @@ const Navbar = () => {
             {isAuthenticated ? (
               <button
                 type="button"
-                className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                className="flex text-sm  bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                 onClick={toggleSidebar}
               >
                 <span className="sr-only">Open user sidebar</span>
