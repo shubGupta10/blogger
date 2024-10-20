@@ -136,7 +136,7 @@ const userResolver = {
                     httpOnly: true, 
                     secure: true,
                     sameSite: 'None',
-                    domain: 'https://goblogerly.vercel.app'
+                    domain: 'goblogerly.vercel.app', 
                 });
                 
                 
