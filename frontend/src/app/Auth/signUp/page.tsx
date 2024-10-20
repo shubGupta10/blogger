@@ -55,6 +55,7 @@ const SignupForm = () => {
                 }
             });
 
+            router.push("/pages/Dashboard");
             if (response?.signUp) {
                 const { token, user } = response.signUp;
                 
@@ -63,7 +64,6 @@ const SignupForm = () => {
                 localStorage.setItem('token', token);
                 Cookies.set('token', token, { expires: 1 });
 
-                router.push("/pages/Dashboard");
                 toast.success("User creation successful");
 
                 setTimeout(() => {

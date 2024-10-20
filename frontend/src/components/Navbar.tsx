@@ -15,7 +15,7 @@ const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  const { user: authUser, setUser } = useMyContext(); // Get setUser to update context
+  const { user: authUser, setUser } = useMyContext();
 
   const toggleSidebar = useCallback(() => {
     setIsSidebarOpen((prev) => !prev);
@@ -33,9 +33,8 @@ const Navbar = () => {
       if (response.data?.logout) {
         Cookies.remove('token');
         localStorage.clear();
-
-        // Clear user from context to update navbar state
-        setUser(null);
+        
+        setUser(null); // Clear user from context
 
         closeSidebar();
         router.push('/Auth/login');
@@ -103,8 +102,6 @@ const Navbar = () => {
                 Get Started
               </Link>
             )}
-
-            {/* Mobile menu button */}
           </div>
         </div>
       </nav>
@@ -139,7 +136,8 @@ const Navbar = () => {
                   </svg>
                 </button>
 
-                {authUser && (
+                {/* User Profile Section */}
+                {isAuthenticated && (
                   <div className="flex flex-col items-center">
                     <img className="w-20 h-20 rounded-full shadow-lg" src={authUser.profilePicture} alt={`${authUser.firstName} ${authUser.lastName}`} />
                     <h2 className="mt-4 text-xl font-semibold text-gray-900 dark:text-white">{`${authUser.firstName} ${authUser.lastName}`}</h2>
@@ -161,7 +159,7 @@ const Navbar = () => {
                         </button>
                       </li>
                     ))}
-                    {authUser && (
+                    {isAuthenticated && (
                       <>
                         <li>
                           <button
