@@ -56,9 +56,6 @@ const LoginForm = () => {
                 toast.success("Login successful");
                 router.push('/');
 
-                setTimeout(() => {
-                    window.location.reload();    
-                }, 3000);
             } else {
                 toast.error("Login failed");
                 router.push('/')
