@@ -47,6 +47,7 @@ const LoginForm = () => {
             });
 
             router.push('/pages/Dashboard');
+            window.location.href="/pages/Dashboard"
             if (response?.login) {
               console.log(response.login);
               const {token, user} = response.login

@@ -6,7 +6,7 @@ export function middleware(request: NextRequest) {
   
   const path = request.nextUrl.pathname;
 
-  const publicRoutes = ['/', '/Auth/login', '/Auth/signUp'];
+  const publicRoutes = ['/', '/Auth/login', '/Auth/signUp', '/pages/publicBlogs', '/pages/viewBlog/:id'];
 
   const isPublicRoute = publicRoutes.includes(path);
 
