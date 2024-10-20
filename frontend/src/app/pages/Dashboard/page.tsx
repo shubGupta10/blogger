@@ -66,7 +66,7 @@ const Dashboard: React.FC = () => {
                 className="mt-4 md:hidden"
               >
                 <div className="flex flex-col space-y-2">
-                  <NavButton href="/pages/createBlog" onClick={toggleMenu}>New Post</NavButton>
+                  <NavButton href="/pages/createBlog" onClick={toggleMenu}>Add blog</NavButton>
                   <NavButton href="/pages/publicBlogs" onClick={toggleMenu}>Public Blogs</NavButton>
                   <NavButton href="/settings" onClick={toggleMenu}>Settings</NavButton>
                 </div>

@@ -3,12 +3,18 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Cpu, Edit, Lock, BarChart, Zap, Type, MessageSquare, FileText, Search, Filter } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 const Home = () => {
   const router = useRouter();
 
   const handleGetStarted = () => {
-    router.push("/Auth/signUp");
+    if((Cookies.get('token')) || (localStorage.getItem('token'))){
+      router.push("/");
+    }else{
+      router.push("/Auth/signUp");
+    }
+    
   };
 
   const fadeInUp = {
