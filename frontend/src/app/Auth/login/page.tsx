@@ -20,7 +20,7 @@ import { useMutation } from "@apollo/client";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useMyContext } from "@/context/ContextProvider";
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
 
 const LoginForm = () => {
     const form = useForm<z.infer<typeof SignInSchema>>({
@@ -31,7 +31,7 @@ const LoginForm = () => {
         }
     });
 
-    const { setToken } = useMyContext();
+    const { setToken, setUser } = useMyContext(); 
     const [login, { loading }] = useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
     const router = useRouter(); 
 
@@ -45,16 +45,20 @@ const LoginForm = () => {
                     }
                 }
             });
-            router.push('/pages/Dashboard');
-    
+
             if (response?.login) {
-                setToken(response.login.token);
-                Cookies.set('token', response.login.token, { expires: 1 }); 
+                const { token, user } = response.login;
+                
+                setToken(token);
+                setUser(user); 
+                Cookies.set('token', token, { expires: 1 }); 
+                
                 toast.success("Login successful");
+                router.push('/pages/Dashboard');
+
                 setTimeout(() => {
-                    window.location.reload()    
+                    window.location.reload();    
                 }, 1000);
-                 
             } else {
                 toast.error("Login failed");
             }
@@ -63,9 +67,6 @@ const LoginForm = () => {
             toast.error("An error occurred during login.");
         }
     };
-    
-    
-    
 
     return (
         <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-gray-100 p-4 md:p-8">

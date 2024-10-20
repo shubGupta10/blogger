@@ -38,40 +38,48 @@ const SignupForm = () => {
 
     const [signup, {loading, error}] = useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument)
 
-    const {setToken} = useMyContext()
-    const router = useRouter()
+    const { setToken, setUser } = useMyContext();
+    const router = useRouter();
+    
     const onSubmit = async (data: z.infer<typeof SignupSchema>) => {
-            try {
-                const {data: response} = await signup({
-                    variables: {
-                        input: {
+        try {
+            const { data: response } = await signup({
+                variables: {
+                    input: {
                         firstName: data.firstName,
                         lastName: data.lastName,
                         email: data.email,
                         password: data.password,
                         gender: data.gender,
-                        }
                     }
-                })
-                if(response?.signUp){
-                    setToken(response.signUp.token);
-                    localStorage.setItem('token', response.signUp.token);
-                    Cookies.set('token', response.signUp.token, { expires: 1 }); 
-                    router.push("/pages/Dashboard")
-                    toast.success("User creation successfull")
-                    setTimeout(() => {
-                        window.location.reload()    
-                    }, 1000);
-                }else{
-                    toast.error("User creation failed")
                 }
-            } catch (error) {
+            });
+
+            if (response?.signUp) {
+                const { token, user } = response.signUp;
                 
+                setToken(token);
+                setUser(user); 
+                localStorage.setItem('token', token);
+                Cookies.set('token', token, { expires: 1 });
+
+                router.push("/pages/Dashboard");
+                toast.success("User creation successful");
+
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            } else {
+                toast.error("User creation failed");
             }
+        } catch (error) {
+            console.error("Signup failed:", error);
+            toast.error("Signup failed. Please try again.");
+        }
     };
 
     return (
-        <div className="flex flex-col md:flex-row items-center  justify-center min-h-screen bg-gray-100 p-4 md:p-8">
+        <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-gray-100 p-4 md:p-8">
             <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
