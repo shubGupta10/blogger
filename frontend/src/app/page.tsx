@@ -1,20 +1,41 @@
 'use client'
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Cpu, Edit, Lock, BarChart, Zap, Type, MessageSquare, FileText, Search, Filter } from 'lucide-react';
+import { ArrowRight, Cpu, Edit, Lock, Zap, Type, MessageSquare, FileText, Search, Filter } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const Home = () => {
+  const url = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const interval = 60000; 
+
+  function reloadWebsite() {
+    axios.get(url)
+      .then(response => {
+        console.log(`Reloaded at ${new Date().toISOString()}: Status Code ${response.status}`);
+      })
+      .catch(error => {
+        console.error(`Error reloading at ${new Date().toISOString()}:`, error.message);
+      });
+  }
+
+  useEffect(() => {
+    const intervalId = setInterval(reloadWebsite, interval);
+
+    return () => {
+      clearInterval(intervalId); 
+    };
+  }, [url]);
+
   const router = useRouter();
 
   const handleGetStarted = () => {
-    if((Cookies.get('token')) || (localStorage.getItem('token'))){
+    if (Cookies.get('token') || localStorage.getItem('token')) {
       router.push("/");
-    }else{
+    } else {
       router.push("/Auth/signUp");
     }
-    
   };
 
   const fadeInUp = {
