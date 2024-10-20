@@ -6,6 +6,7 @@ import ApolloWrapper from "@/components/ui/ApolloWrapper";
 import { MyProvider } from "@/context/ContextProvider";
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer";
+import { Analytics } from "@vercel/analytics/react"
 
 // Importing custom fonts
 const geistSans = localFont({
@@ -47,6 +48,7 @@ export default function RootLayout({
         <ApolloWrapper>
           <MyProvider>
             <Navbar />
+            <Analytics/>
             {children}
             <Footer/>
           </MyProvider>
