@@ -29,22 +29,3 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/Auth/login', request.url)); // Redirect to login for protected routes
   }
 }
-
-export const config = {
-  matcher: [
-    '/',
-    '/Auth/login',
-    '/Auth/signUp',
-    '/pages/Dashboard',
-    '/pages/blogs/:id',
-    '/pages/ComingSoon',
-    '/pages/createBlog',
-    '/pages/EditBlogs/:id',
-    '/pages/publicBlogs',
-    '/pages/publicUserProfile/:id',
-    '/pages/settings',
-    '/pages/SummarisePage/:id',
-    '/pages/userProfile/:id',
-    '/pages/viewBlog/:id'
-  ],
-};
