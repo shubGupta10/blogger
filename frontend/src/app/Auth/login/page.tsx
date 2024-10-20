@@ -54,6 +54,7 @@ const LoginForm = () => {
                 setToken(token);
                 setUser(user); 
                 Cookies.set('token', token, { expires: 1 }); 
+                router.push('/pages/Dashboard');
                 toast.success("Login successful");
                 setTimeout(() => {
                     window.location.reload();    
