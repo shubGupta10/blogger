@@ -1,4 +1,3 @@
-// UserProfile.tsx
 'use client';
 
 import { useQuery } from '@apollo/client';

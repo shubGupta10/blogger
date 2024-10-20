@@ -2,7 +2,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useMyContext } from '@/context/ContextProvider';
-import Loader from '@/components/Loader';
 
 const UserProfile = () => {
   const { user } = useMyContext();

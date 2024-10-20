@@ -79,7 +79,6 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
   );
 
   const blog = blogData?.blog;
-  console.log(blog._id);
   
   const handleOpenPublicProfile = (blog: any) => {
     router.push(`/pages/publicUserProfile/${blog._id}`);

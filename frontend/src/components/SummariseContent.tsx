@@ -3,12 +3,11 @@ import React, { useState } from 'react';
 import { GENERATE_STORY } from '@/Graphql/mutations/blogMutations';
 import { GenerateStoryMutation, GenerateStoryMutationVariables } from '@/gql/graphql';
 import { useMutation } from '@apollo/client';
-import Loader from '@/components/Loader';
 import { Button } from './ui/button';
 
 interface SummariseContentProps {
     setBlogContent: (content: string) => void;
-    prompt: string; // Accept the prompt as a prop
+    prompt: string; 
 }
 
 const SummariseContent: React.FC<SummariseContentProps> = ({ setBlogContent, prompt }) => {
@@ -43,7 +42,6 @@ const SummariseContent: React.FC<SummariseContentProps> = ({ setBlogContent, pro
     
 
     const handleSummariseButton = async () => {
-        console.log("Working");
 
         if (!prompt.trim()) return;
         try {

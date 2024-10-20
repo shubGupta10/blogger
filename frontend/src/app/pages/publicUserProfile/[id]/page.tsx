@@ -19,7 +19,6 @@ const PublicUserProfile = () => {
     variables: { blogId: id },
   });
 
-  console.log("Variables passed to query (userId):", id); 
 
   useEffect(() => {
     if (data.blog.user._id) {
@@ -27,7 +26,6 @@ const PublicUserProfile = () => {
     }
   }, [data]);
 
-  console.log("User before (from query):", userId);
   
   if (loading) return <Loader />;
 

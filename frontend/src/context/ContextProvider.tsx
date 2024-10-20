@@ -24,7 +24,6 @@ const myContext = createContext<ContextType>({
 export const MyProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<any>(null);
-  console.log(user);
   
 
   const { data, loading, error } = useQuery<GetAuthenticatedUserQuery, GetAuthenticatedUserQueryVariables>(

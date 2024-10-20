@@ -6,7 +6,7 @@ import Loader from '@/components/Loader';
 
 interface GenerativeContentProps {
   setBlogContent: (content: string) => void;
-  blogTitle: string; // Accept blog title as a prop
+  blogTitle: string;
 }
 
 export const GenerativeContent: React.FC<GenerativeContentProps> = ({ setBlogContent, blogTitle }) => {

@@ -15,12 +15,10 @@ const PublicBlogs: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Handle refetch if needed for specific cases (e.g., after a mutation)
   useEffect(() => {
     refetch();
   }, []); 
 
-  // Display loader while fetching the data from Apollo
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -29,7 +27,6 @@ const PublicBlogs: React.FC = () => {
     );
   }
 
-  // Display error message if the query fails
   if (error) {
     return (
       <div className="text-red-500 text-center mt-10 p-4 bg-white rounded-lg shadow">
@@ -38,7 +35,6 @@ const PublicBlogs: React.FC = () => {
     );
   }
 
-  // Variants for the animation
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
