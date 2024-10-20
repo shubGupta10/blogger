@@ -4,6 +4,8 @@ import { useQuery } from '@apollo/client';
 import { GET_SINGLEBLOG } from '@/Graphql/queries/blogQueries';
 import SummariseContent from '@/components/SummariseContent';
 import Loader from '@/components/Loader';
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+
 
 const SummarisePage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
@@ -21,7 +23,12 @@ const SummarisePage = ({ params }: { params: { id: string } }) => {
   }, [data]);
 
   if (loading) return <Loader />;
-  if (error) return <div>Error: {error.message}</div>;
+  if (error){
+    <Alert>
+    <AlertTitle>Please log in...</AlertTitle>
+    <AlertDescription>User needs to authenticated..</AlertDescription>
+    </Alert>
+  }
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">

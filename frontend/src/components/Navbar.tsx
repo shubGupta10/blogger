@@ -1,57 +1,39 @@
 'use client'
-import React, { useEffect, useState, useCallback } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
+import React, { useState, useCallback } from 'react';
+import { useMutation } from '@apollo/client';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { GET_AUTHENTICATED_USER } from '@/Graphql/queries/userQueries';
-import Loader from '@/components/Loader';
+import { useRouter, usePathname } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { LogoutDocument } from '@/gql/graphql';
 import { LogoutMutation, LogoutMutationVariables } from '@/gql/graphql';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from './ui/button';
+import { useMyContext } from '@/context/ContextProvider';
 
 const Navbar = () => {
-  
-  interface User {
-    _id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    profilePicture: string;
-    gender: string;
-  }
-
- 
-  const { loading, data } = useQuery(GET_AUTHENTICATED_USER);
   const [logout] = useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
-  const [user, setUser] = useState<User | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
-  const router = useRouter(); 
+  const router = useRouter();
+  const pathname = usePathname();
+  const { user: authUser } = useMyContext();
 
   const toggleSidebar = useCallback(() => {
     setIsSidebarOpen((prev) => !prev);
   }, []);
 
-  const toggleNavbar = useCallback(() => {
-    setIsNavbarOpen((prev) => !prev);
+  const closeSidebar = useCallback(() => {
+    setIsSidebarOpen(false);
   }, []);
 
-  useEffect(() => {
-    if (!loading && data) {
-      setUser(data.authenticatedUser);
-    }
-  }, [loading, data]);
-
-  const isAuthenticated = !!user;
+  const isAuthenticated = !!authUser;
 
   const handleLogout = async () => {
     try {
       const response = await logout();
       if (response.data?.logout) {
-       router.push('/Auth/login'); 
+        closeSidebar();
+        router.push('/Auth/login'); 
         toast.success('Logout successful!');
+        window.location.reload();
       }
     } catch (error) {
       console.error('Logout failed:', error);
@@ -59,11 +41,27 @@ const Navbar = () => {
     }
   };
 
-  if (loading) {
-    return <Loader />;
-  }
+  const handleNavigation = (href: string) => {
+    closeSidebar();
+    router.push(href);
+  };
 
+  const getLinkStyle = (href: string) => {
+    const isActive = pathname === href;
+    return `transition-colors duration-200 ${
+      isActive
+        ? 'text-black font-semibold'
+        : 'text-gray-600 hover:text-black'
+    }`;
+  };
 
+  const navLinks = [
+    { href: '/', label: 'Home' },
+    { href: '/pages/publicBlogs', label: 'Public Blogs' },
+    { href: '/pages/Dashboard', label: 'Dashboard' },
+    { href: '/pages/createBlog', label: 'Create Blog' },
+    { href: 'https://shubgupta.vercel.app', label: 'Contact' },
+  ];
 
   return (
     <>
@@ -74,15 +72,24 @@ const Navbar = () => {
             <span className="self-center text-2xl font-semibold whitespace-nowrap text-gray-900 dark:text-white">Blogger</span>
           </Link>
 
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex space-x-8">
+            {navLinks.map((link) => (
+              <Link key={link.href} href={link.href} className={getLinkStyle(link.href)}>
+                {link.label}
+              </Link>
+            ))}
+          </div>
+
           <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
             {isAuthenticated ? (
               <button
                 type="button"
-                className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                className="flex text-sm  bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                 onClick={toggleSidebar}
               >
                 <span className="sr-only">Open user sidebar</span>
-                <img className="w-8 h-8 rounded-full" src={user?.profilePicture} alt={`${user?.firstName} ${user?.lastName}`} />
+                <img className="w-8 h-8 rounded-full" src={authUser?.profilePicture} alt={`${authUser?.firstName} ${authUser?.lastName}`} />
               </button>
             ) : (
               <Link href="/Auth/login" className="text-white bg-black hover:bg-gray-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
@@ -90,38 +97,7 @@ const Navbar = () => {
               </Link>
             )}
 
-            <button
-              type="button"
-              className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-              onClick={toggleNavbar}
-              aria-controls="navbar-user"
-              aria-expanded={isNavbarOpen}
-            >
-              <span className="sr-only">Open main menu</span>
-              <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15" />
-              </svg>
-            </button>
-          </div>
-
-          <div className={`items-center justify-between w-full md:flex md:w-auto md:order-1 ${isNavbarOpen ? 'block' : 'hidden'}`} id="navbar-user">
-            <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0">
-              <li>
-                <Link href="/" className={`block py-2 px-3 ${window.location.href === '/' ? 'bg-black text-white' : 'text-gray-900'} rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent`} aria-current="page">Home</Link>
-              </li>
-              <li>
-                <Link href="/pages/publicBlogs" className={`block py-2 px-3 ${window.location.href === '/pages/publicBlogs' ? 'bg-black text-white' : 'text-gray-900'} rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent`}>Public Blogs</Link>
-              </li>
-              <li>
-                <Link href="/pages/Dashboard" className={`block py-2 px-3 ${window.location.href === '/pages/Dashboard' ? 'bg-black text-white' : 'text-gray-900'} rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent`}>Dashboard</Link>
-              </li>
-              <li>
-                <Link href="/pages/createBlog" className={`block py-2 px-3 ${window.location.href === '/pages/createBlog' ? 'bg-black text-white' : 'text-gray-900'} rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent`}>Create Blog</Link>
-              </li>
-              <li>
-                <Link href="https://shubgupta.vercel.app" className={`block py-2 px-3 ${window.location.href === '/contact' ? 'bg-black text-white' : 'text-gray-900'} rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent`}>Contact</Link>
-              </li>
-            </ul>
+            {/* Mobile menu button */}
           </div>
         </div>
       </nav>
@@ -135,7 +111,7 @@ const Navbar = () => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
               className="fixed inset-0 bg-black bg-opacity-50 z-40"
-              onClick={toggleSidebar}
+              onClick={closeSidebar}
             />
             <motion.div
               initial={{ x: '100%' }}
@@ -148,7 +124,7 @@ const Navbar = () => {
                 <button
                   type="button"
                   className="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
-                  onClick={toggleSidebar}
+                  onClick={closeSidebar}
                 >
                   <span className="sr-only">Close sidebar</span>
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -156,34 +132,54 @@ const Navbar = () => {
                   </svg>
                 </button>
 
-                {user && (
+                {authUser && (
                   <div className="flex flex-col items-center">
-                    <img className="w-20 h-20 rounded-full shadow-lg" src={user.profilePicture} alt={`${user.firstName} ${user.lastName}`} />
-                    <h2 className="mt-4 text-xl font-semibold text-gray-900 dark:text-white">{`${user.firstName} ${user.lastName}`}</h2>
-                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{user.email}</p>
+                    <img className="w-20 h-20 rounded-full shadow-lg" src={authUser.profilePicture} alt={`${authUser.firstName} ${authUser.lastName}`} />
+                    <h2 className="mt-4 text-xl font-semibold text-gray-900 dark:text-white">{`${authUser.firstName} ${authUser.lastName}`}</h2>
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{authUser.email}</p>
                   </div>
                 )}
 
                 <nav className="mt-6">
                   <ul className="space-y-2">
-                    <li>
-                      <Link href="/pages/Dashboard" className="block py-2 px-4 text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-200 dark:hover:text-white transition-colors duration-200">
-                        Dashboard
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/pages/settings" className="block py-2 px-4 text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-200 dark:hover:text-white transition-colors duration-200">
-                        Settings
-                      </Link>
-                    </li>
-                    <li>
-                      <button
-                        onClick={handleLogout}
-                        className="w-full text-left py-2 px-4 text-white bg-red-500 rounded-lg hover:bg-red-700 dark:hover:bg-gray-700 dark:text-white dark:hover:text-white transition-colors duration-200"
-                      >
-                        Sign out
-                      </button>
-                    </li>
+                    {navLinks.map((link) => (
+                      <li key={link.href}>
+                        <button
+                          onClick={() => handleNavigation(link.href)}
+                          className={`w-full text-left py-2 px-4 rounded-lg transition-colors duration-200 ${
+                            pathname === link.href
+                              ? 'bg-black text-white hover:bg-gray-800'
+                              : 'text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white'
+                          }`}
+                        >
+                          {link.label}
+                        </button>
+                      </li>
+                    ))}
+                    {authUser && (
+                      <>
+                        <li>
+                          <button
+                            onClick={() => handleNavigation('/pages/settings')}
+                            className={`w-full text-left py-2 px-4 rounded-lg transition-colors duration-200 ${
+                              pathname === '/pages/settings'
+                                ? 'bg-black text-white hover:bg-gray-800'
+                                : 'text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white'
+                            }`}
+                          >
+                            Settings
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            onClick={handleLogout}
+                            className="w-full text-left py-2 px-4 text-white bg-red-500 rounded-lg hover:bg-red-700 dark:hover:bg-gray-700 dark:text-white dark:hover:text-white transition-colors duration-200"
+                          >
+                            Sign out
+                          </button>
+                        </li>
+                      </>
+                    )}
                   </ul>
                 </nav>
               </div>

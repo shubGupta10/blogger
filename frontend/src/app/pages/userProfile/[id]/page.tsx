@@ -7,7 +7,7 @@ import Loader from '@/components/Loader';
 const UserProfile = () => {
   const { user } = useMyContext();
 
-  if (!user) return <div><Loader/></div>;
+  if (!user) return <div className="text-center text-3xl text-red-600">User is not authenticated</div>;
 
   return (
     <div className="min-h-screen bg-white dark:bg-black flex flex-col items-center justify-center p-10">

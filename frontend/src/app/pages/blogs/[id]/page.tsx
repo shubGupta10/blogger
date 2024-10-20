@@ -3,21 +3,22 @@ import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GET_SINGLEBLOG } from '@/Graphql/queries/blogQueries';
-import { GetBlogQuery, GetBlogQueryVariables } from '@/gql/graphql';
+import { GetBlogQuery, GetBlogQueryVariables, GetUserQuery, GetUserQueryVariables } from '@/gql/graphql';
 import { ChevronDown, Calendar, User } from 'lucide-react';
 import Loader from '@/components/Loader';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 
 const BlogDetails = ({ params }: { params: { id: string } }) => {
-  const [userId, setUserId] = useState('');
   const [blogId, setBlogId] = useState('')
   const { id } = params;
   const router = useRouter()
 
-  useEffect(() => {
-    setUserId(id)
-  }, [id])
+  
+  const { data, loading, error } = useQuery<GetBlogQuery, GetBlogQueryVariables>(GET_SINGLEBLOG, {
+    variables: { blogId: id },
+  });
+
 
   useEffect(() => {
     setBlogId(id)
@@ -25,25 +26,16 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
 
 
   const handleSubmit = (blogId: string) => {
-    console.log("working");
-    console.log("Ths is here blogid", blogId);
-
     router.push(`/pages/SummarisePage/${blogId}`)
   }
 
 
-
-  const handleOpenProfile = (userId: string) => {
-    router.push(`/pages/userProfile/${userId}`)
-  }
-
-
   const [isContentExpanded, setIsContentExpanded] = useState(false);
+  const userID = data?.blog?.user?._id
 
-
-  const { data, loading, error } = useQuery<GetBlogQuery, GetBlogQueryVariables>(GET_SINGLEBLOG, {
-    variables: { blogId: id },
-  });
+  const handleOpenProfile = (userID: string) => {
+    router.push(`/pages/userProfile/${userID}`)
+  }
 
   if (loading) return (
     <div className="flex justify-center items-center h-screen bg-black">
@@ -100,7 +92,7 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4 }}
             className="flex items-center cursor-pointer mt-8 space-x-4"
-            onClick={() => handleOpenProfile(userId)}
+            onClick={() => handleOpenProfile(userID)}
           >
             <img
               src={blog.user?.profilePicture || '/api/placeholder/100/100'}
@@ -128,7 +120,7 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="flex items-center space-x-4 mb-8 text-gray-400"
+          className="flex items-center space-x-4 mb-8 mt-4 text-gray-400"
         >
           <Calendar size={20} />
           <span>{new Date(parseInt(blog.createdAt)).toLocaleDateString()}</span>

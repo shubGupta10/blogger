@@ -1,4 +1,5 @@
-'use client'
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
@@ -7,7 +8,6 @@ import { useMyContext } from '@/context/ContextProvider';
 const Settings = () => {
   const [userId, setUserId] = useState<string | undefined>();
   const { user } = useMyContext();
-  
   const router = useRouter();
 
   useEffect(() => {
@@ -22,10 +22,13 @@ const Settings = () => {
     }
   };
 
-
   const handleContact = () => {
     router.push("https://shubgupta.vercel.app");
-  }
+  };
+
+  const handleChangeTheme = () => {
+    router.push("/pages/ComingSoon");
+  };
 
   return (
     <div className="min-h-screen bg-white dark:bg-black flex flex-col items-center justify-center text-black dark:text-white px-6">
@@ -50,23 +53,25 @@ const Settings = () => {
           whileTap={{ scale: 0.95 }}
           className="flex items-center justify-center border border-gray-300 dark:border-gray-600 bg-black text-white dark:bg-white dark:text-black rounded-lg py-8 cursor-pointer transition-all hover:bg-gray-800 dark:hover:bg-gray-300"
         >
-          <button className="text-xl font-semibold">User Profile</button>
+          <div className="text-xl font-semibold">User Profile</div>
         </motion.div>
 
         <motion.div
+          onClick={handleChangeTheme}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           className="flex items-center justify-center border border-gray-300 dark:border-gray-600 bg-black text-white dark:bg-white dark:text-black rounded-lg py-8 cursor-pointer transition-all hover:bg-gray-800 dark:hover:bg-gray-300"
         >
-          <button className="text-xl font-semibold">Change Theme</button>
+          <div className="text-xl font-semibold">Change Theme</div>
         </motion.div>
 
         <motion.div
+          onClick={handleContact}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           className="flex items-center justify-center border border-gray-300 dark:border-gray-600 bg-black text-white dark:bg-white dark:text-black rounded-lg py-8 cursor-pointer transition-all hover:bg-gray-800 dark:hover:bg-gray-300"
         >
-          <button onClick={handleContact} className="text-xl font-semibold">Contact Developer</button>
+          <div className="text-xl font-semibold">Contact Developer</div>
         </motion.div>
       </motion.div>
     </div>

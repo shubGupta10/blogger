@@ -47,14 +47,11 @@ const LoginForm = () => {
     
             if (response?.login) {
                 setToken(response.login.token);
-                localStorage.setItem('userAuth', 'true');
                 router.push('/pages/Dashboard');
                 toast.success("Login successful");
-    
-                
                 setTimeout(() => {
                     window.location.reload()    
-                }, 5000);
+                }, 2000);
                  
             } else {
                 toast.error("Login failed");

@@ -44,7 +44,7 @@ const Dashboard: React.FC = () => {
               Dashboard
             </h1>
             <div className="hidden md:flex space-x-4">
-              <NavButton href="/pages/createBlog">New Post</NavButton>
+              <NavButton href="/pages/createBlog">Add Blog</NavButton>
               <NavButton href="/pages/publicBlogs">Public Blogs</NavButton>
               <NavButton href="/pages/settings">Settings</NavButton>
             </div>

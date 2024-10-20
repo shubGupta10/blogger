@@ -2,26 +2,39 @@
 
 import { useQuery } from '@apollo/client';
 import { useParams } from 'next/navigation';
-import { GET_SINGLEBLOG } from '@/Graphql/queries/blogQueries';
 import Loader from '@/components/Loader';
-import UserProfile from '@/components/userProfile'
+import UserProfile from '@/components/userProfile';
+import { useEffect, useState } from 'react';
+import { GET_SINGLEBLOG } from '@/Graphql/queries/blogQueries';
+import { GetBlogQuery, GetBlogQueryVariables } from '@/gql/graphql';
 
 const PublicUserProfile = () => {
+  const [userId, setUserId] = useState('');
   const params = useParams();
-  const blogId = params.id as string;
+  const id = params.id as string; 
+  
+  console.log("User after params (URL id):", id); 
 
-  const { data: blogData, loading: loadingBlog, error: blogError } = useQuery(GET_SINGLEBLOG, {
-    variables: { blogId },
-    skip: !blogId,
+  const { data, loading, error } = useQuery<GetBlogQuery, GetBlogQueryVariables>(GET_SINGLEBLOG, {
+    variables: { blogId: id },
   });
 
-  if (loadingBlog) return <Loader />;
-  if (blogError) {
-    console.error("Error fetching blog:", blogError);
-    return <div>Error fetching blog</div>;
-  }
+  console.log("Variables passed to query (userId):", id); 
 
-  const userId = blogData?.blog?.user?._id;
+  useEffect(() => {
+    if (data.blog.user._id) {
+      setUserId(data.blog.user._id); 
+    }
+  }, [data]);
+
+  console.log("User before (from query):", userId);
+  
+  if (loading) return <Loader />;
+
+  if (error) {
+    console.error("Error fetching user:", error);
+    return <div className='text-red-700 text=5xl text-center'>Error fetching user</div>;
+  }
 
   return (
     <div className="min-h-screen bg-white dark:bg-black flex flex-col items-center justify-center p-10">

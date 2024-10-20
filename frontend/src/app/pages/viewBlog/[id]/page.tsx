@@ -33,7 +33,6 @@ interface Comment {
 
 const BlogDetails = ({ params }: { params: { id: string } }) => {
   const { user: CurrentUser } = useMyContext()
-  console.log(CurrentUser);
 
   const { id } = params;
   const [isContentExpanded, setIsContentExpanded] = useState(false);
@@ -80,7 +79,18 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
   );
 
   const blog = blogData?.blog;
+  console.log(blog._id);
+  
+  const handleOpenPublicProfile = (blog: any) => {
+    router.push(`/pages/publicUserProfile/${blog._id}`);
+  };
+  
+ 
   const user = userData?.fetchUserByID;
+
+
+
+
 
   const handleSubmit = () => {
     router.push(`/pages/SummarisePage/${blog?._id}`)
@@ -133,9 +143,6 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
     transition: { duration: 0.5 }
   };
 
-  const handleOpenPublicProfile = (userId: string) => {
-    router.push(`/pages/publicUserProfile/${userId}`);
-  };
 
 
   const ShareBlog = () => {
@@ -170,7 +177,7 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
           <motion.div
             {...fadeIn}
             className="flex items-center space-x-4 cursor-pointer text-white"
-            onClick={() => handleOpenPublicProfile(user._id)}
+            onClick={() => handleOpenPublicProfile(blog)}
           >
             <img
               src={user.profilePicture || '/api/placeholder/100/100'}

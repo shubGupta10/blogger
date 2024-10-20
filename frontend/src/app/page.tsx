@@ -8,7 +8,7 @@ const Home = () => {
   const router = useRouter();
 
   const handleGetStarted = () => {
-    router.push("/signup");
+    router.push("/Auth/signUp");
   };
 
   const fadeInUp = {
@@ -173,7 +173,7 @@ const Home = () => {
             Join  bloggers, leveraging AI to create outstanding content. Your AI writing journey starts here.
           </motion.p>
           <motion.button
-            className="bg-black text-white py-3 px-8 rounded-full text-lg font-semibold shadow-lg hover:bg-gray-200 transition duration-300"
+            className="bg-black text-white py-3 px-8 rounded-full text-lg font-semibold shadow-lg hover:bg-gray-700 transition duration-300"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={handleGetStarted}

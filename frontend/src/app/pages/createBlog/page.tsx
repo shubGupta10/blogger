@@ -1,22 +1,25 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+
+import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-import dynamic from 'next/dynamic'; // Use dynamic import
+import dynamic from 'next/dynamic';
 import { CreateBlogMutation, CreateBlogDocument, CreateBlogMutationVariables } from '@/gql/graphql';
 import { uploadImage } from '@/Firebase/firebaseStorage';
 import GenerativeContent from '@/components/GenerativeContent';
-
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false }); // Dynamic import
-import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.snow.css'; 
 import { GET_BLOGS_BY_USER } from '@/Graphql/queries/blogQueries';
+import Loader from '@/components/Loader';
+
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false }); 
 
 const CreateBlog = () => {
   const [isPublishing, setIsPublishing] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
+
   const form = useForm({
     defaultValues: {
       title: '',
@@ -25,9 +28,13 @@ const CreateBlog = () => {
     },
   });
 
-  const [createBlog] = useMutation<CreateBlogMutation, CreateBlogMutationVariables>(CreateBlogDocument, {
-    refetchQueries: [{query: GET_BLOGS_BY_USER}],
-  });
+  const [createBlog, { loading, error }] = useMutation<CreateBlogMutation, CreateBlogMutationVariables>(
+    CreateBlogDocument,
+    {
+      refetchQueries: [{ query: GET_BLOGS_BY_USER }],
+    }
+  );
+
   const router = useRouter();
 
   const onSubmit = async (data: any) => {
@@ -40,8 +47,8 @@ const CreateBlog = () => {
 
       await createBlog({ variables: { input: data } });
       toast.success('Blog published successfully!');
-      router.push('/pages/Dashboard');
-      form.reset()
+      router.push('/pages/Dashboard'); 
+      form.reset(); 
     } catch (error) {
       toast.error('Failed to publish blog');
     } finally {
@@ -56,8 +63,12 @@ const CreateBlog = () => {
   };
 
   const setGeneratedContent = (content: string) => {
-    form.setValue('blogContent', content); 
+    form.setValue('blogContent', content);
   };
+
+  if (loading) return <Loader />;
+  
+  if (error) return <h3 className="text-red-700 text-3xl text-center mx-auto">Something went wrong</h3>;
 
   return (
     <div className="min-h-screen bg-white text-black pt-14">
@@ -81,20 +92,17 @@ const CreateBlog = () => {
       </header>
 
       <main className="pt-10 pb-10 px-4 max-w-screen-xl mx-auto">
-        <div className="mb-6">
+        <div className="mb-6 ">
           <input
             type="file"
             accept="image/*"
             onChange={handleImageChange}
-            className="w-full mb-4 border border-gray-300 rounded-md focus:outline-none"
+            className="w-full cursor-pointer mb-4 border border-gray-300 rounded-md focus:outline-none"
           />
         </div>
-        
-        <GenerativeContent 
-          setBlogContent={setGeneratedContent} 
-          blogTitle={form.watch('title')} 
-        />
-        
+
+        <GenerativeContent setBlogContent={setGeneratedContent} blogTitle={form.watch('title')} />
+
         <Controller
           name="blogContent"
           control={form.control}

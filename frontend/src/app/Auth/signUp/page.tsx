@@ -52,15 +52,13 @@ const SignupForm = () => {
                         }
                     }
                 })
-
                 if(response?.signUp){
                     setToken(response.signUp.token);
-                    localStorage.setItem('userAuth', 'true');
                     router.push("/pages/Dashboard")
                     toast.success("User creation successfull")
                     setTimeout(() => {
                         window.location.reload()    
-                    }, 5000);
+                    }, 1000);
                 }else{
                     toast.error("User creation failed")
                 }

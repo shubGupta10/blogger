@@ -99,7 +99,9 @@ export type GetBlogQueryVariables = Exact<{
 }>;
 
 
-export type GetBlogQuery = { __typename?: 'Query', blog?: { __typename?: 'Blog', _id: string, title: string, blogImage: string, blogContent: string, createdAt: string, user: { __typename?: 'User', _id: string, firstName: string, lastName?: string | null, email: string, profilePicture: string } } | null };
+export type GetBlogQuery = { __typename?: 'Query', blog?: {
+  id: unknown; __typename?: 'Blog', _id: string, title: string, blogImage: string, blogContent: string, createdAt: string, user: { __typename?: 'User', _id: string, firstName: string, lastName?: string | null, email: string, profilePicture: string } 
+} | null };
 
 export type GetBlogsByUserQueryVariables = Exact<{ [key: string]: never; }>;
 
