@@ -20,6 +20,7 @@ import { useMutation } from "@apollo/client";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useMyContext } from "@/context/ContextProvider";
+import Cookies from 'js-cookie'
 
 const LoginForm = () => {
     const form = useForm<z.infer<typeof SignInSchema>>({
@@ -47,12 +48,14 @@ const LoginForm = () => {
     
             if (response?.login) {
                 setToken(response.login.token);
-                localStorage.setItem('token', response.login.token);
+                Cookies.set('token', response.login.token, { expires: 1 }); 
                 router.push('/pages/Dashboard');
                 toast.success("Login successful");
+    
+                
                 setTimeout(() => {
                     window.location.reload()    
-                }, 2000);
+                }, 1000);
                  
             } else {
                 toast.error("Login failed");

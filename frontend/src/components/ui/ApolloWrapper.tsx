@@ -1,6 +1,5 @@
 import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink, ApolloLink } from '@apollo/client';
 import { ReactNode, useMemo } from 'react';
-import dynamic from 'next/dynamic';
 
 const createApolloClient = () => {
   const httpLink = new HttpLink({
@@ -9,18 +8,22 @@ const createApolloClient = () => {
   });
 
   const authLink = new ApolloLink((operation, forward) => {
-    const token = localStorage.getItem('token');
+    // Get the authentication token from local storage if it exists
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    
     operation.setContext({
       headers: {
         authorization: token ? `Bearer ${token}` : "",
       }
     });
+
     return forward(operation);
   });
 
   return new ApolloClient({
     link: ApolloLink.from([authLink, httpLink]),
     cache: new InMemoryCache(),
+    ssrMode: typeof window === 'undefined',
   });
 };
 
@@ -28,13 +31,12 @@ interface ApolloWrapperProps {
   children: ReactNode;
 }
 
-const ApolloWrapperComponent = ({ children }: ApolloWrapperProps) => {
+export const ApolloWrapper = ({ children }: ApolloWrapperProps) => {
   const client = useMemo(() => createApolloClient(), []);
+
+  if (typeof window === 'undefined') return <>{children}</>;
+
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
 };
-
-export const ApolloWrapper = dynamic(() => Promise.resolve(ApolloWrapperComponent), {
-  ssr: false,
-}) as React.ComponentType<ApolloWrapperProps>;
 
 export default ApolloWrapper;

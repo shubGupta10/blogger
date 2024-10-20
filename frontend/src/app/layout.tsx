@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
-import ApolloWrapper from "@/components/ApolloWrapper";
+import ApolloWrapper from "@/components/ui/ApolloWrapper";
 import { MyProvider } from "@/context/ContextProvider";
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer";

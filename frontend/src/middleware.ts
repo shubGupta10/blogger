@@ -1,17 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  const authHeader = request.headers.get('Authorization');
+  const token = request.cookies.get('token')?.value; 
   const path = request.nextUrl.pathname;
 
   const publicRoutes = ['/', '/Auth/login', '/Auth/signUp'];
-  const publicPartialRoutes = ['/pages/blogs/', '/pages/publicBlogs'];
+  const publicPartialRoutes = ['/pages/blogs/:id', '/pages/publicBlogs'];
 
-  const isPublicRoute =
-    publicRoutes.includes(path) ||
+  const isPublicRoute = publicRoutes.includes(path) || 
     publicPartialRoutes.some(route => path.startsWith(route));
-
-  const token = authHeader?.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
 
   if (token) {
     if (publicRoutes.includes(path)) {
@@ -25,3 +22,22 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/Auth/login', request.url));
   }
 }
+
+export const config = {
+  matcher: [
+    '/', 
+    '/Auth/login', 
+    '/Auth/signUp', 
+    '/pages/Dashboard', 
+    '/pages/blogs/:id', 
+    '/pages/ComingSoon', 
+    '/pages/createBlog', 
+    '/pages/EditBlogs/:id', 
+    '/pages/publicBlogs', 
+    '/pages/publicUserProfile/:id', 
+    '/pages/settings', 
+    '/pages/SummarisePage/:id', 
+    '/pages/userProfile/:id', 
+    '/pages/viewBlog/:id'
+  ],
+};

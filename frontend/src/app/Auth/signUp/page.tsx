@@ -20,6 +20,7 @@ import { useMutation } from "@apollo/client";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useMyContext } from "@/context/ContextProvider";
+import Cookies from 'js-cookie'
 
 
 const SignupForm = () => {
@@ -55,6 +56,7 @@ const SignupForm = () => {
                 if(response?.signUp){
                     setToken(response.signUp.token);
                     localStorage.setItem('token', response.signUp.token);
+                    Cookies.set('token', response.signUp.token, { expires: 1 }); 
                     router.push("/pages/Dashboard")
                     toast.success("User creation successfull")
                     setTimeout(() => {
