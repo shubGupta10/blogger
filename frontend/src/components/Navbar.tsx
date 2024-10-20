@@ -28,7 +28,7 @@ const Navbar = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      setUser(null); 
+      setUser(null);
     }
   }, [setUser]);
 
@@ -39,8 +39,8 @@ const Navbar = () => {
       const response = await logout();
       if (response.data?.logout) {
         Cookies.remove('token');
-        localStorage.clear(); 
-        setUser(null); 
+        localStorage.clear();
+        setUser(null);
         closeSidebar();
         router.push('/Auth/login');
         toast.success('Logout successful!');
@@ -58,9 +58,8 @@ const Navbar = () => {
 
   const getLinkStyle = (href: string) => {
     const isActive = pathname === href;
-    return `transition-colors duration-200 ${
-      isActive ? 'text-black font-semibold' : 'text-gray-600 hover:text-black'
-    }`;
+    return `transition-colors duration-200 ${isActive ? 'text-black font-semibold' : 'text-gray-600 hover:text-black'
+      }`;
   };
 
   const navLinks = [
@@ -90,7 +89,7 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            {(Cookies.get('token')) || (localStorage.getItem('token')) || isAuthenticated   ? (
+            {isAuthenticated ? (
               <button
                 type="button"
                 className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
@@ -141,8 +140,7 @@ const Navbar = () => {
                   </svg>
                 </button>
 
-                {/* User Profile Section */}
-                {(Cookies.get('token')) || (localStorage.getItem('token')) || isAuthenticated && (
+                {(Cookies.get('token') || localStorage.getItem('token') || isAuthenticated) && (
                   <div className="flex flex-col items-center">
                     <img className="w-20 h-20 rounded-full shadow-lg" src={authUser?.profilePicture} alt={`${authUser?.firstName} ${authUser?.lastName}`} />
                     <h2 className="mt-4 text-xl font-semibold text-gray-900 dark:text-white">{`${authUser?.firstName} ${authUser?.lastName}`}</h2>
@@ -156,22 +154,20 @@ const Navbar = () => {
                       <li key={link.href}>
                         <button
                           onClick={() => handleNavigation(link.href)}
-                          className={`w-full text-left py-2 px-4 rounded-lg transition-colors duration-200 ${
-                            pathname === link.href ? 'bg-black text-white hover:bg-gray-800' : 'text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white'
-                          }`}
+                          className={`w-full text-left py-2 px-4 rounded-lg transition-colors duration-200 ${pathname === link.href ? 'bg-black text-white hover:bg-gray-800' : 'text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white'
+                            }`}
                         >
                           {link.label}
                         </button>
                       </li>
                     ))}
-                    {(Cookies.get('token')) || (localStorage.getItem('token')) || isAuthenticated && (
+                   {((Cookies.get('token')) || (localStorage.getItem('token')) || isAuthenticated) && (
                       <>
                         <li>
                           <button
                             onClick={() => handleNavigation('/pages/settings')}
-                            className={`w-full text-left py-2 px-4 rounded-lg transition-colors duration-200 ${
-                              pathname === '/pages/settings' ? 'bg-black text-white hover:bg-gray-800' : 'text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white'
-                            }`}
+                            className={`w-full text-left py-2 px-4 rounded-lg transition-colors duration-200 ${pathname === '/pages/settings' ? 'bg-black text-white hover:bg-gray-800' : 'text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white'
+                              }`}
                           >
                             Settings
                           </button>

@@ -34,9 +34,8 @@ const SignupForm = () => {
             confirmPassword: '',
         }
     });
-
-    const [signup, { loading, error }] = useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument);
     const { setToken, setUser } = useMyContext();
+    const [signup, { loading, error }] = useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument);
     const router = useRouter();
     
     const onSubmit = async (data: z.infer<typeof SignupSchema>) => {
@@ -53,6 +52,7 @@ const SignupForm = () => {
                 }
             });
 
+
             if (response?.signUp) {
                 const { token, user } = response.signUp;
                 
@@ -66,7 +66,7 @@ const SignupForm = () => {
                 router.push('/');
                 setTimeout(() => {
                     window.location.reload();
-                }, 3000);
+                }, 5000);
             } else {
                 toast.error("User creation failed");
             }
