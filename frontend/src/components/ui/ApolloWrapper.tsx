@@ -1,41 +1,24 @@
-import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink, ApolloLink } from '@apollo/client';
-import { ReactNode, useMemo } from 'react';
+'use client';
 
-const createApolloClient = () => {
-  const httpLink = new HttpLink({
-    uri: process.env.NEXT_PUBLIC_BACKEND_URL,
-    credentials: 'include',
-  });
+import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink } from '@apollo/client';
+import { ReactNode } from 'react';
 
-  const authLink = new ApolloLink((operation, forward) => {
-    // Get the authentication token from local storage if it exists
-    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-    
-    operation.setContext({
-      headers: {
-        authorization: token ? `Bearer ${token}` : "",
-      }
-    });
+const httpLink = new HttpLink({
+  uri: process.env.NEXT_PUBLIC_BACKEND_URL,
+  credentials: 'include',
+});
 
-    return forward(operation);
-  });
-
-  return new ApolloClient({
-    link: ApolloLink.from([authLink, httpLink]),
-    cache: new InMemoryCache(),
-    ssrMode: typeof window === 'undefined',
-  });
-};
+const client = new ApolloClient({
+  link: httpLink,
+  cache: new InMemoryCache(),
+  credentials: 'include',
+});
 
 interface ApolloWrapperProps {
   children: ReactNode;
 }
 
-export const ApolloWrapper = ({ children }: ApolloWrapperProps) => {
-  const client = useMemo(() => createApolloClient(), []);
-
-  if (typeof window === 'undefined') return <>{children}</>;
-
+const ApolloWrapper = ({ children }: ApolloWrapperProps) => {
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
 };
 

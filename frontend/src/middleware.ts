@@ -1,26 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  const token = request.cookies.get('token')?.value; 
+  const token = request.cookies.get('token')?.value;  // Retrieve token from cookies
   const path = request.nextUrl.pathname;
 
+  // Define the routes that are public
   const publicRoutes = ['/', '/Auth/login', '/Auth/signUp'];
-  const publicPartialRoutes = ['/pages/blogs/:id', '/pages/publicBlogs'];
 
-  const isPublicRoute = publicRoutes.includes(path) || 
-    publicPartialRoutes.some(route => path.startsWith(route));
+  // Check if the current route is a public route
+  const isPublicRoute = publicRoutes.includes(path);
 
+  // If token exists (user is authenticated), allow access to any route
   if (token) {
-    if (publicRoutes.includes(path)) {
-      return NextResponse.redirect(new URL('/pages/Dashboard', request.url));
-    }
-    return NextResponse.next();
-  } else {
-    if (isPublicRoute) {
-      return NextResponse.next();
-    }
-    return NextResponse.redirect(new URL('/Auth/login', request.url));
+    return NextResponse.next();  // Let them access any route
   }
+
+  // If no token (user is not authenticated), only allow public routes
+  if (isPublicRoute) {
+    return NextResponse.next();  // Let them access the public route
+  }
+
+  // If not authenticated and trying to access a protected route, redirect to login
+  return NextResponse.redirect(new URL('/Auth/login', request.url));
 }
 
 export const config = {
