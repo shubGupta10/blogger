@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import axios from 'axios';
 
-const ReloadComponent = ({ url, interval = 30000 }) => {
+const ReloadComponent = ({ url, interval = 300000 }) => {
   const reloadWebsite = () => {
     axios.get(url)
       .then(response => {
