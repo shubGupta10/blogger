@@ -54,6 +54,7 @@ const SignupForm = () => {
                 })
                 if(response?.signUp){
                     setToken(response.signUp.token);
+                    localStorage.setItem('token', response.signUp.token);
                     router.push("/pages/Dashboard")
                     toast.success("User creation successfull")
                     setTimeout(() => {

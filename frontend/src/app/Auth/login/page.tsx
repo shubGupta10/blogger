@@ -47,6 +47,7 @@ const LoginForm = () => {
     
             if (response?.login) {
                 setToken(response.login.token);
+                localStorage.setItem('token', response.login.token);
                 router.push('/pages/Dashboard');
                 toast.success("Login successful");
                 setTimeout(() => {
