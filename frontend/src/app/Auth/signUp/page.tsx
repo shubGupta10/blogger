@@ -68,7 +68,7 @@ const SignupForm = () => {
 
                 setTimeout(() => {
                     window.location.reload();
-                }, 1000);
+                }, 3000);
             } else {
                 toast.error("User creation failed");
             }
