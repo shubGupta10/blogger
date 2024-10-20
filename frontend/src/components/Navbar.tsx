@@ -44,6 +44,7 @@ const Navbar = () => {
         closeSidebar();
         router.push('/Auth/login');
         toast.success('Logout successful!');
+        window.location.reload()
       }
     } catch (error) {
       console.error('Logout failed:', error);
@@ -89,7 +90,7 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            {isAuthenticated ? (
+            {(Cookies.get('token') || localStorage.getItem('token')) ? (
               <button
                 type="button"
                 className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
@@ -106,6 +107,7 @@ const Navbar = () => {
                 Get Started
               </Link>
             )}
+
           </div>
         </div>
       </nav>
@@ -140,7 +142,7 @@ const Navbar = () => {
                   </svg>
                 </button>
 
-                {(Cookies.get('token') || localStorage.getItem('token') || isAuthenticated) && (
+                {(Cookies.get('token') || localStorage.getItem('token')) && (
                   <div className="flex flex-col items-center">
                     <img className="w-20 h-20 rounded-full shadow-lg" src={authUser?.profilePicture} alt={`${authUser?.firstName} ${authUser?.lastName}`} />
                     <h2 className="mt-4 text-xl font-semibold text-gray-900 dark:text-white">{`${authUser?.firstName} ${authUser?.lastName}`}</h2>
@@ -161,7 +163,7 @@ const Navbar = () => {
                         </button>
                       </li>
                     ))}
-                   {((Cookies.get('token')) || (localStorage.getItem('token')) || isAuthenticated) && (
+                    {((Cookies.get('token')) || (localStorage.getItem('token'))) && (
                       <>
                         <li>
                           <button

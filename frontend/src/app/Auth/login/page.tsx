@@ -50,7 +50,6 @@ const LoginForm = () => {
             if (response?.login) {
               console.log(response.login);
               const {token, user} = response.login
-              console.log("ye rha token", "and ye rha ", token);
               
                 setToken(token);
                 setUser(user); 
@@ -58,7 +57,7 @@ const LoginForm = () => {
                 toast.success("Login successful");
                 setTimeout(() => {
                     window.location.reload();    
-                }, 3000);
+                }, 2000);
             } else {
                 toast.error("Login failed");
             }
