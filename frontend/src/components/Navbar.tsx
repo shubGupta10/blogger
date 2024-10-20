@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
@@ -25,6 +25,14 @@ const Navbar = () => {
     setIsSidebarOpen(false);
   }, []);
 
+  // Check for token in localStorage to determine if the user is authenticated
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setUser(null); // Clear user if no token exists
+    }
+  }, [setUser]);
+
   const isAuthenticated = !!authUser;
 
   const handleLogout = async () => {
@@ -32,8 +40,8 @@ const Navbar = () => {
       const response = await logout();
       if (response.data?.logout) {
         Cookies.remove('token');
-        localStorage.clear();
-        
+        localStorage.removeItem('token'); // Remove token from localStorage
+
         setUser(null); // Clear user from context
 
         closeSidebar();
@@ -139,9 +147,9 @@ const Navbar = () => {
                 {/* User Profile Section */}
                 {isAuthenticated && (
                   <div className="flex flex-col items-center">
-                    <img className="w-20 h-20 rounded-full shadow-lg" src={authUser.profilePicture} alt={`${authUser.firstName} ${authUser.lastName}`} />
-                    <h2 className="mt-4 text-xl font-semibold text-gray-900 dark:text-white">{`${authUser.firstName} ${authUser.lastName}`}</h2>
-                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{authUser.email}</p>
+                    <img className="w-20 h-20 rounded-full shadow-lg" src={authUser?.profilePicture} alt={`${authUser?.firstName} ${authUser?.lastName}`} />
+                    <h2 className="mt-4 text-xl font-semibold text-gray-900 dark:text-white">{`${authUser?.firstName} ${authUser?.lastName}`}</h2>
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{authUser?.email}</p>
                   </div>
                 )}
 
