@@ -45,14 +45,12 @@ const LoginForm = () => {
                     }
                 }
             });
+            router.push('/pages/Dashboard');
     
             if (response?.login) {
                 setToken(response.login.token);
                 Cookies.set('token', response.login.token, { expires: 1 }); 
-                router.push('/pages/Dashboard');
                 toast.success("Login successful");
-    
-                
                 setTimeout(() => {
                     window.location.reload()    
                 }, 1000);

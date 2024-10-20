@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useState, useCallback } from 'react';
 import { useMutation } from '@apollo/client';
 import Link from 'next/link';
@@ -8,13 +8,14 @@ import { LogoutDocument } from '@/gql/graphql';
 import { LogoutMutation, LogoutMutationVariables } from '@/gql/graphql';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMyContext } from '@/context/ContextProvider';
+import Cookies from 'js-cookie';
 
 const Navbar = () => {
   const [logout] = useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  const { user: authUser } = useMyContext();
+  const { user: authUser, setUser } = useMyContext(); // Get setUser to update context
 
   const toggleSidebar = useCallback(() => {
     setIsSidebarOpen((prev) => !prev);
@@ -30,10 +31,15 @@ const Navbar = () => {
     try {
       const response = await logout();
       if (response.data?.logout) {
+        Cookies.remove('token');
+        localStorage.clear();
+
+        // Clear user from context to update navbar state
+        setUser(null);
+
         closeSidebar();
-        router.push('/Auth/login'); 
+        router.push('/Auth/login');
         toast.success('Logout successful!');
-        window.location.reload();
       }
     } catch (error) {
       console.error('Logout failed:', error);
@@ -49,9 +55,7 @@ const Navbar = () => {
   const getLinkStyle = (href: string) => {
     const isActive = pathname === href;
     return `transition-colors duration-200 ${
-      isActive
-        ? 'text-black font-semibold'
-        : 'text-gray-600 hover:text-black'
+      isActive ? 'text-black font-semibold' : 'text-gray-600 hover:text-black'
     }`;
   };
 
@@ -85,14 +89,17 @@ const Navbar = () => {
             {isAuthenticated ? (
               <button
                 type="button"
-                className="flex text-sm  bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                 onClick={toggleSidebar}
               >
                 <span className="sr-only">Open user sidebar</span>
                 <img className="w-8 h-8 rounded-full" src={authUser?.profilePicture} alt={`${authUser?.firstName} ${authUser?.lastName}`} />
               </button>
             ) : (
-              <Link href="/Auth/login" className="text-white bg-black hover:bg-gray-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+              <Link
+                href="/Auth/login"
+                className="text-white bg-black hover:bg-gray-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              >
                 Get Started
               </Link>
             )}
@@ -147,9 +154,7 @@ const Navbar = () => {
                         <button
                           onClick={() => handleNavigation(link.href)}
                           className={`w-full text-left py-2 px-4 rounded-lg transition-colors duration-200 ${
-                            pathname === link.href
-                              ? 'bg-black text-white hover:bg-gray-800'
-                              : 'text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white'
+                            pathname === link.href ? 'bg-black text-white hover:bg-gray-800' : 'text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white'
                           }`}
                         >
                           {link.label}
@@ -162,9 +167,7 @@ const Navbar = () => {
                           <button
                             onClick={() => handleNavigation('/pages/settings')}
                             className={`w-full text-left py-2 px-4 rounded-lg transition-colors duration-200 ${
-                              pathname === '/pages/settings'
-                                ? 'bg-black text-white hover:bg-gray-800'
-                                : 'text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white'
+                              pathname === '/pages/settings' ? 'bg-black text-white hover:bg-gray-800' : 'text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white'
                             }`}
                           >
                             Settings

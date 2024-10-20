@@ -15,9 +15,8 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();  // Let them access any route
   }
 
-  // If no token (user is not authenticated), only allow public routes
   if (isPublicRoute) {
-    return NextResponse.next();  // Let them access the public route
+    return NextResponse.next();  
   }
 
   // If not authenticated and trying to access a protected route, redirect to login
