@@ -20,8 +20,7 @@ import { useMutation } from "@apollo/client";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useMyContext } from "@/context/ContextProvider";
-import Cookies from 'js-cookie'
-
+import Cookies from 'js-cookie';
 
 const SignupForm = () => {
     const form = useForm<z.infer<typeof SignupSchema>>({
@@ -36,8 +35,7 @@ const SignupForm = () => {
         }
     });
 
-    const [signup, {loading, error}] = useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument)
-
+    const [signup, { loading, error }] = useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument);
     const { setToken, setUser } = useMyContext();
     const router = useRouter();
     
@@ -55,7 +53,6 @@ const SignupForm = () => {
                 }
             });
 
-            router.push("/pages/Dashboard");
             if (response?.signUp) {
                 const { token, user } = response.signUp;
                 
@@ -66,6 +63,7 @@ const SignupForm = () => {
 
                 toast.success("User creation successful");
 
+                router.push('/');
                 setTimeout(() => {
                     window.location.reload();
                 }, 3000);
@@ -93,7 +91,7 @@ const SignupForm = () => {
             </motion.div>
 
             <motion.div
-                className="w-full md:w-1/2 max-w-md p-8 space-y-6 border-2  bg-gray-200 rounded-lg shadow-xl"
+                className="w-full md:w-1/2 max-w-md p-8 space-y-6 border-2 bg-gray-200 rounded-lg shadow-xl"
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}

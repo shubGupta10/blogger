@@ -1,10 +1,11 @@
-'use client'
+'use client';
 
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { useQuery } from '@apollo/client';
 import { GET_AUTHENTICATED_USER } from '@/Graphql/queries/userQueries';
 import Loader from "@/components/Loader";
 import { GetAuthenticatedUserQuery, GetAuthenticatedUserQueryVariables } from '@/gql/graphql';
+import Cookies from 'js-cookie';
 
 interface ContextType {
   token: string | null;
@@ -29,6 +30,23 @@ export const MyProvider = ({ children }: { children: ReactNode }) => {
   );
 
   useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem('token', token);
+      Cookies.set('token', token, { expires: 1 });
+    } else {
+      localStorage.removeItem('token');
+      Cookies.remove('token');
+    }
+  }, [token]);
+
+  useEffect(() => {
     if (data) {
       setUser(data.authenticatedUser); 
     }
@@ -42,7 +60,9 @@ export const MyProvider = ({ children }: { children: ReactNode }) => {
     );
   }
 
-
+  if (error) {
+    console.error("Error fetching authenticated user:", error);
+  }
 
   return (
     <myContext.Provider value={{ token, setToken, user, setUser }}>
@@ -51,7 +71,6 @@ export const MyProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// Custom hook to use the context
 export const useMyContext = () => {
   const context = useContext(myContext);
   if (!context) {

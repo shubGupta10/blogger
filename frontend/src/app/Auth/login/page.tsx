@@ -45,9 +45,6 @@ const LoginForm = () => {
                     }
                 }
             });
-            if(localStorage.getItem('token')){
-                router.push('/');
-            }
             router.push('/pages/Dashboard');
             if (response?.login) {
                 const { token, user } = response.login;
@@ -57,7 +54,11 @@ const LoginForm = () => {
                 Cookies.set('token', token, { expires: 1 }); 
                 
                 toast.success("Login successful");
-               
+                if(localStorage.getItem('token')){
+                    router.push('/');
+                }else{
+                    router.push('/Auth/login')
+                }
 
                 setTimeout(() => {
                     window.location.reload();    

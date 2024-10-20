@@ -8,7 +8,7 @@ import { LogoutDocument } from '@/gql/graphql';
 import { LogoutMutation, LogoutMutationVariables } from '@/gql/graphql';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMyContext } from '@/context/ContextProvider';
-import Cookies from 'js-cookie';
+import Cookies from 'js-cookie'
 
 const Navbar = () => {
   const [logout] = useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
@@ -25,7 +25,6 @@ const Navbar = () => {
     setIsSidebarOpen(false);
   }, []);
 
-  // Check for token in localStorage to determine if the user is authenticated
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -91,7 +90,7 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            {isAuthenticated ? (
+            {(Cookies.get('token')) || (localStorage.getItem('token')) || isAuthenticated   ? (
               <button
                 type="button"
                 className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
@@ -143,7 +142,7 @@ const Navbar = () => {
                 </button>
 
                 {/* User Profile Section */}
-                {isAuthenticated && (
+                {(Cookies.get('token')) || (localStorage.getItem('token')) || isAuthenticated && (
                   <div className="flex flex-col items-center">
                     <img className="w-20 h-20 rounded-full shadow-lg" src={authUser?.profilePicture} alt={`${authUser?.firstName} ${authUser?.lastName}`} />
                     <h2 className="mt-4 text-xl font-semibold text-gray-900 dark:text-white">{`${authUser?.firstName} ${authUser?.lastName}`}</h2>
@@ -165,7 +164,7 @@ const Navbar = () => {
                         </button>
                       </li>
                     ))}
-                    {(localStorage.getItem('token')) && isAuthenticated && (
+                    {(Cookies.get('token')) || (localStorage.getItem('token')) || isAuthenticated && (
                       <>
                         <li>
                           <button
