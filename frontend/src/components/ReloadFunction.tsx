@@ -1,4 +1,4 @@
-'use client'; 
+'use client';
 
 import { useEffect } from 'react';
 import axios from 'axios';
@@ -20,9 +20,9 @@ const ReloadComponent = ({ url, interval = 30000 }) => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [url]);
+  }, [url, interval]);
 
-  return null; 
+  return null;
 };
 
 export default ReloadComponent;
