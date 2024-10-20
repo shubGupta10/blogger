@@ -132,10 +132,10 @@ const userResolver = {
                     throw new Error("Response object is not available");
                 }
       
-                context.res.cookie('token', token);
-                
-                
-      
+                context.res.cookie('token', token, {
+                    httpOnly: true, 
+                    secure: true,
+                });
                 return {
                     user: {
                         _id: user._id,
