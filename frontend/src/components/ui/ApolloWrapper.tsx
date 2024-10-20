@@ -1,25 +1,25 @@
-'use client';
-
 import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink } from '@apollo/client';
 import { ReactNode } from 'react';
 
 const httpLink = new HttpLink({
-  uri: process.env.NEXT_PUBLIC_BACKEND_URL,
-  credentials: 'include',
+    uri: process.env.NEXT_PUBLIC_BACKEND_URL,
+    credentials: 'include',
+    headers: {
+        Authorization: `Bearer ${localStorage.getItem('token') || ''}`, 
+    },
 });
 
 const client = new ApolloClient({
-  link: httpLink,
-  cache: new InMemoryCache(),
-  credentials: 'include',
+    link: httpLink,
+    cache: new InMemoryCache(),
 });
 
 interface ApolloWrapperProps {
-  children: ReactNode;
+    children: ReactNode;
 }
 
 const ApolloWrapper = ({ children }: ApolloWrapperProps) => {
-  return <ApolloProvider client={client}>{children}</ApolloProvider>;
+    return <ApolloProvider client={client}>{children}</ApolloProvider>;
 };
 
 export default ApolloWrapper;
