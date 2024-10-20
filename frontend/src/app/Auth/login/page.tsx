@@ -32,7 +32,7 @@ const LoginForm = () => {
     });
 
     const { setToken, setUser } = useMyContext(); 
-    const [login, { loading, error }] = useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
+    const [login, { loading }] = useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
     const router = useRouter(); 
 
     const onSubmit = async (data: z.infer<typeof SignInSchema>) => {
@@ -45,30 +45,28 @@ const LoginForm = () => {
                     }
                 }
             });
+
             router.push('/pages/Dashboard');
             if (response?.login) {
-                const { token, user } = response.login;
-                
+              console.log(response.login);
+              const {token, user} = response.login
+              console.log("ye rha token", "and ye rha ", token);
+              
                 setToken(token);
                 setUser(user); 
                 Cookies.set('token', token, { expires: 1 }); 
-                
                 toast.success("Login successful");
-                router.push('/');
-
+                setTimeout(() => {
+                    window.location.reload();    
+                }, 3000);
             } else {
                 toast.error("Login failed");
-                router.push('/')
             }
         } catch (error) {
             console.error("Login error:", error);
             toast.error("An error occurred during login.");
         }
     };
-
-    if(error){
-        <h1 className="text-red-700 text-center text-3xl">User is not authenticated</h1>
-    }
 
     return (
         <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-gray-100 p-4 md:p-8">

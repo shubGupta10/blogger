@@ -24,6 +24,8 @@ const myContext = createContext<ContextType>({
 export const MyProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<any>(null);
+  console.log(user);
+  
 
   const { data, loading, error } = useQuery<GetAuthenticatedUserQuery, GetAuthenticatedUserQueryVariables>(
     GET_AUTHENTICATED_USER
@@ -40,9 +42,6 @@ export const MyProvider = ({ children }: { children: ReactNode }) => {
     if (token) {
       localStorage.setItem('token', token);
       Cookies.set('token', token, { expires: 1 });
-    } else {
-      localStorage.removeItem('token');
-      Cookies.remove('token');
     }
   }, [token]);
 
