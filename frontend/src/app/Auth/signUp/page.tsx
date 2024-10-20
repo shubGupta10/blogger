@@ -63,10 +63,7 @@ const SignupForm = () => {
 
                 toast.success("User creation successful");
 
-                router.push('/');
-                setTimeout(() => {
-                    window.location.reload();
-                }, 5000);
+                router.push('/Auth/login');
             } else {
                 toast.error("User creation failed");
             }
