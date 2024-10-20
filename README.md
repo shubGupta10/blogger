@@ -1,6 +1,6 @@
 # **Blogger**
 
-Blogger is a full-featured blog application built using **Next.js**, **TypeScript**, **GraphQL**, **Tailwind CSS**, and **MongoDB**. The platform allows users to create, read, update, and delete blog posts with seamless authentication and user-specific content filtering. It also includes **AI-powered blog generation and summarization** features, real-time chat integration, a settings page, and more.
+Blogger is a full-featured blog application built using **Next.js**, **TypeScript**, **GraphQL**, **ShadCN**, and **MongoDB**. The platform allows users to create, read, update, and delete blog posts with seamless authentication and user-specific content filtering. It also includes **AI-powered blog generation and summarization** features, real-time chat integration, a settings page, and more.
 
 ## **Features**
 
@@ -25,24 +25,19 @@ Blogger is a full-featured blog application built using **Next.js**, **TypeScrip
 - **Typed Queries and Mutations:** Using **codegen**, all queries and mutations are type-safe, ensuring the integrity of data throughout the application.
 - **Relationships:** Fetch blogs related to the currently logged-in user using GraphQL relationships.
 
-### **5. Real-Time Communication**
-- **Live Chat Integration (Exploring):** You can choose between Firebase Realtime Database, WebSockets, or MongoDB to implement a live chat feature.
-
-### **6. Dynamic Theming**
+### **5. Dynamic Theming**
 - **Light/Dark Mode:** Toggle between light and dark themes using the `ThemeSwitcher` component built with **next-themes**.
 - **Persistent Theme:** The selected theme is stored locally and persists across sessions.
 
-### **7. Responsive Design**
+### **6. Responsive Design**
 - Fully responsive across devices, from desktops to mobile screens, ensuring a consistent user experience using **Tailwind CSS**.
 
-### **8. Smooth Animations**
+### **7. Smooth Animations**
 - **Framer Motion:** Adds dynamic page transitions, hover effects, and other animations to enhance the user interface.
 
-### **9. Settings Page**
+### **8. Settings Page**
 - A user settings page built with **Tailwind CSS** and **Framer Motion**, featuring a minimalistic black-and-white color scheme.
 
-### **10. Custom Middleware**
-- Middleware handles authentication and routing protection, ensuring only authenticated users can access certain pages like blog creation and management.
 
 ## **Tech Stack**
 
@@ -70,5 +65,5 @@ Blogger is a full-featured blog application built using **Next.js**, **TypeScrip
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/blogger.git
+   git clone https://github.com/shubGupta10/blogger
    cd blogger
