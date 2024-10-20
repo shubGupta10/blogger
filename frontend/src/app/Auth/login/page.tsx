@@ -45,7 +45,9 @@ const LoginForm = () => {
                     }
                 }
             });
-
+            if(localStorage.getItem('token')){
+                router.push('/');
+            }
             router.push('/pages/Dashboard');
             if (response?.login) {
                 const { token, user } = response.login;

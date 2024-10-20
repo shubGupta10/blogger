@@ -1,25 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  const token = request.cookies.get('token')?.value;  // Retrieve token from cookies
+  const token = request.cookies.get('token')?.value;  
+  console.log(token);
+  
   const path = request.nextUrl.pathname;
 
-  // Define the routes that are public
   const publicRoutes = ['/', '/Auth/login', '/Auth/signUp'];
 
-  // Check if the current route is a public route
   const isPublicRoute = publicRoutes.includes(path);
 
-  // If token exists (user is authenticated), allow access to any route
   if (token) {
-    return NextResponse.next();  // Let them access any route
+    return NextResponse.next();  
   }
 
   if (isPublicRoute) {
     return NextResponse.next();  
   }
 
-  // If not authenticated and trying to access a protected route, redirect to login
   return NextResponse.redirect(new URL('/Auth/login', request.url));
 }
 

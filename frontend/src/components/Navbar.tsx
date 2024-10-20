@@ -29,7 +29,7 @@ const Navbar = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      setUser(null); // Clear user if no token exists
+      setUser(null); 
     }
   }, [setUser]);
 
@@ -40,10 +40,8 @@ const Navbar = () => {
       const response = await logout();
       if (response.data?.logout) {
         Cookies.remove('token');
-        localStorage.removeItem('token'); // Remove token from localStorage
-
-        setUser(null); // Clear user from context
-
+        localStorage.clear(); 
+        setUser(null); 
         closeSidebar();
         router.push('/Auth/login');
         toast.success('Logout successful!');
@@ -167,7 +165,7 @@ const Navbar = () => {
                         </button>
                       </li>
                     ))}
-                    {isAuthenticated && (
+                    {(localStorage.getItem('token')) && isAuthenticated && (
                       <>
                         <li>
                           <button
