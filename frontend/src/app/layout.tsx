@@ -1,4 +1,3 @@
-'use client'
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -8,14 +7,16 @@ import { MyProvider } from "@/context/ContextProvider";
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer";
 import { Analytics } from "@vercel/analytics/react"
-import ReloadComponent from "@/components/ReloadFunction";
+import dynamic from 'next/dynamic';
 
-// Importing custom fonts
+const ReloadComponent = dynamic(() => import('@/components/ReloadFunction'), { ssr: false });
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
 });
+
 const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
@@ -32,6 +33,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  console.log("Backend URL:", process.env.NEXT_PUBLIC_BACKEND_URL);
+  
   return (
     <html lang="en">
       <head>
@@ -51,7 +54,9 @@ export default function RootLayout({
           <MyProvider>
             <Navbar />
             <Analytics/>
-            <ReloadComponent url={process.env.NEXT_PUBLIC_BACKEND_URL}/>
+            {process.env.NEXT_PUBLIC_BACKEND_URL && (
+              <ReloadComponent url={process.env.NEXT_PUBLIC_BACKEND_URL} />
+            )}
             {children}
             <Footer/>
           </MyProvider>
