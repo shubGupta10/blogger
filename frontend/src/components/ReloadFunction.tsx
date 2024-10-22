@@ -5,9 +5,19 @@ import axios from 'axios';
 
 const ReloadComponent = ({ url, interval = 30000 }) => {
   const reloadWebsite = () => {
-    axios.get(url)
+    axios.post(url, {
+      query: `
+        query {
+          __typename
+        }
+      `
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
       .then(response => {
-        console.log(`Reloaded at ${new Date().toISOString()}: Status Code ${response.status}`);
+        console.log(`Reloaded at ${new Date().toISOString()}:`, response.data);
       })
       .catch(error => {
         console.error(`Error reloading at ${new Date().toISOString()}:`, error.message);
