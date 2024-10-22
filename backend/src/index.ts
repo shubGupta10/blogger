@@ -36,10 +36,10 @@ const corsOptions = {
         process.env.NEXT_PUBLIC_FRONTEND_URL,
         process.env.NEXT_PUBLIC_FRONTEND_PING_URL,
     ],
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'], 
     credentials: true,
 };
-
 
 app.use(cors(corsOptions));
 app.use(express.json());
