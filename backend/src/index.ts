@@ -3,7 +3,7 @@ import { expressMiddleware } from "@apollo/server/express4";
 import cors from 'cors';
 import express from 'express';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
-import http from 'http';
+import http, { METHODS } from 'http';
 import mergedResolvers from './resolvers/mergedResolvers.js';
 import mergedTypeDefs from './typeDefs/mergedTypeDefs.js';
 import connect from './DbConfig/Connect.js';
@@ -32,9 +32,14 @@ const server = new ApolloServer<MyContext>({
 await server.start();
 
 const corsOptions = {
-    origin: process.env.NEXT_PUBLIC_FRONTEND_URL,
+    origin: [
+        process.env.NEXT_PUBLIC_FRONTEND_URL,
+        process.env.NEXT_PUBLIC_FRONTEND_PING_URL,
+    ],
+    methods: ['GET', 'POST'],
     credentials: true,
 };
+
 
 app.use(cors(corsOptions));
 app.use(express.json());
