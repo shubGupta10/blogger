@@ -5,6 +5,7 @@ export interface Blog extends Document {
     title: string;
     blogImage: string;
     blogContent: string;
+    blogCategory: string;
     createdAt: Date;
     userId: Types.ObjectId; 
 }
@@ -21,6 +22,11 @@ const blogSchema: Schema<Blog> = new mongoose.Schema({
     blogContent: {
         type: String,
         required: [true, "Blog content is required"],
+    },
+    blogCategory: {
+        type: String,
+        enum: ['technology', 'lifestyle', 'education', 'health', 'travel'],
+        required: [true, 'Please select a category for this blog'],
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId, 

@@ -7,6 +7,7 @@ export const CREATEBLOG = gql`
       title
       blogImage
       blogContent
+      blogCategory
       createdAt
       user {
         _id

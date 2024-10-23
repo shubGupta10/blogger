@@ -1,12 +1,9 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
-import { GET_BLOGS } from '@/Graphql/queries/blogQueries'
-import { GetBlogsQuery, BlogsByCategoryDocument, BlogsByCategoryQuery, BlogsByCategoryQueryVariables } from '@/gql/graphql'
 import { motion, AnimatePresence } from 'framer-motion'
-import { User, Calendar, ArrowRight, Search, AlertCircle } from 'lucide-react'
-import Loader from '@/components/Loader'
+import { User, Calendar, ArrowRight, Search } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import {
   Select,
@@ -15,85 +12,40 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { BlogsByCategoryDocument, BlogsByCategoryQuery, BlogsByCategoryQueryVariables } from '@/gql/graphql'
 
 const categories = [
-  { value: "all", label: "All Categories" },
   { value: "technology", label: "Technology" },
   { value: "lifestyle", label: "Lifestyle" },
   { value: "education", label: "Education" },
   { value: "health", label: "Health" },
 ]
 
-export default function PublicBlogs() {
-  const [selectedCategory, setSelectedCategory] = useState<string>('all')
+export default function BlogCategories() {
+  const [selectedCategory, setSelectedCategory] = useState<string>('')
   const [searchTerm, setSearchTerm] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
-  const { loading: allBlogsLoading, error: allBlogsError, data: allBlogsData, refetch: refetchAllBlogs } = useQuery<GetBlogsQuery>(GET_BLOGS)
-  const { loading: categoryBlogsLoading, error: categoryBlogsError, data: categoryBlogsData, refetch: refetchCategoryBlogs } = useQuery<BlogsByCategoryQuery, BlogsByCategoryQueryVariables>(
+  const { loading, error, data } = useQuery<BlogsByCategoryQuery, BlogsByCategoryQueryVariables>(
     BlogsByCategoryDocument,
     {
       variables: { blogCategory: selectedCategory },
-      skip: selectedCategory === 'all',
+      skip: !selectedCategory,
     }
   )
-
-  useEffect(() => {
-    if (selectedCategory === 'all') {
-      refetchAllBlogs()
-    } else {
-      refetchCategoryBlogs()
-    }
-  }, [selectedCategory, refetchAllBlogs, refetchCategoryBlogs])
-
-  const loading = allBlogsLoading || categoryBlogsLoading
-  const error = allBlogsError || categoryBlogsError
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <Loader />
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div className="flex justify-center items-center h-screen bg-gray-100">
-        <Alert variant="destructive" className="max-w-md">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>
-            {error.message}
-          </AlertDescription>
-          <div className="mt-4">
-            <Button onClick={() => window.location.reload()} variant="outline">
-              Try Again
-            </Button>
-          </div>
-        </Alert>
-      </div>
-    )
-  }
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category)
   }
 
-  const handleOpenBlogs = async (BlogId: string) => {
-    setIsLoading(true)
-    router.push(`/pages/viewBlog/${BlogId}`)
-    setIsLoading(false)
+  const handleOpenBlog = (blogId: string) => {
+    router.push(`/pages/viewBlog/${blogId}`)
   }
 
-  const blogs = selectedCategory === 'all' ? allBlogsData?.blogs : categoryBlogsData?.blogsByCategory
-
-  const filteredBlogs = blogs?.filter((blog) =>
+  const filteredBlogs = data?.blogsByCategory.filter((blog) =>
     blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     blog.blogContent.toLowerCase().includes(searchTerm.toLowerCase())
   )
@@ -119,14 +71,12 @@ export default function PublicBlogs() {
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-black mb-8 text-center">
-          Explore Our Blogs
-        </h1>
-
-        <div className="mb-8 flex flex-col sm:flex-row gap-4 items-center justify-center">
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-center mb-8">Explore Our Blogs</h1>
+        
+        <div className="mb-8 max-w-md mx-auto">
           <Select onValueChange={handleCategoryChange} value={selectedCategory}>
-            <SelectTrigger className="w-full sm:w-[180px]">
-              <SelectValue placeholder="Select Category" />
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Choose a category" />
             </SelectTrigger>
             <SelectContent>
               {categories.map((category) => (
@@ -136,26 +86,42 @@ export default function PublicBlogs() {
               ))}
             </SelectContent>
           </Select>
+        </div>
 
-          <div className="relative w-full sm:w-auto flex-1">
+        <div className="mb-8 max-w-md mx-auto">
+          <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
             <Input
               type="text"
               placeholder="Search blogs..."
-              className="pl-10 pr-4 w-full"
+              className="pl-10 pr-4"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
         </div>
 
-        {filteredBlogs && filteredBlogs.length === 0 ? (
-          <Card className="p-6">
-            <CardContent className="text-center text-gray-500 text-xl">
-              No blogs found.
-            </CardContent>
-          </Card>
-        ) : (
+        {loading && (
+          <div className="text-center">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
+              <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
+            </div>
+          </div>
+        )}
+
+        {error && (
+          <div className="text-red-500 text-center mt-10 p-4 bg-white rounded-lg shadow">
+            Error: {error.message}
+          </div>
+        )}
+
+        {!loading && !error && filteredBlogs && filteredBlogs.length === 0 && (
+          <p className="text-center text-gray-500 text-xl bg-white p-6 rounded-lg shadow">
+            No blogs found in this category.
+          </p>
+        )}
+
+        {!loading && !error && filteredBlogs && filteredBlogs.length > 0 && (
           <AnimatePresence>
             <motion.div
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
@@ -163,9 +129,9 @@ export default function PublicBlogs() {
               initial="hidden"
               animate="visible"
             >
-              {filteredBlogs?.map((blog) => (
+              {filteredBlogs.map((blog) => (
                 <motion.div key={blog._id} variants={itemVariants}>
-                  <Card className="overflow-hidden transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-1">
+                  <Card className="overflow-hidden">
                     <div className="relative h-48 overflow-hidden">
                       {blog.blogImage && (
                         <img
@@ -190,21 +156,16 @@ export default function PublicBlogs() {
                           {blog.user.firstName} {blog.user.lastName ?? ''}
                         </span>
                         <Calendar size={16} className="mr-2" />
+                        <span>{new Date().toLocaleDateString()}</span>
                       </div>
                     </CardContent>
                     <CardFooter>
                       <Button
-                        className="w-full flex items-center justify-center"
-                        onClick={() => handleOpenBlogs(blog._id)}
+                        className="w-full"
+                        onClick={() => handleOpenBlog(blog._id)}
                       >
-                        {isLoading ? (
-                          <Loader />
-                        ) : (
-                          <>
-                            Read More
-                            <ArrowRight size={16} className="ml-2" />
-                          </>
-                        )}
+                        Read More
+                        <ArrowRight size={16} className="ml-2" />
                       </Button>
                     </CardFooter>
                   </Card>

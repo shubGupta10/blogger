@@ -13,8 +13,15 @@ import GenerativeContent from '@/components/GenerativeContent';
 import 'react-quill/dist/quill.snow.css'; 
 import { GET_BLOGS_BY_USER } from '@/Graphql/queries/blogQueries';
 import Loader from '@/components/Loader';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false }); 
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 const CreateBlog = () => {
   const [isPublishing, setIsPublishing] = useState(false);
@@ -25,6 +32,7 @@ const CreateBlog = () => {
       title: '',
       blogImage: '',
       blogContent: '', 
+      blogCategory: ''
     },
   });
 
@@ -38,23 +46,27 @@ const CreateBlog = () => {
   const router = useRouter();
 
   const onSubmit = async (data: any) => {
+    console.log('Form data being sent:', data);
     setIsPublishing(true);
     try {
-      if (imageFile) {
-        const downloadURL = await uploadImage(imageFile);
-        data.blogImage = downloadURL;
-      }
+        if (imageFile) {
+            const downloadURL = await uploadImage(imageFile);
+            data.blogImage = downloadURL;
+        } else {
+            data.blogImage = ""; 
+        }
 
-      await createBlog({ variables: { input: data } });
-      toast.success('Blog published successfully!');
-      router.push('/pages/Dashboard'); 
-      form.reset(); 
+        await createBlog({ variables: { input: data } });
+        toast.success('Blog published successfully!');
+        router.push('/pages/Dashboard'); 
+        form.reset(); 
     } catch (error) {
-      toast.error('Failed to publish blog');
+        toast.error('Failed to publish blog');
+        console.error('Error:', error);
     } finally {
-      setIsPublishing(false);
+        setIsPublishing(false);
     }
-  };
+};
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -92,13 +104,30 @@ const CreateBlog = () => {
       </header>
 
       <main className="pt-10 pb-10 px-4 max-w-screen-xl mx-auto">
-        <div className="mb-6 ">
+        <div className="mb-6">
           <input
             type="file"
             accept="image/*"
             onChange={handleImageChange}
             className="w-full cursor-pointer mb-4 border border-gray-300 rounded-md focus:outline-none"
           />
+        </div>
+
+        {/* Select for blog category */}
+        <div className="mb-4">
+        <Select onValueChange={(value) => form.setValue('blogCategory', value)}>
+  <SelectTrigger className="w-[180px]">
+    <SelectValue placeholder="Select Category" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="technology">Technology</SelectItem>
+    <SelectItem value="lifestyle">Lifestyle</SelectItem>
+    <SelectItem value="education">Education</SelectItem>
+    <SelectItem value="health">Health</SelectItem>
+    <SelectItem value="travel">Travel</SelectItem>
+  </SelectContent>
+</Select>
+
         </div>
 
         <GenerativeContent setBlogContent={setGeneratedContent} blogTitle={form.watch('title')} />

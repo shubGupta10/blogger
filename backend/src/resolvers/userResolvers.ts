@@ -109,37 +109,39 @@ const userResolver = {
         login: async (_parent: unknown, { input }: { input: SignInInput }, context: any) => {
             try {
                 const { email, password } = input;
-      
+        
                 const user = await User.findOne({ email });
-      
+        
                 if (!user) {
                     throw new Error("User not found");
                 }
-      
+        
                 const isPasswordMatch = await bcrypt.compare(password, user.password);
-      
+        
                 if (!isPasswordMatch) {
                     throw new Error("Password is incorrect");
                 }
-      
+        
                 const userData: UserData = {
                     _id: user._id.toString(),
                 };
-      
+        
                 const token = generateToken(userData);
-      
+        
                 if (!context.res) {
                     throw new Error("Response object is not available");
                 }
-      
+        
                 context.res.cookie('token', token, {
                     httpOnly: true, 
-                    secure: true,
-                    sameSite: 'None',
+                    secure: process.env.NODE_ENV === 'production', 
+                    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', 
+                    domain: process.env.COOKIE_DOMAIN, 
+                    path: '/', 
                 });
-                
-                
-      
+        
+                context.res.setHeader('Authorization', `Bearer ${token}`);
+        
                 return {
                     user: {
                         _id: user._id,
@@ -156,6 +158,7 @@ const userResolver = {
                 throw new Error(error.message || "Internal Server error");
             }
         },
+        
       
         logout: async (_parent: unknown, _args: unknown, context: any) => {
             try {

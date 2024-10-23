@@ -6,6 +6,9 @@ import { ReactNode } from 'react';
 const httpLink = new HttpLink({
   uri: process.env.NEXT_PUBLIC_BACKEND_URL,
   credentials: 'include',
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 const client = new ApolloClient({

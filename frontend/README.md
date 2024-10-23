@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# **Blogger**
 
-## Getting Started
+Blogger is a full-featured blog application built using **Next.js**, **TypeScript**, **GraphQL**, **ShadCN**, and **MongoDB**. The platform allows users to create, read, update, and delete blog posts with seamless authentication and user-specific content filtering. It also includes **AI-powered blog generation and summarization** features, real-time chat integration, a settings page, and more.
 
-First, run the development server:
+## **Features**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### **1. AI-Powered Blog Features**
+- **AI Blog Generation:** Users can generate entire blog posts using AI, making content creation faster and easier.
+- **AI Summarization:** Summarize existing blogs using AI, providing concise overviews of longer content.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### **2. User Authentication**
+- **JWT-based Authentication:** Secure login and signup functionalities using JWT.
+- **HTTP-only Cookies:** Tokens are stored in HTTP-only cookies for secure authentication.
+- **Current User Context:** The logged-in user is accessed globally via a custom hook `useMyContext()` to ensure a smooth user experience across the platform.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### **3. Blog Management**
+- **Create Blog:** Authenticated users can create blog posts with rich content.
+- **Update Blog:** Users can edit their existing blog posts.
+- **Delete Blog:** Users can delete their blog posts.
+- **View Blogs:** All blogs are displayed with pagination, sorted by creation date, or user-specific filters.
+- **User-Specific Blogs:** Authenticated users can view only their blogs by filtering via GraphQL relationships.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### **4. GraphQL Integration**
+- **Apollo Client Setup:** For seamless data fetching and state management across the frontend.
+- **Typed Queries and Mutations:** Using **codegen**, all queries and mutations are type-safe, ensuring the integrity of data throughout the application.
+- **Relationships:** Fetch blogs related to the currently logged-in user using GraphQL relationships.
 
-## Learn More
+### **5. Dynamic Theming**
+- **Light/Dark Mode:** Toggle between light and dark themes using the `ThemeSwitcher` component built with **next-themes**.
+- **Persistent Theme:** The selected theme is stored locally and persists across sessions.
 
-To learn more about Next.js, take a look at the following resources:
+### **6. Responsive Design**
+- Fully responsive across devices, from desktops to mobile screens, ensuring a consistent user experience using **Tailwind CSS**.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### **7. Smooth Animations**
+- **Framer Motion:** Adds dynamic page transitions, hover effects, and other animations to enhance the user interface.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### **8. Settings Page**
+- A user settings page built with **Tailwind CSS** and **Framer Motion**, featuring a minimalistic black-and-white color scheme.
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## **Tech Stack**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### **Frontend:**
+- **Next.js**
+- **TypeScript**
+- **Tailwind CSS**
+- **Shadcn**
+- **Apollo Client** (for GraphQL)
+
+### **Backend:**
+- **Node.js**
+- **GraphQL**
+- **MongoDB** (Database)
+- **Mongoose** (MongoDB ODM)
+- **Zod** (for schema validation)
+- **JWT Authentication**
+
+### **Deployment:**
+- **Vercel** (Frontend)
+- **Render** (Backend)
+
+## **Installation and Setup**
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/shubGupta10/blogger
+   cd blogger

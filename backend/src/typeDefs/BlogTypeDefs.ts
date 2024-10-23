@@ -3,7 +3,8 @@ const blogTypeDefs = `#graphql
     _id: ID!
     title: String!
     blogImage: String!
-    blogContent: String! 
+    blogContent: String!
+    blogCategory: String! 
     createdAt: String!
     userId: String!
     user: User!
@@ -13,6 +14,7 @@ const blogTypeDefs = `#graphql
     blogs: [Blog!]!
     blog(blogId: ID!): Blog
     blogsByUser: [Blog]
+    blogsByCategory(blogCategory: String!): [Blog] 
  }
 
  type Mutation {
@@ -26,6 +28,7 @@ const blogTypeDefs = `#graphql
     title: String!
     blogImage: String!
     blogContent: String! 
+    blogCategory: String!
  }
 
  input updateBlogInput {  

@@ -3,7 +3,7 @@ import { expressMiddleware } from "@apollo/server/express4";
 import cors from 'cors';
 import express from 'express';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
-import http, { METHODS } from 'http';
+import http from 'http';
 import mergedResolvers from './resolvers/mergedResolvers.js';
 import mergedTypeDefs from './typeDefs/mergedTypeDefs.js';
 import connect from './DbConfig/Connect.js';
@@ -32,20 +32,17 @@ const server = new ApolloServer<MyContext>({
 await server.start();
 
 const corsOptions = {
-    origin: [
-        process.env.NEXT_PUBLIC_FRONTEND_URL,
-        process.env.NEXT_PUBLIC_FRONTEND_PING_URL,
-    ],
-    methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'], 
+    origin:process.env.NEXT_PUBLIC_FRONTEND_URL,
     credentials: true,
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    exposedHeaders: ['Set-Cookie', 'Authorization'],
 };
 
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
-// Use authMiddleware as regular Express middleware
 app.use(authMiddleware());
 
 app.use('/graphql', expressMiddleware(server, {
@@ -56,7 +53,7 @@ app.use('/graphql', expressMiddleware(server, {
 
 const PORT = process.env.PORT || 4000;
 
-await connect(); // Ensure this connects successfully
+await connect();
 
 await new Promise<void>((resolve) => httpServer.listen({ port: PORT }, resolve));
 console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);

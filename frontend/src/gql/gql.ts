@@ -14,7 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 const documents = {
-    "\n  mutation CreateBlog($input: createBlogInput!) {\n    createBlog(input: $input) {\n      _id\n      title\n      blogImage\n      blogContent\n      createdAt\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n": types.CreateBlogDocument,
+    "\n  mutation CreateBlog($input: createBlogInput!) {\n    createBlog(input: $input) {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      createdAt\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n": types.CreateBlogDocument,
     "\n  mutation UpdateBlog($input: updateBlogInput!) {\n    updateBlog(input: $input) {\n      _id\n      title\n      blogImage\n      blogContent\n      createdAt\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n": types.UpdateBlogDocument,
     "\n  mutation DeleteBlog($blogId: ID!) {\n    deleteBlog(blogId: $blogId) {\n      _id\n      title\n    }\n  }\n": types.DeleteBlogDocument,
     "\n  mutation GenerateStory($prompt: String!){\n    generateStory(prompt: $prompt)\n  }\n": types.GenerateStoryDocument,
@@ -24,6 +24,7 @@ const documents = {
     "\n  query GetBlogs {\n    blogs {\n      _id\n      title\n      blogImage\n      blogContent\n      createdAt\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n": types.GetBlogsDocument,
     "\n  query GetBlog($blogId: ID!) {\n    blog(blogId: $blogId) {\n      _id\n      title\n      blogImage\n      blogContent\n      createdAt\n      user {\n        _id\n        firstName\n        lastName\n        email\n        profilePicture\n      }\n    }\n  }\n": types.GetBlogDocument,
     "\n query GetBlogsByUser {\n    blogsByUser {\n        _id\n        title\n        blogImage\n        blogContent\n        createdAt\n    }\n}\n": types.GetBlogsByUserDocument,
+    "\n  query blogsByCategory($blogCategory: String!) {\n    blogsByCategory(blogCategory: $blogCategory) {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n": types.BlogsByCategoryDocument,
     "\n  query GetAuthenticatedUser {\n    authenticatedUser {\n      _id\n      firstName\n      lastName\n      email\n      profilePicture\n      gender\n      blogs {\n        _id\n        title\n      }\n    }\n  }\n": types.GetAuthenticatedUserDocument,
     "\n  query GetUser($userId: ID!) {\n    user(userId: $userId) {\n      _id\n      firstName\n      lastName\n      email\n      profilePicture\n      gender\n      blogs {\n        _id\n        title\n        blogImage\n        blogContent\n        createdAt\n      }\n    }\n  }\n": types.GetUserDocument,
     "\n  query FetchUserByID($userId: ID!) {\n    fetchUserByID(userId: $userId) {\n      _id\n      firstName\n      lastName\n      email\n      profilePicture\n      gender\n      blogs {\n        _id\n        title\n        blogImage\n        blogContent\n        createdAt\n      }\n    }\n  }\n": types.FetchUserByIdDocument,
@@ -46,7 +47,7 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation CreateBlog($input: createBlogInput!) {\n    createBlog(input: $input) {\n      _id\n      title\n      blogImage\n      blogContent\n      createdAt\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateBlog($input: createBlogInput!) {\n    createBlog(input: $input) {\n      _id\n      title\n      blogImage\n      blogContent\n      createdAt\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  mutation CreateBlog($input: createBlogInput!) {\n    createBlog(input: $input) {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      createdAt\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateBlog($input: createBlogInput!) {\n    createBlog(input: $input) {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      createdAt\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -83,6 +84,10 @@ export function graphql(source: "\n  query GetBlog($blogId: ID!) {\n    blog(blo
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n query GetBlogsByUser {\n    blogsByUser {\n        _id\n        title\n        blogImage\n        blogContent\n        createdAt\n    }\n}\n"): (typeof documents)["\n query GetBlogsByUser {\n    blogsByUser {\n        _id\n        title\n        blogImage\n        blogContent\n        createdAt\n    }\n}\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query blogsByCategory($blogCategory: String!) {\n    blogsByCategory(blogCategory: $blogCategory) {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n"): (typeof documents)["\n  query blogsByCategory($blogCategory: String!) {\n    blogsByCategory(blogCategory: $blogCategory) {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

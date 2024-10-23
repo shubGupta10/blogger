@@ -3,6 +3,7 @@ import Blog from "../model/BlogModel.js";
 import User from "../model/userModel.js";
 import { Request, Response } from "express";
 
+
 export interface MyContext {
     user?: any;
     req: Request;
@@ -13,6 +14,7 @@ interface createBlogInput {
     title: string;
     blogImage: string;
     blogContent: string;
+    blogCategory: string;
 }
 
 interface updateBlogInput {
@@ -37,9 +39,9 @@ const blogResolver = {
     Mutation: {
         createBlog: async (_parent: unknown, { input }: { input: createBlogInput }, context: MyContext) => {
             try {
-                const { title, blogImage, blogContent } = input;
+                const { title, blogImage, blogContent, blogCategory } = input;
           
-                if (!title || !blogImage || !blogContent) {
+                if (!title || !blogImage || !blogContent || !blogCategory) {
                     throw new Error("All fields are required");
                 }
           
@@ -52,6 +54,7 @@ const blogResolver = {
                     title,
                     blogImage,
                     blogContent,
+                    blogCategory,
                     userId,  
                 });
           
@@ -152,6 +155,19 @@ const blogResolver = {
                 }
                 const blogs = await Blog.find({ userId });
                 return blogs;
+            } catch (error: any) {
+                console.error("Failed to fetch blogs by user", error);
+                throw new Error(error.message || "Internal server error");
+            }
+        },
+
+        blogsByCategory: async (_parent: unknown, {blogCategory}: {blogCategory: string}) => {
+            try {
+                const blogs = await Blog.find({blogCategory})
+                if (!blogs || blogs.length === 0) {
+                    throw new Error("No blogs found in this category");
+                }
+                return blogs
             } catch (error: any) {
                 console.error("Failed to fetch blogs by user", error);
                 throw new Error(error.message || "Internal server error");

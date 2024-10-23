@@ -48,3 +48,20 @@ export const GET_BLOGS_BY_USER = gql`
     }
 }
 `;
+
+export const GET_BLOGS_BY_CATEGORY = gql`
+  query blogsByCategory($blogCategory: String!) {
+    blogsByCategory(blogCategory: $blogCategory) {
+      _id
+      title
+      blogImage
+      blogContent
+      blogCategory
+      user {
+        _id
+        firstName
+        lastName
+      }
+    }
+  }
+`;
