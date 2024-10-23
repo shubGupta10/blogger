@@ -121,6 +121,8 @@ const CreateBlog = () => {
   </SelectTrigger>
   <SelectContent>
     <SelectItem value="technology">Technology</SelectItem>
+    <SelectItem value="sports">Sports</SelectItem>
+    <SelectItem value="entertainment">Entertainment</SelectItem>
     <SelectItem value="lifestyle">Lifestyle</SelectItem>
     <SelectItem value="education">Education</SelectItem>
     <SelectItem value="health">Health</SelectItem>

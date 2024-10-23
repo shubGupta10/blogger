@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button'
 import { BlogsByCategoryDocument, BlogsByCategoryQuery, BlogsByCategoryQueryVariables } from '@/gql/graphql'
 
 const categories = [
+  { value: "all", label: "All Categories" },
   { value: "technology", label: "Technology" },
   { value: "lifestyle", label: "Lifestyle" },
   { value: "education", label: "Education" },
@@ -25,6 +26,7 @@ const categories = [
   { value: "entertainment", label: "Entertainment" },
   { value: "sports", label: "Sports" },
 ]
+
 
 export default function BlogCategories() {
   const [selectedCategory, setSelectedCategory] = useState<string>('')
