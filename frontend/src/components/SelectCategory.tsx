@@ -22,6 +22,8 @@ const categories = [
   { value: "lifestyle", label: "Lifestyle" },
   { value: "education", label: "Education" },
   { value: "health", label: "Health" },
+  { value: "entertainment", label: "Entertainment" },
+  { value: "sports", label: "Sports" },
 ]
 
 export default function BlogCategories() {
