@@ -21,11 +21,12 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 const categories = [
-  { value: "all", label: "All Categories" },
   { value: "technology", label: "Technology" },
   { value: "lifestyle", label: "Lifestyle" },
   { value: "education", label: "Education" },
   { value: "health", label: "Health" },
+  { value: "entertainment", label: "Entertainment" },
+  { value: "sports", label: "Sports" },
 ]
 
 export default function PublicBlogs() {
