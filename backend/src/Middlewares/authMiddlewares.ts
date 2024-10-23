@@ -12,9 +12,7 @@ export interface AuthenticatedRequest extends Request {
 
 const authMiddleware = () => {
   return async (req: Request, res: Response, next: NextFunction) => {
-    const authHeader = req.headers.authorization;
-    const token = req.cookies.token || (authHeader && authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : null);
-    
+    const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
 
     console.log("Extracted token:", token);
     if (!token) {

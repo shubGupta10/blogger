@@ -46,13 +46,14 @@ const LoginForm = () => {
                 }
             });
 
+            router.push('/pages/Dashboard');
+            window.location.href="/pages/Dashboard"
             if (response?.login) {
               const {token, user} = response.login
               
                 setToken(token);
                 setUser(user); 
-                Cookies.set('token', token, { expires: 1 });
-                sessionStorage.setItem('token', token) 
+                Cookies.set('token', token, { expires: 1 }); 
                 router.push('/pages/Dashboard');
                 toast.success("Login successful");
                 setTimeout(() => {

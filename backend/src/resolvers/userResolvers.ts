@@ -134,10 +134,8 @@ const userResolver = {
         
                 context.res.cookie('token', token, {
                     httpOnly: true, 
-                    secure: process.env.NODE_ENV === 'production', 
-                    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', 
-                    domain: process.env.COOKIE_DOMAIN, 
-                    path: '/', 
+                    secure: true, 
+                    sameSite: 'None', 
                 });
         
                 context.res.setHeader('Authorization', `Bearer ${token}`);
