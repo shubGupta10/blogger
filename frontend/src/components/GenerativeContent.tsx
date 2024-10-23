@@ -75,19 +75,21 @@ export const GenerativeContent: React.FC<GenerativeContentProps> = ({ setBlogCon
         placeholder="Enter your prompt for the blog..."
         className="w-full p-2 mb-2 border border-gray-300 rounded resize-y min-h-[100px]"
       />
+      <div className='flex text-sm md:text-md gap-4 md:flex-row'>
       <button
         onClick={handleGenerateStory}
-        className="px-4 py-2 bg-black text-white rounded-full cursor-pointer hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed"
+        className="px-4 py-2  bg-black text-white rounded-full cursor-pointer hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed"
         disabled={loading || !prompt.trim()}
       >
         {loading ? 'Generating...' : 'Generate Response'}
       </button>
       <button
         onClick={handleUseBlogTitle}
-        className="px-4 py-2 ml-5 bg-black text-white rounded-full cursor-pointer hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed"
+        className="px-4 py-2  bg-black text-white rounded-full cursor-pointer hover:bg-gray-800 disabled:bg-gray-400 disabled:cursor-not-allowed"
       >
         Use Blog Title
       </button>
+      </div>
 
       {loading && <Loader />}
       {error && (

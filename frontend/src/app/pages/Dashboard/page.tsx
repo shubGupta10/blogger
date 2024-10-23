@@ -186,7 +186,7 @@ const Dashboard: React.FC = () => {
                 </div>
                 <Link 
                   href="/pages/createBlog"
-                  className="inline-flex bg-black items-center md:gap-4 p-2 md:p-4 rounded-xl text-sm font-medium text-white hover:underline"
+                  className="inline-flex gap-2 bg-black items-center md:gap-4 p-2 md:p-4 rounded-xl text-sm font-medium text-white"
                 >
                   Create new blog
                   <ChevronRight size={16} />
@@ -206,7 +206,7 @@ const Dashboard: React.FC = () => {
               <div className="flex items-center justify-between">
                 <h2 className="text-xl font-semibold">Your Recent Blogs</h2>
                 <Link 
-                  href="/pages/blogs"
+                  href="/pages/Dashboard"
                   className="text-sm font-medium text-gray-600 hover:text-black transition-colors"
                 >
                   View all

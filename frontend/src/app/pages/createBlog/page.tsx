@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from '@/components/ui/button';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -28,15 +29,20 @@ const CreateBlog = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isMobileView, setIsMobileView] = useState(false);
+  const [isClient, setIsClient] = useState(false);  // Added to check client-side rendering
 
   useEffect(() => {
     const checkMobileView = () => {
       setIsMobileView(window.innerWidth < 768);
     };
-    
+
     checkMobileView();
     window.addEventListener('resize', checkMobileView);
     return () => window.removeEventListener('resize', checkMobileView);
+  }, []);
+
+  useEffect(() => {
+    setIsClient(true); // Ensure client-side rendering
   }, []);
 
   const form = useForm({
@@ -98,31 +104,46 @@ const CreateBlog = () => {
     form.setValue('blogContent', content);
   };
 
+  const handleGoBack = () => {
+    router.push('/pages/Dashboard');
+  }
+
   if (loading) return <div className="min-h-screen flex items-center justify-center"><Loader /></div>;
   if (error) return <div className="min-h-screen flex items-center justify-center text-red-600">Something went wrong</div>;
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Fixed Header with Shadow */}
-      <header className="sticky top-0 left-0 right-0 bg-white shadow-md z-50">
+      <header className="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="h-16 flex items-center justify-between gap-6">
-            <div className="flex-1 relative">
+          <div className="h-16 flex items-center justify-between gap-4 md:gap-6">
+            <div className="flex-1  relative">
               <input
                 {...form.register('title')}
                 placeholder="Enter your blog title"
                 className="w-full text-xl md:text-2xl font-semibold focus:outline-none border-b-2 border-transparent focus:border-black transition-colors py-2"
               />
             </div>
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={form.handleSubmit(onSubmit)}
-              disabled={isPublishing}
-              className="px-6 py-2.5 bg-black text-white rounded-lg text-sm font-medium tracking-wide hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
-            >
-              {isPublishing ? 'Publishing...' : 'Publish'}
+
+            {/* Button Container for Publish button */}
+            <div className="flex flex-row gap-2  md:gap-4 items-end">
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={form.handleSubmit(onSubmit)}
+                disabled={isPublishing}
+                className="px-4 py-2.5 bg-black text-white rounded-lg text-sm font-medium tracking-wide hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+              >
+                {isPublishing ? 'Publishing...' : 'Publish'}
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+               onClick={handleGoBack}
+              className="px-4  py-2.5 bg-black text-white rounded-lg text-sm font-medium tracking-wide hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+              Go Back
             </motion.button>
+            </div>
           </div>
         </div>
       </header>
@@ -135,7 +156,7 @@ const CreateBlog = () => {
             {/* Category Selection */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <label className="block text-sm font-semibold mb-3 text-gray-900">Blog Category</label>
-              <Select 
+              <Select
                 onValueChange={(value) => form.setValue('blogCategory', value)}
               >
                 <SelectTrigger className="w-full border-gray-300 focus:ring-black focus:border-black">
@@ -185,41 +206,28 @@ const CreateBlog = () => {
           {/* Editor with Better Visibility */}
           <div className="lg:col-span-2">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <Controller
-                name="blogContent"
-                control={form.control}
-                render={({ field }) => (
-                  <div className="h-[calc(100vh-280px)] md:h-[calc(100vh-240px)] flex flex-col">
-                    <ReactQuill
-                      {...field}
-                      theme="snow"
-                      placeholder="Start writing your blog post..."
-                      className="flex-1 overflow-y-auto [&_.ql-editor]:min-h-[calc(100vh-400px)] [&_.ql-editor]:text-base md:text-lg [&_.ql-editor]:leading-relaxed [&_.ql-toolbar]:flex [&_.ql-toolbar]:flex-wrap [&_.ql-toolbar]:gap-1.5 [&_.ql-toolbar]:p-3 [&_.ql-toolbar]:border-gray-200 [&_.ql-container]:border-gray-200"
-                      modules={{
-                        toolbar: isMobileView ? [
-                          [{ header: [1, 2, false] }],
-                          ['bold', 'italic'],
-                          [{ list: 'bullet' }],
-                          ['link'],
-                          ['clean']
-                        ] : [
-                          [{ header: [1, 2, 3, false] }],
-                          ['bold', 'italic', 'underline', 'strike'],
-                          [{ list: 'ordered' }, { list: 'bullet' }],
-                          ['link', 'image'],
-                          ['clean']
-                        ]
-                      }}
-                    />
-                  </div>
-                )}
-              />
+              {isClient && ( 
+                <Controller
+                  name="blogContent"
+                  control={form.control}
+                  render={({ field }) => (
+                    <div className="h-[calc(100vh-280px)] md:h-[calc(100vh-240px)] flex flex-col">
+                      <ReactQuill
+                        {...field}
+                        theme="snow"
+                        placeholder="Start writing your blog post..."
+                        className="flex-1 overflow-y-auto [&_.ql-editor]:min-h-[calc(100vh-400px)] [&_.ql-editor]:text-base md:text-lg [&_.ql-editor]:leading-relaxed [&_.ql-toolbar]:flex [&_.ql-toolbar]:flex-wrap [&_.ql-toolbar]:gap-1"
+                      />
+                    </div>
+                  )}
+                />
+              )}
             </div>
           </div>
         </div>
       </main>
 
-      {/* Improved Unsaved Changes Indicator */}
+      {/* Unsaved changes */}
       <AnimatePresence>
         {form.formState.isDirty && (
           <motion.div
