@@ -139,10 +139,10 @@ const CreateBlog = () => {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-               onClick={handleGoBack}
-              className="px-4  py-2.5 bg-black text-white rounded-lg text-sm font-medium tracking-wide hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
-              Go Back
-            </motion.button>
+                onClick={handleGoBack}
+                className="px-4  py-2.5 bg-black text-white rounded-lg text-sm font-medium tracking-wide hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+                Go Back
+              </motion.button>
             </div>
           </div>
         </div>
@@ -176,7 +176,11 @@ const CreateBlog = () => {
 
             {/* Image Upload with Preview */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <label className="block text-sm font-semibold mb-3 text-gray-900">Featured Image</label>
+              <label className="block text-sm font-semibold mb-2 text-gray-900">Featured Image</label>
+              <label className="block text-sm text-gray-600 mb-4">
+                Only supports <strong className="text-black">PNG, JPEG, and JPG</strong> images
+              </label>
+
               <div className="relative">
                 <input
                   type="file"
@@ -196,6 +200,7 @@ const CreateBlog = () => {
               </div>
             </div>
 
+
             {/* AI Content Generator */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h3 className="text-sm font-semibold mb-3 text-gray-900">AI Content Generator</h3>
@@ -206,7 +211,7 @@ const CreateBlog = () => {
           {/* Editor with Better Visibility */}
           <div className="lg:col-span-2">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              {isClient && ( 
+              {isClient && (
                 <Controller
                   name="blogContent"
                   control={form.control}

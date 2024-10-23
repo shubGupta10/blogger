@@ -150,10 +150,10 @@ const UserBlogs = () => {
                         </p>
                       </div>
                       
-                      <div className="grid grid-cols-3 gap-2 mt-6 pt-6 border-t border-gray-100">
+                      <div className="grid md:grid-cols-3 grid-cols-1 gap-2 mt-6 pt-6 border-t border-gray-100">
                         <button
                           onClick={() => router.push(`/pages/blogs/${blog._id}`)}
-                          className="inline-flex justify-center items-center px-3 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors gap-2 text-sm"
+                          className="inline-flex justify-center items-center px-3 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors gap-2 md:text-sm"
                         >
                           <Eye className="w-4 h-4" />
                           <span>View</span>

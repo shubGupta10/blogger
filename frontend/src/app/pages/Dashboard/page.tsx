@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, ReactNode } from 'react';
+import React, { useState, ReactNode, useEffect } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import Link from 'next/link';
 import UserBlogs from '@/components/UserBlogs';
@@ -17,6 +17,8 @@ import {
   Layout
 } from 'lucide-react';
 import { useMyContext } from '@/context/ContextProvider';
+import { GetBlogsByUserDocument, GetBlogsByUserQuery, GetBlogsByUserQueryVariables } from '@/gql/graphql';
+import { useQuery } from '@apollo/client';
 
 interface NavButtonProps {
   href: string;
@@ -41,8 +43,12 @@ const containerVariants: Variants = {
 
 
 const Dashboard: React.FC = () => {
-  const {user} = useMyContext()
-  const userData = user
+  const { user } = useMyContext(); 
+  const userData = user; 
+
+
+  const { data } = useQuery<GetBlogsByUserQuery, GetBlogsByUserQueryVariables>(GetBlogsByUserDocument);
+
   
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
@@ -144,7 +150,7 @@ const Dashboard: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-600">Total Blogs</p>
-                  <h3 className="text-2xl font-bold">{userData?.blogs.length}</h3>
+                  <h3 className="text-2xl font-bold">{data?.blogsByUser?.length}</h3>
                 </div>
               </div>
             </motion.div>
@@ -162,7 +168,7 @@ const Dashboard: React.FC = () => {
                 <div>
                   <p className="text-sm font-medium text-gray-600">Latest Blog</p>
                   <h3 className="text-sm font-medium truncate max-w-[180px]">
-                    {userData?.blogs[user?.blogs.length - 1]?.title || 'No blogs yet'}
+                    {userData?.blogs[data?.blogsByUser?.length - 1]?.title || 'No blogs yet'}
                   </h3>
                 </div>
               </div>
@@ -215,7 +221,7 @@ const Dashboard: React.FC = () => {
             </div>
             <div className="p-6">
               <div className="space-y-4">
-                {userData?.blogs.slice(0, 3).map((blog, index) => (
+                {data?.blogsByUser.slice(0, 3).map((blog, index) => (
                   <motion.div
                     key={blog._id}
                     initial={{ opacity: 0, x: -20 }}
