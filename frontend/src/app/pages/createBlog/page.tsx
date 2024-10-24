@@ -20,7 +20,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from '@/components/ui/button';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -29,7 +28,7 @@ const CreateBlog = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isMobileView, setIsMobileView] = useState(false);
-  const [isClient, setIsClient] = useState(false);  // Added to check client-side rendering
+  const [isClient, setIsClient] = useState(false); 
 
   useEffect(() => {
     const checkMobileView = () => {
@@ -42,7 +41,7 @@ const CreateBlog = () => {
   }, []);
 
   useEffect(() => {
-    setIsClient(true); // Ensure client-side rendering
+    setIsClient(true);
   }, []);
 
   const form = useForm({

@@ -4,7 +4,7 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('token')?.value;
   console.log("Middleware - Cookie Token:", token);
   
-  const authHeader = request.headers['authorization']; // Use lowercase 'authorization'
+  const authHeader = request.headers.get('authorization');
   const headtoken = authHeader ? authHeader.split(' ')[1] : null;
   console.log("Middleware - Authorization Token:", headtoken);
     
@@ -14,15 +14,19 @@ export function middleware(request: NextRequest) {
 
   const isPublicRoute = publicRoutes.includes(path);
 
-  if (token || headtoken) {
-    return NextResponse.next();  
+  if ((token || headtoken) && (path === '/Auth/login' || path === '/Auth/signUp')) {
+    return NextResponse.redirect(new URL('/pages/Dashboard', request.url));
   }
 
   if (isPublicRoute) {
-    return NextResponse.next();  
+    return NextResponse.next();
   }
 
-  return NextResponse.redirect(new URL('/Auth/login', request.url));
+  if (!token && !headtoken) {
+    return NextResponse.redirect(new URL('/Auth/login', request.url));
+  }
+
+  return NextResponse.next();  
 }
 
 export const config = {
