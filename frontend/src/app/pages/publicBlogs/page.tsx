@@ -3,22 +3,16 @@
 import React, { useState, useEffect } from 'react'
 import { useQuery } from '@apollo/client'
 import { GET_BLOGS } from '@/Graphql/queries/blogQueries'
-import { GetBlogsQuery, BlogsByCategoryDocument, BlogsByCategoryQuery, BlogsByCategoryQueryVariables } from '@/gql/graphql'
+import { GetBlogsQuery, BlogsByCategoryQuery, BlogsByCategoryQueryVariables, BlogsByCategoryDocument } from '@/gql/graphql'
 import { motion, AnimatePresence } from 'framer-motion'
-import { User, Calendar, ArrowRight, Search, AlertCircle } from 'lucide-react'
-import Loader from '@/components/Loader'
+import { User, ArrowRight, Search, AlertCircle, Calendar } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import Loader from '@/components/Loader'
 
 const categories = [
   { value: "all", label: "All Categories" },
@@ -30,9 +24,31 @@ const categories = [
   { value: "sports", label: "Sports" },
 ]
 
+const sortOptions = [
+  { value: "newest", label: "Newest First" },
+  { value: "oldest", label: "Oldest First" },
+  { value: "title", label: "Title A-Z" },
+]
+
+interface Blog {
+  __typename?: "Blog"
+  _id: string
+  title: string
+  blogImage: string
+  blogContent: string
+  blogCategory: string
+  user: {
+    __typename?: "User"
+    _id: string
+    firstName: string
+    lastName?: string | null
+  }
+}
+
 export default function PublicBlogs() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [searchTerm, setSearchTerm] = useState('')
+  const [sortBy, setSortBy] = useState('newest')
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
@@ -58,33 +74,36 @@ export default function PublicBlogs() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <Loader />
-      </div>
+      <Loader />
     )
   }
 
   if (error) {
     return (
-      <div className="flex justify-center items-center h-screen bg-gray-100">
-        <Alert variant="destructive" className="max-w-md">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>
-            {error.message}
-          </AlertDescription>
-          <div className="mt-4">
+      <div className="flex justify-center items-center h-screen bg-gray-50">
+        <Card className="max-w-md">
+          <CardHeader>
+            <CardTitle>Unable to load blogs</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-gray-600">{error.message}</p>
+          </CardContent>
+          <CardFooter>
             <Button onClick={() => window.location.reload()} variant="outline">
               Try Again
             </Button>
-          </div>
-        </Alert>
+          </CardFooter>
+        </Card>
       </div>
     )
   }
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category)
+  }
+
+  const handleSortChange = (sort: string) => {
+    setSortBy(sort)
   }
 
   const handleOpenBlogs = async (BlogId: string) => {
@@ -100,107 +119,146 @@ export default function PublicBlogs() {
     blog.blogContent.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-    },
-  }
+  const sortedBlogs = [...(filteredBlogs || [])].sort((a: Blog, b: Blog) => {
+    if (sortBy === 'newest') return b._id.localeCompare(a._id)
+    if (sortBy === 'oldest') return a._id.localeCompare(b._id)
+    if (sortBy === 'title') return a.title.localeCompare(b.title)
+    return 0
+  })
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen  py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-black mb-8 text-center">
+        <motion.h1
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-4xl sm:text-5xl font-bold  mb-12 text-center"
+        >
           Explore Our Blogs
-        </h1>
+        </motion.h1>
 
-        <div className="mb-8 flex flex-col sm:flex-row gap-4 items-center justify-center">
-          <Select onValueChange={handleCategoryChange} value={selectedCategory}>
-            <SelectTrigger className="w-full sm:w-[180px]">
-              <SelectValue placeholder="Select Category" />
-            </SelectTrigger>
-            <SelectContent>
-              {categories.map((category) => (
-                <SelectItem key={category.value} value={category.value}>
-                  {category.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-12 space-y-4 sm:space-y-0 sm:flex sm:items-center sm:justify-between sm:space-x-4"
+        >
+          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+            <Select onValueChange={handleCategoryChange} value={selectedCategory}>
+              <SelectTrigger className="w-full sm:w-[200px]">
+                <SelectValue placeholder="Select category" />
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map((category) => (
+                  <SelectItem key={category.value} value={category.value}>
+                    {category.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-          <div className="relative w-full sm:w-auto flex-1">
+            <Select onValueChange={handleSortChange} value={sortBy}>
+              <SelectTrigger className="w-full sm:w-[200px]">
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                {sortOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="relative w-full sm:w-96">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
             <Input
               type="text"
               placeholder="Search blogs..."
-              className="pl-10 pr-4 w-full"
+              className="pl-10  ring-2 ring-gray-600"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-        </div>
+        </motion.div>
 
-        {filteredBlogs && filteredBlogs.length === 0 ? (
-          <Card className="p-6">
-            <CardContent className="text-center text-gray-500 text-xl">
-              No blogs found.
+        {sortedBlogs.length === 0 ? (
+          <Card className="p-8 text-center">
+            <CardContent>
+              <p className="text-2xl text-gray-600 font-semibold">No blogs found.</p>
             </CardContent>
           </Card>
         ) : (
           <AnimatePresence>
             <motion.div
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-              variants={containerVariants}
               initial="hidden"
               animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.1,
+                  },
+                },
+              }}
             >
-              {filteredBlogs?.map((blog) => (
-                <motion.div key={blog._id} variants={itemVariants}>
-                  <Card className="overflow-hidden transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-1">
+              {sortedBlogs.map((blog) => (
+                <motion.div
+                  key={blog._id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                >
+                  <Card className="h-full flex flex-col overflow-hidden group">
                     <div className="relative h-48 overflow-hidden">
                       {blog.blogImage && (
                         <img
                           src={blog.blogImage}
                           alt={blog.title}
-                          className="w-full h-full object-cover transition-transform duration-300 transform hover:scale-110"
+                          className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105"
                         />
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
-                      <CardHeader className="absolute bottom-0 left-0 text-white">
-                        <CardTitle className="text-xl font-bold truncate">{blog.title}</CardTitle>
-                      </CardHeader>
                     </div>
-                    <CardContent className="p-6">
-                      <p
-                        className="text-gray-600 mb-4 line-clamp-3"
+                    <CardHeader className="flex-none">
+                      <CardTitle className="line-clamp-2 text-lg">{blog.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="flex-grow">
+                      <div
+                        className="text-muted-foreground line-clamp-3 text-sm"
                         dangerouslySetInnerHTML={{ __html: blog.blogContent }}
                       />
-                      <div className="flex items-center text-sm text-gray-500 mb-4">
+                      <div className="flex items-center text-sm text-gray-500 mb-2">
                         <User size={16} className="mr-2" />
-                        <span className="mr-4 truncate">
-                          {blog.user.firstName} {blog.user.lastName ?? ''}
+                        <span className="truncate">
+                          {blog.user.firstName} {blog.user.lastName}
                         </span>
+                      </div>
+                      <div className="flex items-center text-sm text-gray-500">
                         <Calendar size={16} className="mr-2" />
+                        <span>
+                          {new Date(blog._id.substring(0, 8)).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                          })}
+                        </span>
                       </div>
                     </CardContent>
-                    <CardFooter>
+                    <CardFooter className="flex justify-between items-center">
+                      <Badge variant="secondary">{blog.blogCategory}</Badge>
                       <Button
-                        className="w-full flex items-center justify-center"
+                        variant="default"
                         onClick={() => handleOpenBlogs(blog._id)}
+                        disabled={isLoading}
                       >
                         {isLoading ? (
-                          <Loader />
+                          <motion.div
+                            className="w-5 h-5 border-t-2 border-white rounded-full"
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                          />
                         ) : (
                           <>
                             Read More
@@ -208,6 +266,7 @@ export default function PublicBlogs() {
                           </>
                         )}
                       </Button>
+
                     </CardFooter>
                   </Card>
                 </motion.div>

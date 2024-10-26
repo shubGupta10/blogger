@@ -111,9 +111,9 @@ const CreateBlog = () => {
   if (error) return <div className="min-h-screen flex items-center justify-center text-red-600">Something went wrong</div>;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-black">
       {/* Fixed Header with Shadow */}
-      <header className="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
+      <header className="fixed top-0 left-0 right-0 bg-white dark:bg-black shadow-md z-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="h-16 flex items-center justify-between gap-4 md:gap-6">
             <div className="flex-1  relative">
@@ -131,7 +131,7 @@ const CreateBlog = () => {
                 whileTap={{ scale: 0.98 }}
                 onClick={form.handleSubmit(onSubmit)}
                 disabled={isPublishing}
-                className="px-4 py-2.5 bg-black text-white rounded-lg text-sm font-medium tracking-wide hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                className="px-4 py-2.5 bg-black text-white dark:bg-white dark:text-black rounded-lg text-sm font-medium tracking-wide hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
               >
                 {isPublishing ? 'Publishing...' : 'Publish'}
               </motion.button>
@@ -139,7 +139,7 @@ const CreateBlog = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={handleGoBack}
-                className="px-4  py-2.5 bg-black text-white rounded-lg text-sm font-medium tracking-wide hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+                className="px-4  py-2.5 bg-black text-white dark:bg-white dark:text-black rounded-lg text-sm font-medium tracking-wide hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
                 Go Back
               </motion.button>
             </div>
@@ -148,17 +148,17 @@ const CreateBlog = () => {
       </header>
 
       {/* Main Content with Improved Spacing */}
-      <main className="pt-16 pb-24 px-4 md:px-6 max-w-7xl mx-auto">
+      <main className="pt-20 pb-24 px-4 md:px-6 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
           {/* Left Sidebar */}
           <div className="lg:col-span-1 space-y-6">
             {/* Category Selection */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <label className="block text-sm font-semibold mb-3 text-gray-900">Blog Category</label>
+            <div className="bg-white dark:bg-black rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <label className="block text-sm font-semibold mb-3 text-gray-900 dark:text-white">Blog Category</label>
               <Select
                 onValueChange={(value) => form.setValue('blogCategory', value)}
               >
-                <SelectTrigger className="w-full border-gray-300 focus:ring-black focus:border-black">
+                <SelectTrigger className="w-full max-w-sm border-gray-300 dark:border-gray-700 focus:ring-black focus:border-black">
                   <SelectValue placeholder="Select Category" />
                 </SelectTrigger>
                 <SelectContent>
@@ -174,10 +174,10 @@ const CreateBlog = () => {
             </div>
 
             {/* Image Upload with Preview */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <label className="block text-sm font-semibold mb-2 text-gray-900">Featured Image</label>
-              <label className="block text-sm text-gray-600 mb-4">
-                Only supports <strong className="text-black">PNG, JPEG, and JPG</strong> images
+            <div className="bg-white dark:bg-black rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <label className="block text-sm font-semibold mb-2 text-gray-900 dark:text-white">Featured Image</label>
+              <label className="block text-sm text-gray-600 dark:text-white mb-4">
+                Only supports <strong className="text-black dark:text-white">PNG, JPEG, and JPG</strong> images
               </label>
 
               <div className="relative">
@@ -185,7 +185,7 @@ const CreateBlog = () => {
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
-                  className="w-full text-sm cursor-pointer file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-black file:text-white hover:file:bg-gray-900 transition-colors"
+                  className="w-full text-sm cursor-pointer file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-black dark:file:bg-white file:text-white dark:file:text-black hover:file:bg-gray-900 dark:hover:file:bg-white transition-colors"
                 />
                 {imagePreview && (
                   <div className="mt-4 relative aspect-video rounded-lg overflow-hidden border border-gray-200">
@@ -201,15 +201,15 @@ const CreateBlog = () => {
 
 
             {/* AI Content Generator */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-sm font-semibold mb-3 text-gray-900">AI Content Generator</h3>
+            <div className="bg-white dark:bg-black rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <h3 className="text-sm font-semibold mb-3 text-gray-900 dark:text-white">AI Content Generator</h3>
               <GenerativeContent setBlogContent={setGeneratedContent} blogTitle={form.watch('title')} />
             </div>
           </div>
 
           {/* Editor with Better Visibility */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="bg-white dark:bg-gray-300  dark:text-black  rounded-xl shadow-sm border border-gray-200 dark:border-gray-900 p-6">
               {isClient && (
                 <Controller
                   name="blogContent"
@@ -238,7 +238,7 @@ const CreateBlog = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
-            className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-black text-white px-6 py-3 rounded-lg text-sm font-medium shadow-lg"
+            className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-black dark:bg-white text-white dark:text-black px-6 py-3 rounded-lg text-sm font-medium shadow-lg"
           >
             Unsaved changes
           </motion.div>

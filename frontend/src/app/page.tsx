@@ -26,17 +26,17 @@ const Home = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-white text-black">
+    <div className="flex flex-col min-h-screen  ">
       {/* Hero Section */}
       <motion.section
-        className="relative h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gray-50"
+        className="relative h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
         <div className="absolute inset-0 z-0">
           <motion.div
-            className="absolute top-1/4 left-1/4 w-64 h-64 bg-gray-100 rounded-full mix-blend-multiply filter blur-xl"
+            className="absolute top-1/4 left-1/4 w-64 h-64  rounded-full mix-blend-multiply filter blur-xl"
             animate={{
               scale: [1, 1.2, 1],
               opacity: [0.3, 0.2, 0.3]
@@ -48,7 +48,7 @@ const Home = () => {
             }}
           />
           <motion.div
-            className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-gray-200 rounded-full mix-blend-multiply filter blur-xl"
+            className="absolute bottom-1/4 right-1/4 w-64 h-64  rounded-full mix-blend-multiply filter blur-xl"
             animate={{
               scale: [1, 1.1, 1],
               opacity: [0.2, 0.3, 0.2]
@@ -63,19 +63,19 @@ const Home = () => {
 
         <div className="z-10 text-center">
           <motion.h1
-            className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-black to-gray-700 leading-snug py-2"
+            className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 bg-clip-text  bg-gradient-to-r from-black to-gray-700 leading-snug py-2"
             {...fadeInUp}
           >
             Elevate Your Blogging Experience
           </motion.h1>
           <motion.p
-            className="text-lg sm:text-xl mb-8 max-w-2xl mx-auto text-gray-700 leading-relaxed"
+            className="text-lg sm:text-xl mb-8 max-w-2xl mx-auto  leading-relaxed"
             {...fadeInUp}
           >
             Seamlessly create and share captivating content that resonates with your audience.
           </motion.p>
           <motion.button
-            className="bg-black text-white py-3 px-8 rounded-full text-lg font-semibold shadow-lg hover:bg-gray-800 transition duration-300 flex items-center mx-auto"
+            className=" py-3 px-8 rounded-full text-lg font-semibold shadow-lg hover:bg-gray-800 dark:hover:bg-gray-100 dark:hover:text-black dark:bg-gray-700 transition duration-300 flex items-center mx-auto"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={handleGetStarted}
@@ -91,7 +91,7 @@ const Home = () => {
 
 
       {/* Features Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 ">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.h2
             className="text-3xl sm:text-4xl font-bold mb-12 text-center"
@@ -110,17 +110,17 @@ const Home = () => {
             ].map((feature, index) => (
               <motion.div
                 key={index}
-                className="bg-white p-6 rounded-lg text-center shadow-md border border-gray-200"
+                className=" p-6 rounded-lg text-center shadow-md border border-gray-200 dark:border-gray-700"
                 whileHover={{ scale: 1.03, boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <div className="flex justify-center mb-4">
-                  <feature.icon className="w-12 h-12 text-black" />
+                  <feature.icon className="w-12 h-12 text-black dark:text-white" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
+                <p className="text-gray-600 dark:text-white">{feature.description}</p>
               </motion.div>
             ))}
           </div>
@@ -129,7 +129,7 @@ const Home = () => {
 
 
       {/* How It Works Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 ">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.h2
             className="text-3xl sm:text-4xl font-bold mb-12 text-center"
@@ -151,12 +151,12 @@ const Home = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <div className="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center text-2xl font-bold mb-4 mx-auto">
+                <div className="w-16 h-16 bg-black dark:bg-white text-white dark:text-black rounded-full flex items-center justify-center text-2xl font-bold mb-4 mx-auto">
                   {item.step}
                 </div>
-                <item.icon className="w-8 h-8 mb-4 mx-auto text-gray-700" />
+                <item.icon className="w-8 h-8 mb-4 mx-auto text-gray-700 dark:text-white" />
                 <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                <p className="text-gray-600">{item.description}</p>
+                <p className="text-gray-600 dark:text-white">{item.description}</p>
               </motion.div>
             ))}
           </div>
@@ -166,7 +166,7 @@ const Home = () => {
 
 
       {/* CTA Section */}
-      <section className="py-20 bg-white text-black">
+      <section className="py-20  text-black dark:text-white">
         <div className="container mx-auto text-center px-4 sm:px-6 lg:px-8">
           <motion.h2
             className="text-3xl sm:text-4xl font-bold mb-4"
@@ -181,7 +181,7 @@ const Home = () => {
             Join  bloggers, leveraging AI to create outstanding content. Your AI writing journey starts here.
           </motion.p>
           <motion.button
-            className="bg-black text-white py-3 px-8 rounded-full text-lg font-semibold shadow-lg hover:bg-gray-700 transition duration-300"
+            className="bg-black dark:bg-white text-white dark:text-black py-3 px-8 rounded-full text-lg font-semibold shadow-lg hover:bg-gray-700 transition duration-300"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={handleGetStarted}

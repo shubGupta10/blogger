@@ -27,7 +27,7 @@ const Settings = () => {
   };
 
   const handleChangeTheme = () => {
-    router.push("/pages/ComingSoon");
+    router.push("/pages/SelectTheme");
   };
 
   return (

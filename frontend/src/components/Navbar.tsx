@@ -8,7 +8,8 @@ import { LogoutDocument } from '@/gql/graphql';
 import { LogoutMutation, LogoutMutationVariables } from '@/gql/graphql';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMyContext } from '@/context/ContextProvider';
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
+import ThemeSwitcher from './ThemeSwitcher';
 
 const Navbar = () => {
   const [logout] = useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
@@ -16,7 +17,6 @@ const Navbar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { user: authUser, setUser, token } = useMyContext();
-
 
   const toggleSidebar = useCallback(() => {
     setIsSidebarOpen((prev) => !prev);
@@ -45,7 +45,7 @@ const Navbar = () => {
         closeSidebar();
         router.push('/Auth/login');
         toast.success('Logout successful!');
-        window.location.reload()
+        window.location.reload();
       }
     } catch (error) {
       console.error('Logout failed:', error);
@@ -60,8 +60,7 @@ const Navbar = () => {
 
   const getLinkStyle = (href: string) => {
     const isActive = pathname === href;
-    return `transition-colors duration-200 ${isActive ? 'text-black font-semibold' : 'text-gray-600 hover:text-black'
-      }`;
+    return `transition-colors duration-200 ${isActive ? 'text-black dark:text-white font-semibold' : 'text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white'}`;
   };
 
   const navLinks = [
@@ -74,11 +73,11 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 relative w-full z-30">
+      <nav className="bg-white dark:bg-black border-b border-gray-200 dark:border-gray-700 relative w-full z-30 shadow">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
             <img src="https://www.svgrepo.com/show/144580/blog.svg" className="h-8" alt="Logo" />
-            <span className="self-center text-2xl font-semibold whitespace-nowrap text-gray-900 dark:text-white">Blogger</span>
+            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Blogger</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -90,8 +89,11 @@ const Navbar = () => {
             ))}
           </div>
 
-          <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            {(isAuthenticated) ? (
+          <div className="flex cursor-pointer gap-5 md:gap-8 items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+            <div className='cursor-pointer w-4 '> 
+              <ThemeSwitcher />
+            </div>
+            {isAuthenticated ? (
               <button
                 type="button"
                 className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
@@ -103,13 +105,13 @@ const Navbar = () => {
             ) : (
               <Link
                 href="/Auth/login"
-                className="text-white bg-black hover:bg-gray-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                className="text-white bg-black hover:bg-gray-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-white dark:text-black dark:hover:bg-gray-700 focus:outline-none"
               >
                 Get Started
               </Link>
             )}
-
           </div>
+
         </div>
       </nav>
 
@@ -157,20 +159,21 @@ const Navbar = () => {
                       <li key={link.href}>
                         <button
                           onClick={() => handleNavigation(link.href)}
-                          className={`w-full text-left py-2 px-4 rounded-lg transition-colors duration-200 ${pathname === link.href ? 'bg-black text-white hover:bg-gray-800' : 'text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white'
-                            }`}
+                          className={`w-full text-left py-2 px-4 rounded-lg transition-colors duration-200 
+                            ${pathname === link.href ? 'bg-gray-800 text-white' : 'text-gray-900 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700'}
+                          `}
                         >
                           {link.label}
                         </button>
                       </li>
                     ))}
+
                     {isAuthenticated && (
                       <>
                         <li>
                           <button
                             onClick={() => handleNavigation('/pages/settings')}
-                            className={`w-full text-left py-2 px-4 rounded-lg transition-colors duration-200 ${pathname === '/pages/settings' ? 'bg-black text-white hover:bg-gray-800' : 'text-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-white'
-                              }`}
+                            className={`w-full text-left py-2 px-4 rounded-lg transition-colors duration-200 ${pathname === '/pages/settings' ? 'bg-black text-white hover:bg-gray-800' : 'text-gray-900 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
                           >
                             Settings
                           </button>
@@ -178,7 +181,7 @@ const Navbar = () => {
                         <li>
                           <button
                             onClick={handleLogout}
-                            className="w-full text-left py-2 px-4 text-white bg-red-500 rounded-lg hover:bg-red-700 dark:hover:bg-gray-700 dark:text-white dark:hover:text-white transition-colors duration-200"
+                            className="w-full text-left py-2 px-4 text-white bg-red-500 rounded-lg hover:bg-red-700 dark:hover:bg-red-600 transition-colors duration-200"
                           >
                             Sign out
                           </button>

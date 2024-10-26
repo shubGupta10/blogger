@@ -14,6 +14,7 @@ body {
 
 @layer base {
   :root {
+    /* Light mode colors */
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
@@ -40,7 +41,9 @@ body {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
+  
   .dark {
+    /* Dark mode colors */
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
@@ -70,9 +73,29 @@ body {
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border; /* Apply border utility globally */
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground; /* Use CSS variables for body */
+  }
+}
+
+/* Example utility classes for easy use in components */
+@layer components {
+  .bg-card {
+    background-color: rgb(var(--card));
+  }
+
+  .bg-popover {
+    background-color: rgb(var(--popover));
+  }
+
+  .text-primary {
+    color: rgb(var(--primary));
+  }
+
+  .text-secondary {
+    color: rgb(var(--secondary));
   }
 }

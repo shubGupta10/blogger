@@ -7,6 +7,7 @@ export const GET_BLOGS = gql`
       title
       blogImage
       blogContent
+      blogCategory
       createdAt
       user {
         _id
@@ -24,6 +25,7 @@ export const GET_SINGLEBLOG = gql`
       title
       blogImage
       blogContent
+      blogCategory
       createdAt
       user {
         _id
@@ -44,6 +46,7 @@ export const GET_BLOGS_BY_USER = gql`
         title
         blogImage
         blogContent
+        blogCategory
         createdAt
     }
 }

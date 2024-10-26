@@ -69,21 +69,21 @@ const LoginForm = () => {
     };
 
     return (
-        <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-gray-100 p-4 md:p-8">
+        <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-gray-100 dark:bg-black p-4 md:p-8">
             <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5 }}
-                className="w-full md:w-1/2 max-w-lg text-black mb-8 md:mb-0 md:mr-8"
+                className="w-full md:w-1/2 max-w-lg text-black dark:text-white mb-8 md:mb-0 md:mr-8"
             >
                 <h1 className="text-4xl md:text-5xl font-bold mb-6">Welcome Back</h1>
-                <p className="text-xl md:text-2xl text-gray-700">
+                <p className="text-xl md:text-2xl text-gray-700 dark:text-white">
                     Log in to continue your journey of sharing your thoughts, stories, and experiences with readers around the world. Your voice matters, and we're excited to have you back!
                 </p>
             </motion.div>
 
             <motion.div
-                className="w-full md:w-1/2 max-w-md p-8 space-y-6 bg-gray-200 rounded-lg shadow-xl"
+                className="w-full md:w-1/2 max-w-md p-8 space-y-6 bg-gray-200  rounded-lg shadow-xl"
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}

@@ -2,10 +2,10 @@
 
 const Loader = () => {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-100 z-50">
+      <div className="fixed inset-0 flex items-center justify-center bg-white dark:bg-black bg-opacity-100 z-50">
         <svg
           aria-hidden="true"
-          className="w-24 h-24 text-gray-200 animate-spin dark:text-gray-600 fill-black"
+          className="w-24 h-24 text-gray-200 animate-spin dark:text-gray-600 fill-black dark:fill-white"
           viewBox="0 0 100 101"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

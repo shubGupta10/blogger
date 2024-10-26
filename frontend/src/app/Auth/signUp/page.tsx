@@ -74,15 +74,15 @@ const SignupForm = () => {
     };
 
     return (
-        <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-gray-100 p-4 md:p-8">
+        <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-gray-100 dark:bg-black p-4 md:p-8">
             <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5 }}
-                className="w-full md:w-1/2 max-w-lg text-black mb-8 md:mb-0 md:mr-8"
+                className="w-full md:w-1/2 max-w-lg text-black dark:text-white mb-8 md:mb-0 md:mr-8"
             >
                 <h1 className="text-4xl md:text-5xl font-bold mb-6">Join Our Community</h1>
-                <p className="text-xl md:text-2xl text-gray-700">
+                <p className="text-xl md:text-2xl text-gray-700 dark:text-white">
                     Unlock your voice and connect with readers around the world. Create your account now and start writing today. It's free, simple, and your words have the power to inspire!
                 </p>
             </motion.div>

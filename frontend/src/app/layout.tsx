@@ -4,10 +4,10 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import ApolloWrapper from "@/components/ui/ApolloWrapper";
 import { MyProvider } from "@/context/ContextProvider";
-import Navbar from "@/components/Navbar"
+import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Analytics } from "@vercel/analytics/react"
-
+import { Analytics } from "@vercel/analytics/react";
+import { ThemeProvider } from 'next-themes';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,7 +31,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
   return (
     <html lang="en">
       <head>
@@ -49,10 +48,12 @@ export default function RootLayout({
       >
         <ApolloWrapper>
           <MyProvider>
-            <Navbar />
-            <Analytics/>
-            {children}
-            <Footer/>
+            <ThemeProvider attribute="class"> 
+              <Navbar />
+              <Analytics />
+              {children}
+              <Footer />
+            </ThemeProvider>
           </MyProvider>
         </ApolloWrapper>
         <Toaster position="top-center" />
