@@ -199,7 +199,7 @@ export default function UserBlogs() {
                           })}
                         </p>
                       </CardContent>
-                      <CardFooter className="grid grid-cols-3 gap-2">
+                      <CardFooter className="grid md:grid-cols-3 gap-2 grid-cols-1">
                         <Button 
                           variant="secondary"
                           className="w-full bg-black text-white dark:bg-white dark:text-black"

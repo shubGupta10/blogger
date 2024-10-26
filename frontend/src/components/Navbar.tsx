@@ -131,7 +131,7 @@ const Navbar = () => {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'tween', duration: 0.3 }}
-              className="fixed top-0 right-0 w-72 md:w-80 h-full bg-white dark:bg-gray-800 shadow-lg z-50 overflow-y-auto"
+              className="fixed top-0 right-0 w-72 md:w-80 h-full bg-white dark:bg-black shadow-lg z-50 overflow-y-auto"
             >
               <div className="p-6 space-y-6">
                 <button
@@ -160,7 +160,7 @@ const Navbar = () => {
                         <button
                           onClick={() => handleNavigation(link.href)}
                           className={`w-full text-left py-2 px-4 rounded-lg transition-colors duration-200 
-                            ${pathname === link.href ? 'bg-gray-800 text-white' : 'text-gray-900 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700'}
+                            ${pathname === link.href ? 'bg-gray-600 text-white' : 'text-gray-900 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700'}
                           `}
                         >
                           {link.label}
