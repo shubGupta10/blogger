@@ -37,7 +37,6 @@ interface Blog {
   blogImage: string
   blogContent: string
   blogCategory: string
-  createdAt: string
   user: {
     __typename?: "User"
     _id: string
@@ -237,14 +236,14 @@ export default function PublicBlogs() {
                         </span>
                       </div>
                       <div className="flex items-center text-sm text-gray-500">
-                        <Calendar size={16} className="mr-2" />
+                        {/* <Calendar size={16} className="mr-2" />
                         <span>
-                        {new Date(parseInt(blog?.createdAt)).toLocaleDateString('en-US', {
+                          {new Date(blog._id.substring(0, 8)).toLocaleDateString('en-US', {
                             year: 'numeric',
                             month: 'long',
                             day: 'numeric'
                           })}
-                        </span>
+                        </span> */}
                       </div>
                     </CardContent>
                     <CardFooter className="flex justify-between items-center">
