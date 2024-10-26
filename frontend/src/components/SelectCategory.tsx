@@ -42,8 +42,10 @@ export default function BlogCategories() {
   )
 
   const handleCategoryChange = (category: string) => {
-    setSelectedCategory(category)
-  }
+    if (categories.some(cat => cat.value === category)) {
+      setSelectedCategory(category);
+    }
+  };
 
   const handleOpenBlog = (blogId: string) => {
     router.push(`/pages/viewBlog/${blogId}`)

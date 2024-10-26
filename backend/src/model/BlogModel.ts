@@ -25,7 +25,7 @@ const blogSchema: Schema<Blog> = new mongoose.Schema({
     },
     blogCategory: {
         type: String,
-        enum: ['technology', 'lifestyle', 'education', 'health', 'travel'],
+        enum: ['technology', 'sports', 'entertainment', 'lifestyle', 'education', 'health', 'travel'],
         required: [true, 'Please select a category for this blog'],
     },
     userId: {

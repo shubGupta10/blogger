@@ -15,7 +15,8 @@ const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  const { user: authUser, setUser } = useMyContext();
+  const { user: authUser, setUser, token } = useMyContext();
+
 
   const toggleSidebar = useCallback(() => {
     setIsSidebarOpen((prev) => !prev);
@@ -26,13 +27,13 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
+    const authToken = token;
+    if (!authToken) {
       setUser(null);
     }
-  }, [setUser]);
+  }, [token]);
 
-  const isAuthenticated = !!authUser;
+  const isAuthenticated = !!token;
 
   const handleLogout = async () => {
     try {
@@ -90,7 +91,7 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            {(Cookies.get('token') || localStorage.getItem('token')) ? (
+            {(isAuthenticated) ? (
               <button
                 type="button"
                 className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
@@ -142,7 +143,7 @@ const Navbar = () => {
                   </svg>
                 </button>
 
-                {(Cookies.get('token') || localStorage.getItem('token')) && (
+                {isAuthenticated && (
                   <div className="flex flex-col items-center">
                     <img className="w-20 h-20 rounded-full shadow-lg" src={authUser?.profilePicture} alt={`${authUser?.firstName} ${authUser?.lastName}`} />
                     <h2 className="mt-4 text-xl font-semibold text-gray-900 dark:text-white">{`${authUser?.firstName} ${authUser?.lastName}`}</h2>
@@ -163,7 +164,7 @@ const Navbar = () => {
                         </button>
                       </li>
                     ))}
-                    {((Cookies.get('token')) || (localStorage.getItem('token'))) && (
+                    {isAuthenticated && (
                       <>
                         <li>
                           <button
