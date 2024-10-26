@@ -78,20 +78,20 @@ const EditBlogs = ({ params }: { params: { id: string } }) => {
 
   return (
     <motion.div 
-      className="min-h-screen bg-white"
+      className="min-h-screen bg-white dark:bg-black"
       initial={{ opacity: 0 }} 
       animate={{ opacity: 1 }} 
       transition={{ duration: 0.5 }}
     >
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50">
+      <header className="fixed top-0 left-0 right-0 bg-white dark:bg-black border-b border-gray-200 dark:border-gray-700 z-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex justify-between items-center h-14 md:h-16">
             <h1 className="text-xl md:text-2xl font-semibold truncate">Edit Blog</h1>
             <button
               type="button"
               onClick={() => router.push("/pages/Dashboard")}
-              className="text-white p-2 rounded-md hover:text-black bg-black transition-colors text-sm md:text-base"
+              className="text-white dark:bg-white dark:text-black p-2 rounded-md hover:text-black bg-black transition-colors text-sm md:text-base"
             >
               Cancel
             </button>
@@ -105,7 +105,7 @@ const EditBlogs = ({ params }: { params: { id: string } }) => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
             {/* Left Column - Title and Image */}
             <div className="lg:col-span-1 space-y-4 md:space-y-6">
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6">
+              <div className="bg-white dark:bg-black rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-6">
                 <label className="block text-sm font-medium mb-2" htmlFor="title">Title</label>
                 <Controller
                   name="title"
@@ -114,14 +114,14 @@ const EditBlogs = ({ params }: { params: { id: string } }) => {
                     <input
                       {...field}
                       id="title"
-                      className="w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black text-base md:text-lg px-3 py-2 md:px-4 md:py-3"
+                      className="w-full rounded-md border-gray-300 dark:border-gray-700 shadow-sm focus:border-black dark:focus:border-white focus:ring-black text-base md:text-lg px-3 py-2 md:px-4 md:py-3"
                       required
                     />
                   )}
                 />
               </div>
 
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6">
+              <div className="bg-white dark:bg-black rounded-lg shadow-sm border border-gray-200 dark:border-gray-700  p-4 md:p-6">
                 <label className="block text-sm font-medium mb-2" htmlFor="blogImage">Featured Image</label>
                 <Controller
                   name="blogImage"
@@ -130,7 +130,7 @@ const EditBlogs = ({ params }: { params: { id: string } }) => {
                     <input
                       {...field}
                       id="blogImage"
-                      className="w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black px-3 py-2 md:px-4 md:py-3 mb-4"
+                      className="w-full rounded-md border-gray-300 dark:border-gray-700  shadow-sm focus:border-black focus:ring-black px-3 py-2 md:px-4 md:py-3 mb-4"
                     />
                   )}
                 />
@@ -148,7 +148,7 @@ const EditBlogs = ({ params }: { params: { id: string } }) => {
 
             {/* Right Column - Editor */}
             <div className="lg:col-span-2">
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 md:p-6">
+              <div className="bg-white dark:bg-gray-300 dark:text-black rounded-lg shadow-sm border border-gray-200 p-3 md:p-6">
                 <Controller
                   name="blogContent"
                   control={control}

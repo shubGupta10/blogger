@@ -37,6 +37,7 @@ interface Blog {
   blogImage: string
   blogContent: string
   blogCategory: string
+  createdAt: string
   user: {
     __typename?: "User"
     _id: string
@@ -229,7 +230,7 @@ export default function PublicBlogs() {
                         className="text-muted-foreground line-clamp-3 text-sm"
                         dangerouslySetInnerHTML={{ __html: blog.blogContent }}
                       />
-                      <div className="flex items-center text-sm text-gray-500 mb-2">
+                      <div className="flex items-center text-sm text-gray-500 mt-5 mb-2">
                         <User size={16} className="mr-2" />
                         <span className="truncate">
                           {blog.user.firstName} {blog.user.lastName}
@@ -238,7 +239,7 @@ export default function PublicBlogs() {
                       <div className="flex items-center text-sm text-gray-500">
                         <Calendar size={16} className="mr-2" />
                         <span>
-                          {new Date(blog._id.substring(0, 8)).toLocaleDateString('en-US', {
+                        {new Date(parseInt(blog?.createdAt)).toLocaleDateString('en-US', {
                             year: 'numeric',
                             month: 'long',
                             day: 'numeric'

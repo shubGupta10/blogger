@@ -51,7 +51,7 @@ export default function UserBlogs() {
 
   const blogs = data?.blogsByUser || []
 
-  
+
   const filteredBlogs = blogs.filter((blog: Blog) =>
     blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     blog.blogContent.toLowerCase().includes(searchTerm.toLowerCase())
@@ -127,8 +127,8 @@ export default function UserBlogs() {
                 </SelectContent>
               </Select>
             </div>
-            <Button 
-              onClick={() => router.push('/pages/createBlog')} 
+            <Button
+              onClick={() => router.push('/pages/createBlog')}
               className="w-full sm:w-auto bg-primary hover:bg-primary/90"
             >
               <Plus className="mr-2 h-4 w-4" /> Create New Blog
@@ -143,7 +143,7 @@ export default function UserBlogs() {
               className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
             >
               {filteredBlogs.length === 0 ? (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="col-span-full flex flex-col items-center justify-center py-12 space-y-4"
@@ -151,8 +151,8 @@ export default function UserBlogs() {
                   <Search className="w-12 h-12 text-muted-foreground" />
                   <p className="text-xl text-muted-foreground">No blogs found matching your search.</p>
                   {searchTerm && (
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       onClick={() => setSearchTerm('')}
                       className="mt-2"
                     >
@@ -170,13 +170,13 @@ export default function UserBlogs() {
                     exit={{ opacity: 0, y: -20 }}
                   >
                     <Card className="h-full flex flex-col overflow-hidden group">
-                      <div className="relative h-48 overflow-hidden">
+                      <div className="relative h-48 overflow-hidden group">
                         <img
                           src={blog.blogImage}
                           alt={blog.title}
-                          className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105"
+                          className="w-full h-full object-contain transition-transform duration-300 transform group-hover:scale-105"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       </div>
                       <CardHeader className="flex-none">
                         <div className="flex justify-between items-start gap-2">
@@ -187,7 +187,7 @@ export default function UserBlogs() {
                         </div>
                       </CardHeader>
                       <CardContent className="flex-grow">
-                        <div 
+                        <div
                           className="text-muted-foreground line-clamp-3 text-sm"
                           dangerouslySetInnerHTML={{ __html: blog.blogContent }}
                         />
@@ -200,14 +200,14 @@ export default function UserBlogs() {
                         </p>
                       </CardContent>
                       <CardFooter className="grid md:grid-cols-3 gap-2 grid-cols-1">
-                        <Button 
+                        <Button
                           variant="secondary"
                           className="w-full bg-black text-white dark:bg-white dark:text-black"
                           onClick={() => router.push(`/pages/blogs/${blog._id}`)}
                         >
                           <Eye className="w-4 h-4 mr-2" /> View
                         </Button>
-                        <Button 
+                        <Button
                           variant="secondary"
                           className="w-full bg-black text-white dark:bg-white dark:text-black"
                           onClick={() => router.push(`/pages/EditBlogs/${blog._id}`)}
@@ -229,8 +229,8 @@ export default function UserBlogs() {
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction 
-                                onClick={() => handleDelete(blog._id)} 
+                              <AlertDialogAction
+                                onClick={() => handleDelete(blog._id)}
                                 disabled={deleteLoading && deletingBlogId === blog._id}
                                 className="bg-destructive hover:bg-destructive/90"
                               >
