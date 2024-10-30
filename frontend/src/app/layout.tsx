@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Analytics } from "@vercel/analytics/react";
 import { ThemeProvider } from 'next-themes';
+import ReloadComponent from "@/components/ReloadFunction";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -51,6 +52,7 @@ export default function RootLayout({
             <ThemeProvider attribute="class"> 
               <Navbar />
               <Analytics />
+              <ReloadComponent interval={60000} />
               {children}
               <Footer />
             </ThemeProvider>

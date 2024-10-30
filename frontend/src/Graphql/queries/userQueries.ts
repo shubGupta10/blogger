@@ -57,3 +57,20 @@ export const FETCH_USER_BY_ID = gql`
     }
   }
 `;
+
+export const GET_ALL_USERS = gql`
+  query GetAllUsers {
+    users {
+      _id
+      firstName
+      lastName
+      email
+      profilePicture
+      gender
+      blogs {
+        _id
+        title
+      }
+    }
+  }
+`;

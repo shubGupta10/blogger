@@ -12,7 +12,7 @@ const generateToken = (userData: UserData): string => {
     return jwt.sign(
         { _id: userData._id },  
         process.env.JWT_SECRET,
-        { expiresIn: '1h' }
+        { expiresIn: '1d' }
     );
 };
 

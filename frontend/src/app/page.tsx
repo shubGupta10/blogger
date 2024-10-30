@@ -1,10 +1,11 @@
 'use client'
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Cpu, Edit, Lock, Zap, Type, MessageSquare, FileText, Search, Filter } from 'lucide-react';
+import { ArrowRight, Cpu, Edit, Lock, Zap, Type, MessageSquare, FileText, Search, Filter, User, Users2, Share } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import StatsSection from '@/components/StatsSection';
 
 const Home = () => {
 
@@ -125,6 +126,10 @@ const Home = () => {
             ))}
           </div>
         </div>
+      </section>
+
+      <section className='py-20'>
+        <StatsSection/>
       </section>
 
 
