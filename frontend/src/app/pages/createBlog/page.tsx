@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMutation } from '@apollo/client';
@@ -29,6 +29,73 @@ const CreateBlog = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isMobileView, setIsMobileView] = useState(false);
   const [isClient, setIsClient] = useState(false); 
+
+  // Toolbar options for Quill editor
+  const toolbarOptions = [
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ 'color': [] }, { 'background': [] }],
+    [{ 'script': 'sub'}, { 'script': 'super' }],
+    [{ 'align': [] }],
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    [{ 'indent': '-1'}, { 'indent': '+1' }],
+    ['link', 'video', 'code-block'],
+    ['clean']
+  ];
+
+  // Enhanced Quill Editor Component
+  const EnhancedQuillEditor = ({ 
+    form, 
+    isClient, 
+    placeholder = "Start writing your blog post...",
+    maxHeight = 'calc(100vh - 280px)',
+    editorClassName = '',
+    onChangeHandler 
+  }) => {
+    const modules = useMemo(() => ({
+      toolbar: toolbarOptions,
+      clipboard: {
+        matchVisual: false,
+      }
+    }), []);
+
+    return (
+      <div className="bg-white dark:bg-gray-300 dark:text-black rounded-xl shadow-sm border border-gray-200 dark:border-gray-900 p-6">
+        {isClient && (
+          <Controller
+            name="blogContent"
+            control={form.control}
+            render={({ field: { onChange, value, ...fieldProps } }) => (
+              <div 
+                className={`h-[${maxHeight}] md:h-[calc(100vh-240px)] flex flex-col`}
+              >
+                <ReactQuill
+                  {...fieldProps}
+                  value={value || ''}
+                  onChange={(content, delta, source, editor) => {
+                    onChange(content);
+                    onChangeHandler && onChangeHandler(content, editor);
+                  }}
+                  modules={modules}
+                  theme="snow"
+                  placeholder={placeholder}
+                  className={`flex-1 overflow-y-auto 
+                    [&_.ql-editor]:min-h-[calc(100vh-400px)] 
+                    [&_.ql-editor]:text-base 
+                    md:text-lg 
+                    [&_.ql-editor]:leading-relaxed 
+                    [&_.ql-toolbar]:flex 
+                    [&_.ql-toolbar]:flex-wrap 
+                    [&_.ql-toolbar]:gap-1 
+                    ${editorClassName}`}
+                />
+              </div>
+            )}
+          />
+        )}
+      </div>
+    );
+  };
 
   useEffect(() => {
     const checkMobileView = () => {
@@ -209,24 +276,13 @@ const CreateBlog = () => {
 
           {/* Editor with Better Visibility */}
           <div className="lg:col-span-2">
-            <div className="bg-white dark:bg-gray-300  dark:text-black  rounded-xl shadow-sm border border-gray-200 dark:border-gray-900 p-6">
-              {isClient && (
-                <Controller
-                  name="blogContent"
-                  control={form.control}
-                  render={({ field }) => (
-                    <div className="h-[calc(100vh-280px)] md:h-[calc(100vh-240px)] flex flex-col">
-                      <ReactQuill
-                        {...field}
-                        theme="snow"
-                        placeholder="Start writing your blog post..."
-                        className="flex-1 overflow-y-auto [&_.ql-editor]:min-h-[calc(100vh-400px)] [&_.ql-editor]:text-base md:text-lg [&_.ql-editor]:leading-relaxed [&_.ql-toolbar]:flex [&_.ql-toolbar]:flex-wrap [&_.ql-toolbar]:gap-1"
-                      />
-                    </div>
-                  )}
-                />
-              )}
-            </div>
+            <EnhancedQuillEditor 
+              form={form} 
+              isClient={isClient} 
+              onChangeHandler={(content, editor) => {
+                console.log('Content updated:', content);
+              }}
+            />
           </div>
         </div>
       </main>

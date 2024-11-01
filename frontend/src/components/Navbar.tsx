@@ -1,4 +1,5 @@
-'use client';
+'use client'
+
 import React, { useState, useCallback, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import Link from 'next/link';
@@ -10,6 +11,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useMyContext } from '@/context/ContextProvider';
 import Cookies from 'js-cookie';
 import ThemeSwitcher from './ThemeSwitcher';
+import { Home, Book, PlusCircle, Mail, User, X, LogOut, LayoutDashboard, TrendingUp } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
 const Navbar = () => {
   const [logout] = useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
@@ -60,15 +63,32 @@ const Navbar = () => {
 
   const getLinkStyle = (href: string) => {
     const isActive = pathname === href;
-    return `transition-colors duration-200 ${isActive ? 'text-black dark:text-white font-semibold' : 'text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white'}`;
+    return `transition-colors duration-200 ${
+      isActive 
+        ? ' text-blue-500 font-semibold' 
+        : 'text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white'
+    }`;
   };
+  
+  
+  
+  const getLinkStyleForSideBar = (href: string) => {
+    const isActive = pathname === href;
+    return `transition-colors duration-200 ${
+      isActive 
+        ? 'bg-blue-500 text-white font-semibold' 
+        : 'text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white'
+    }`;
+  };
+  
+
+
 
   const navLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/pages/publicBlogs', label: 'Public Blogs' },
-    { href: '/pages/Dashboard', label: 'Dashboard' },
-    { href: '/pages/createBlog', label: 'Create Blog' },
-    { href: 'https://shubgupta.vercel.app', label: 'Contact' },
+    { href: '/pages/publicBlogs', label: 'Public Blogs', icon: <Book size={20} /> },
+    { href: '/pages/Dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
+    { href: '/pages/createBlog', label: 'Create Blog', icon: <PlusCircle size={20} /> },
+    { href: '/pages/highestViews', label: 'Trending Blogs', icon: <TrendingUp size={20} /> },
   ];
 
   return (
@@ -84,13 +104,16 @@ const Navbar = () => {
           <div className="hidden md:flex space-x-8">
             {navLinks.map((link) => (
               <Link key={link.href} href={link.href} className={getLinkStyle(link.href)}>
-                {link.label}
+                <div className="flex items-center space-x-2">
+                  {link.icon}
+                  <span>{link.label}</span>
+                </div>
               </Link>
             ))}
           </div>
 
           <div className="flex cursor-pointer gap-5 md:gap-8 items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            <div className='cursor-pointer w-4 '> 
+            <div className="cursor-pointer w-4">
               <ThemeSwitcher />
             </div>
             {isAuthenticated ? (
@@ -133,64 +156,62 @@ const Navbar = () => {
               transition={{ type: 'tween', duration: 0.3 }}
               className="fixed top-0 right-0 w-72 md:w-80 h-full bg-white dark:bg-black shadow-lg z-50 overflow-y-auto"
             >
-              <div className="p-6 space-y-6">
-                <button
-                  type="button"
-                  className="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
-                  onClick={closeSidebar}
-                >
-                  <span className="sr-only">Close sidebar</span>
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
+              <Card className="h-full">
+                <CardHeader className="flex justify-end">
+                  <button
+                    type="button"
+                    className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                    onClick={closeSidebar}
+                  >
+                    <X size={24} />
+                    <span className="sr-only">Close sidebar</span>
+                  </button>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {isAuthenticated && (
+                    <div className="flex flex-col items-center">
+                      <img className="w-20 h-20 rounded-full shadow-lg" src={authUser?.profilePicture} alt={`${authUser?.firstName} ${authUser?.lastName}`} />
+                      <h2 className="mt-4 text-xl font-semibold text-gray-900 dark:text-white">{`${authUser?.firstName} ${authUser?.lastName}`}</h2>
+                      <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{authUser?.email}</p>
+                    </div>
+                  )}
 
-                {isAuthenticated && (
-                  <div className="flex flex-col items-center">
-                    <img className="w-20 h-20 rounded-full shadow-lg" src={authUser?.profilePicture} alt={`${authUser?.firstName} ${authUser?.lastName}`} />
-                    <h2 className="mt-4 text-xl font-semibold text-gray-900 dark:text-white">{`${authUser?.firstName} ${authUser?.lastName}`}</h2>
-                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{authUser?.email}</p>
-                  </div>
-                )}
-
-                <nav className="mt-6">
-                  <ul className="space-y-2">
+                  <nav className="space-y-2">
                     {navLinks.map((link) => (
-                      <li key={link.href}>
+                      <Link key={link.href} href={link.href}>
                         <button
                           onClick={() => handleNavigation(link.href)}
-                          className={`w-full text-left py-2 px-4 rounded-lg transition-colors duration-200 
-                            ${pathname === link.href ? 'bg-gray-600 text-white' : 'text-gray-900 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700'}
-                          `}
+                          className={`w-full flex items-center space-x-3 py-2 px-4 rounded-lg ${getLinkStyleForSideBar(link.href)}`}
                         >
-                          {link.label}
+                          {link.icon}
+                          <span>{link.label}</span>
                         </button>
-                      </li>
+                      </Link>
                     ))}
-
                     {isAuthenticated && (
                       <>
-                        <li>
+                        <Link href="/pages/settings">
                           <button
                             onClick={() => handleNavigation('/pages/settings')}
-                            className={`w-full text-left py-2 px-4 rounded-lg transition-colors duration-200 ${pathname === '/pages/settings' ? 'bg-black text-white hover:bg-gray-800' : 'text-gray-900 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                            className={`w-full flex items-center space-x-3 py-2 px-4 rounded-lg ${getLinkStyle('/pages/settings')}`}
                           >
-                            Settings
+                            <User size={20} />
+                            <span>Settings</span>
                           </button>
-                        </li>
-                        <li>
-                          <button
-                            onClick={handleLogout}
-                            className="w-full text-left py-2 px-4 text-white bg-red-500 rounded-lg hover:bg-red-700 dark:hover:bg-red-600 transition-colors duration-200"
-                          >
-                            Sign out
-                          </button>
-                        </li>
+                        </Link>
+                        <button
+                          onClick={handleLogout}
+                          className="w-full flex items-center space-x-3 py-2 px-4 text-white bg-red-500 rounded-lg hover:bg-red-700 dark:hover:bg-red-600 transition-colors duration-200"
+                        >
+                          <LogOut size={20} />
+                          <span>Sign out</span>
+                        </button>
                       </>
                     )}
-                  </ul>
-                </nav>
-              </div>
+                  </nav>
+
+                </CardContent>
+              </Card>
             </motion.div>
           </>
         )}

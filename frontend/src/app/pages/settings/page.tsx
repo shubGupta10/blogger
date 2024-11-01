@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useMyContext } from '@/context/ContextProvider';
+import { fetchMostViewedPosts } from '@/Firebase/FirebaseViews';
 
 const Settings = () => {
   const [userId, setUserId] = useState<string | undefined>();
@@ -23,12 +24,17 @@ const Settings = () => {
   };
 
   const handleContact = () => {
-    router.push("https://shubgupta.vercel.app");
+    router.push("/pages/Contact");
   };
 
   const handleChangeTheme = () => {
     router.push("/pages/SelectTheme");
   };
+
+  fetchMostViewedPosts(10)
+  .then(mostViewedPosts => console.log(mostViewedPosts))
+  .catch(error => console.error("Error:", error));
+
 
   return (
     <div className="min-h-screen bg-white dark:bg-black flex flex-col items-center justify-center text-black dark:text-white px-6">

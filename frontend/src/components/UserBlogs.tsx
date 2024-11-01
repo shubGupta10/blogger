@@ -232,7 +232,7 @@ export default function UserBlogs() {
                               <AlertDialogAction
                                 onClick={() => handleDelete(blog._id)}
                                 disabled={deleteLoading && deletingBlogId === blog._id}
-                                className="bg-destructive hover:bg-destructive/90"
+                                className="bg-white hover:bg-destructive/90"
                               >
                                 {deleteLoading && deletingBlogId === blog._id ? (
                                   <Loader2 className="w-4 h-4 animate-spin mr-2" />

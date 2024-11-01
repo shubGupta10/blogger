@@ -8,8 +8,11 @@ import { ChevronDown, Calendar, User } from 'lucide-react';
 import Loader from '@/components/Loader';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import ViewTracker from '@/components/ViewTracker';
+import { useMyContext } from '@/context/ContextProvider';
 
 const BlogDetails = ({ params }: { params: { id: string } }) => {
+  const {user} = useMyContext()
   const [blogId, setBlogId] = useState('')
   const { id } = params;
   const router = useRouter()
@@ -106,7 +109,10 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
           </motion.div>
 
         </div>
-        <div className='flex justify-end mr-10'>
+        <div className='flex justify-end mr-8'>
+          <div className='flex mr-10 font-extrabold   rounded-full text-xl'>
+        <ViewTracker userId={user._id} postId={id} />
+        </div>
           <Button
             onClick={() => handleSubmit(blogId)} 
             className='bg-white hover:bg-white text-black rounded-full text-end'>
