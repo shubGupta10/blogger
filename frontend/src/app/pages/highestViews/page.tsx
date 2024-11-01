@@ -1,11 +1,11 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
-import { GetBlogDocument } from '@/gql/graphql'
-import { useQuery } from '@apollo/client'
-import { fetchMostViewedPosts } from '@/Firebase/FirebaseViews'
-import { Eye, Clock, Bookmark, TrendingUp } from 'lucide-react'
-import Loader from '@/components/Loader'
+import React, { useEffect, useState } from 'react';
+import { GetBlogDocument } from '@/gql/graphql';
+import { useQuery } from '@apollo/client';
+import { fetchMostViewedPosts } from '@/Firebase/FirebaseViews';
+import { Eye, Clock, Bookmark, TrendingUp } from 'lucide-react';
+import Loader from '@/components/Loader';
 
 interface PostData {
   blogId: string;
@@ -15,13 +15,11 @@ interface PostData {
 const BlogPost = ({ blogId, count, rank }: PostData & { rank: number }) => {
   const { loading, error, data } = useQuery(GetBlogDocument, {
     variables: { blogId },
-    fetchPolicy: 'network-only'
+    fetchPolicy: 'network-only',
   });
-  
+
   if (loading) {
-    return (
-        <Loader/>
-    );
+    return <Loader />;
   }
 
   if (error) return null;
@@ -43,16 +41,15 @@ const BlogPost = ({ blogId, count, rank }: PostData & { rank: number }) => {
       })()
     : 'Recent';
 
-  // Function to truncate text with ellipsis
   const truncateText = (text: string, maxLength: number) => {
     if (text.length <= maxLength) return text;
     return text.substr(0, maxLength) + '...';
   };
 
   return (
-    <div className="group flex gap-6 p-4 rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-800 transition-all duration-300 cursor-pointer">
+    <div className="group flex flex-col md:flex-row gap-4 p-4 rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-800 transition-all duration-300 cursor-pointer">
       {/* Thumbnail Section */}
-      <div className="relative w-[360px] h-[200px] rounded-xl overflow-hidden flex-shrink-0">
+      <div className="relative w-full md:w-[360px] h-[200px] rounded-xl overflow-hidden flex-shrink-0">
         {blog.blogImage ? (
           <img 
             src={blog.blogImage} 
@@ -64,7 +61,7 @@ const BlogPost = ({ blogId, count, rank }: PostData & { rank: number }) => {
             <Bookmark className="w-12 h-12 text-gray-300 dark:text-gray-500" />
           </div>
         )}
-        
+
         {/* Duration/Rank Badge */}
         <div className="absolute bottom-3 right-3 px-3 py-1.5 bg-black/80 text-white dark:bg-white/80 dark:text-black text-sm font-medium rounded-lg flex items-center gap-1.5">
           <TrendingUp className="w-4 h-4" />
@@ -74,9 +71,9 @@ const BlogPost = ({ blogId, count, rank }: PostData & { rank: number }) => {
 
       {/* Content Section */}
       <div className="flex-grow py-2">
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex flex-col md:flex-row items-start justify-between gap-4">
           <div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 mb-2">
+            <h2 className="text-lg md:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 mb-2">
               {blog.title || "Untitled"}
             </h2>
             
@@ -149,10 +146,10 @@ const HighestViews = () => {
   return (
     <div className="max-w-[1200px] mx-auto p-6">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col md:flex-row items-start justify-between mb-8">
         <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-1">Top 10 Trending Posts</h1>
-          <p className="text-gray-600 text-xl dark:text-gray-300">The most-viewed content from our community</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-1">Top 10 Trending Posts</h1>
+          <p className="text-gray-600 text-lg md:text-xl dark:text-gray-300">The most-viewed content from our community</p>
         </div>
       </div>
 
