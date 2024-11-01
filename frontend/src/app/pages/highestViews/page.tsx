@@ -5,7 +5,6 @@ import { GetBlogDocument } from '@/gql/graphql';
 import { useQuery } from '@apollo/client';
 import { fetchMostViewedPosts } from '@/Firebase/FirebaseViews';
 import { Eye, Clock, Bookmark, TrendingUp } from 'lucide-react';
-import Loader from '@/components/Loader';
 
 interface PostData {
   blogId: string;
@@ -18,9 +17,16 @@ const BlogPost = ({ blogId, count, rank }: PostData & { rank: number }) => {
     fetchPolicy: 'network-only',
   });
 
+
   if (loading) {
-    return <Loader />;
-  }
+    return (
+        <div className="flex justify-center items-center h-64">
+            <div className="w-8 h-8 border-4 border-black dark:border-blue-900 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+    );
+}
+
+  
 
   if (error) return null;
 

@@ -149,7 +149,11 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
               Back
             </button>
             <div className="flex items-center space-x-6">
-              <ViewTracker userId={CurrentUser._id} postId={id} />
+              {CurrentUser ? (
+                <ViewTracker userId={CurrentUser?._id} postId={id} />
+              ) : (
+                <p>Please login</p>
+              )}
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
@@ -219,7 +223,11 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
               {new Date(parseInt(blog.createdAt)).toLocaleDateString()}
             </span>
             <span className="flex items-center">
-              <ViewTracker userId={CurrentUser._id} postId={id} />
+            {CurrentUser ? (
+                <ViewTracker userId={CurrentUser?._id} postId={id} />
+              ) : (
+                <p>Please login to see views</p>
+              )}
             </span>
           </motion.div>
           <div className="mt-10 flex justify-center">
