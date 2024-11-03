@@ -16,16 +16,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Skeleton } from "@/components/ui/skeleton"
 
 const categories = [
-  'technology', 'programming', 'web development', 'mobile development', 'data science',
-  'artificial intelligence', 'cloud computing', 'devops', 'cybersecurity', 'sports',
-  'health', 'fitness', 'nutrition', 'mental health', 'lifestyle', 'fashion', 'beauty',
+  'technology', 'programming', 'web-development', 'mobile-development', 'data-science',
+  'artificial-intelligence', 'cloud-computing', 'devops', 'cybersecurity', 'sports',
+  'health', 'fitness', 'nutrition', 'mental-health', 'lifestyle', 'fashion', 'beauty',
   'travel', 'food', 'recipes', 'parenting', 'relationships', 'finance', 'investing',
-  'personal finance', 'real estate', 'education', 'science', 'astronomy', 'physics',
-  'chemistry', 'biology', 'entertainment', 'movies', 'music', 'tv shows', 'books',
-  'gaming', 'art', 'photography', 'politics', 'world news', 'history', 'environment',
+  'personal-finance', 'real-estate', 'education', 'science', 'astronomy', 'physics',
+  'chemistry', 'biology', 'entertainment', 'movies', 'music', 'tv-shows', 'books',
+  'gaming', 'art', 'photography', 'politics', 'world-news', 'history', 'environment',
   'nature', 'animals', 'business', 'marketing', 'entrepreneurship', 'startups',
-  'productivity', 'self improvement', 'spirituality', 'philosophy'
-]
+  'productivity', 'self-improvement', 'spirituality', 'philosophy'
+];
+
 
 const sortOptions = [
   { value: "newest", label: "Newest First" },

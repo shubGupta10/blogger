@@ -1,4 +1,3 @@
-// app/pages/category/[category]/page.tsx
 
 'use client'
 

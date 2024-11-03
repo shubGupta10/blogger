@@ -231,18 +231,18 @@ const CreateBlog = () => {
                 <SelectContent>
                   <SelectItem value="technology">Technology</SelectItem>
                   <SelectItem value="programming">Programming</SelectItem>
-                  <SelectItem value="web development">Web Development</SelectItem>
-                  <SelectItem value="mobile development">Mobile Development</SelectItem>
-                  <SelectItem value="data science">Data Science</SelectItem>
-                  <SelectItem value="artificial intelligence">Artificial Intelligence</SelectItem>
-                  <SelectItem value="cloud computing">Cloud Computing</SelectItem>
+                  <SelectItem value="web-development">Web Development</SelectItem>
+                  <SelectItem value="mobile-development">Mobile Development</SelectItem>
+                  <SelectItem value="data-science">Data Science</SelectItem>
+                  <SelectItem value="artificial-intelligence">Artificial Intelligence</SelectItem>
+                  <SelectItem value="cloud-computing">Cloud Computing</SelectItem>
                   <SelectItem value="devops">DevOps</SelectItem>
                   <SelectItem value="cybersecurity">Cybersecurity</SelectItem>
                   <SelectItem value="sports">Sports</SelectItem>
                   <SelectItem value="health">Health</SelectItem>
                   <SelectItem value="fitness">Fitness</SelectItem>
                   <SelectItem value="nutrition">Nutrition</SelectItem>
-                  <SelectItem value="mental health">Mental Health</SelectItem>
+                  <SelectItem value="mental-health">Mental Health</SelectItem>
                   <SelectItem value="lifestyle">Lifestyle</SelectItem>
                   <SelectItem value="fashion">Fashion</SelectItem>
                   <SelectItem value="beauty">Beauty</SelectItem>
@@ -253,8 +253,8 @@ const CreateBlog = () => {
                   <SelectItem value="relationships">Relationships</SelectItem>
                   <SelectItem value="finance">Finance</SelectItem>
                   <SelectItem value="investing">Investing</SelectItem>
-                  <SelectItem value="personal finance">Personal Finance</SelectItem>
-                  <SelectItem value="real estate">Real Estate</SelectItem>
+                  <SelectItem value="personal-finance">Personal Finance</SelectItem>
+                  <SelectItem value="real-estate">Real Estate</SelectItem>
                   <SelectItem value="education">Education</SelectItem>
                   <SelectItem value="science">Science</SelectItem>
                   <SelectItem value="astronomy">Astronomy</SelectItem>
@@ -264,13 +264,13 @@ const CreateBlog = () => {
                   <SelectItem value="entertainment">Entertainment</SelectItem>
                   <SelectItem value="movies">Movies</SelectItem>
                   <SelectItem value="music">Music</SelectItem>
-                  <SelectItem value="tv shows">TV Shows</SelectItem>
+                  <SelectItem value="tv-shows">TV Shows</SelectItem>
                   <SelectItem value="books">Books</SelectItem>
                   <SelectItem value="gaming">Gaming</SelectItem>
                   <SelectItem value="art">Art</SelectItem>
                   <SelectItem value="photography">Photography</SelectItem>
                   <SelectItem value="politics">Politics</SelectItem>
-                  <SelectItem value="world news">World News</SelectItem>
+                  <SelectItem value="world-news">World News</SelectItem>
                   <SelectItem value="history">History</SelectItem>
                   <SelectItem value="environment">Environment</SelectItem>
                   <SelectItem value="nature">Nature</SelectItem>
@@ -280,11 +280,10 @@ const CreateBlog = () => {
                   <SelectItem value="entrepreneurship">Entrepreneurship</SelectItem>
                   <SelectItem value="startups">Startups</SelectItem>
                   <SelectItem value="productivity">Productivity</SelectItem>
-                  <SelectItem value="self improvement">Self Improvement</SelectItem>
+                  <SelectItem value="self-improvement">Self Improvement</SelectItem>
                   <SelectItem value="spirituality">Spirituality</SelectItem>
                   <SelectItem value="philosophy">Philosophy</SelectItem>
                 </SelectContent>
-
               </Select>
             </div>
 
