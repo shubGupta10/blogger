@@ -49,4 +49,37 @@ export const GENERATE_STORY = gql`
   mutation GenerateStory($prompt: String!){
     generateStory(prompt: $prompt)
   }
-`
+`;
+
+
+export const LIKE_BLOG = gql`
+  mutation LikeBlog($blogId: ID!) {
+    likeBlog(blogId: $blogId) {
+      _id
+      title
+      blogContent
+      likeCount
+      likedBy {
+        _id
+        firstName
+        lastName
+      }
+    }
+  }
+`;
+
+export const UNLIKE_BLOG = gql`
+  mutation UnlikeBlog($blogId: ID!) {
+    unlikeBlog(blogId: $blogId) {
+      _id
+      title
+      blogContent
+      likeCount
+      likedBy {
+        _id
+        firstName
+        lastName
+      }
+    }
+  }
+`;

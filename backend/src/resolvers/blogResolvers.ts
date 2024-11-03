@@ -120,6 +120,46 @@ const blogResolver = {
             }
             return await generateContent(prompt)
         },
+
+        likeBlog: async (_parent: unknown, {blogId}: {blogId: string}, context: MyContext) => {
+            const userId = context.user._id;
+            if(!userId){
+                throw new Error("User should be authenticated!")
+            }
+    
+            const blog = await Blog.findById(blogId);
+            if(!blog){
+                throw new Error("Failed to find blog")
+            }
+    
+            if(!blog.likedBy.includes(userId)){
+                blog.likedBy.push(userId);
+                blog.likeCount += 1;
+                await blog.save();
+            }
+    
+            return blog.populate('likedBy');
+        },
+    
+        unlikeBlog: async (_parent: unknown, {blogId}: {blogId: string}, context: MyContext) => {
+            const userId = context.user._id;
+            if(!userId){
+                throw new Error("User must be authenticated!")
+            }
+    
+            const blog = await Blog.findById(blogId);
+            if(!blog){
+                throw new Error("Blog not found");
+            }
+    
+            const index = blog.likedBy.indexOf(userId);
+            if(index !== -1){
+                blog.likedBy.splice(index, 1);
+                blog.likeCount -= 1;
+                await blog.save()
+            }
+            return blog.populate('likedBy');
+        },
     },
 
     Query: {

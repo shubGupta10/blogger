@@ -5,6 +5,8 @@ const blogTypeDefs = `#graphql
     blogImage: String!
     blogContent: String!
     blogCategory: String! 
+    likeCount: Int!
+    likedBy: [User!]!
     createdAt: String!
     userId: String!
     user: User!
@@ -22,6 +24,8 @@ const blogTypeDefs = `#graphql
     updateBlog(input: updateBlogInput!): Blog!
     deleteBlog(blogId: ID!): Blog!
     generateStory(prompt: String!): String
+    likeBlog(blogId: ID!): Blog!
+    unlikeBlog(blogId: ID!): Blog!
  }
 
  input createBlogInput {

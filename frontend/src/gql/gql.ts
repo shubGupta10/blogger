@@ -18,11 +18,13 @@ const documents = {
     "\n  mutation UpdateBlog($input: updateBlogInput!) {\n    updateBlog(input: $input) {\n      _id\n      title\n      blogImage\n      blogContent\n      createdAt\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n": types.UpdateBlogDocument,
     "\n  mutation DeleteBlog($blogId: ID!) {\n    deleteBlog(blogId: $blogId) {\n      _id\n      title\n    }\n  }\n": types.DeleteBlogDocument,
     "\n  mutation GenerateStory($prompt: String!){\n    generateStory(prompt: $prompt)\n  }\n": types.GenerateStoryDocument,
+    "\n  mutation LikeBlog($blogId: ID!) {\n    likeBlog(blogId: $blogId) {\n      _id\n      title\n      blogContent\n      likeCount\n      likedBy {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n": types.LikeBlogDocument,
+    "\n  mutation UnlikeBlog($blogId: ID!) {\n    unlikeBlog(blogId: $blogId) {\n      _id\n      title\n      blogContent\n      likeCount\n      likedBy {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n": types.UnlikeBlogDocument,
     "\n mutation SignUp($input: SignUpInput!){\n    signUp(input: $input){\n        user{\n         _id\n         firstName\n         lastName\n         email\n         profilePicture\n         gender\n        }\n        token\n    }\n }\n": types.SignUpDocument,
     "\n mutation Login($input: LoginInput!){\n   login(input: $input){\n      user {\n      _id\n      firstName\n      lastName\n      email\n      profilePicture\n      gender\n    }\n    token\n  }\n   }\n": types.LoginDocument,
     "\n  mutation Logout{\n   logout{\n      message\n   }\n  }\n": types.LogoutDocument,
     "\n  query GetBlogs {\n    blogs {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      createdAt\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n": types.GetBlogsDocument,
-    "\n  query GetBlog($blogId: ID!) {\n    blog(blogId: $blogId) {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      createdAt\n      user {\n        _id\n        firstName\n        lastName\n        email\n        profilePicture\n      }\n    }\n  }\n": types.GetBlogDocument,
+    "\n  query GetBlog($blogId: ID!) {\n    blog(blogId: $blogId) {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      createdAt\n      likeCount\n      likedBy {\n        _id\n      }\n      user {\n        _id\n        firstName\n        lastName\n        email\n        profilePicture\n      }\n    }\n  }\n": types.GetBlogDocument,
     "\n query GetBlogsByUser {\n    blogsByUser {\n        _id\n        title\n        blogImage\n        blogContent\n        blogCategory\n        createdAt\n    }\n}\n": types.GetBlogsByUserDocument,
     "\n  query blogsByCategory($blogCategory: String!) {\n    blogsByCategory(blogCategory: $blogCategory) {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n": types.BlogsByCategoryDocument,
     "\n  query GetAuthenticatedUser {\n    authenticatedUser {\n      _id\n      firstName\n      lastName\n      email\n      profilePicture\n      gender\n      blogs {\n        _id\n        title\n      }\n    }\n  }\n": types.GetAuthenticatedUserDocument,
@@ -64,6 +66,14 @@ export function graphql(source: "\n  mutation GenerateStory($prompt: String!){\n
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "\n  mutation LikeBlog($blogId: ID!) {\n    likeBlog(blogId: $blogId) {\n      _id\n      title\n      blogContent\n      likeCount\n      likedBy {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation LikeBlog($blogId: ID!) {\n    likeBlog(blogId: $blogId) {\n      _id\n      title\n      blogContent\n      likeCount\n      likedBy {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation UnlikeBlog($blogId: ID!) {\n    unlikeBlog(blogId: $blogId) {\n      _id\n      title\n      blogContent\n      likeCount\n      likedBy {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation UnlikeBlog($blogId: ID!) {\n    unlikeBlog(blogId: $blogId) {\n      _id\n      title\n      blogContent\n      likeCount\n      likedBy {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\n mutation SignUp($input: SignUpInput!){\n    signUp(input: $input){\n        user{\n         _id\n         firstName\n         lastName\n         email\n         profilePicture\n         gender\n        }\n        token\n    }\n }\n"): (typeof documents)["\n mutation SignUp($input: SignUpInput!){\n    signUp(input: $input){\n        user{\n         _id\n         firstName\n         lastName\n         email\n         profilePicture\n         gender\n        }\n        token\n    }\n }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -80,7 +90,7 @@ export function graphql(source: "\n  query GetBlogs {\n    blogs {\n      _id\n 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query GetBlog($blogId: ID!) {\n    blog(blogId: $blogId) {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      createdAt\n      user {\n        _id\n        firstName\n        lastName\n        email\n        profilePicture\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetBlog($blogId: ID!) {\n    blog(blogId: $blogId) {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      createdAt\n      user {\n        _id\n        firstName\n        lastName\n        email\n        profilePicture\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query GetBlog($blogId: ID!) {\n    blog(blogId: $blogId) {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      createdAt\n      likeCount\n      likedBy {\n        _id\n      }\n      user {\n        _id\n        firstName\n        lastName\n        email\n        profilePicture\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetBlog($blogId: ID!) {\n    blog(blogId: $blogId) {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      createdAt\n      likeCount\n      likedBy {\n        _id\n      }\n      user {\n        _id\n        firstName\n        lastName\n        email\n        profilePicture\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

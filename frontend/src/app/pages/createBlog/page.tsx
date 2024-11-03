@@ -28,29 +28,29 @@ const CreateBlog = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isMobileView, setIsMobileView] = useState(false);
-  const [isClient, setIsClient] = useState(false); 
+  const [isClient, setIsClient] = useState(false);
 
   // Toolbar options for Quill editor
   const toolbarOptions = [
     [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
     ['bold', 'italic', 'underline', 'strike'],
     [{ 'color': [] }, { 'background': [] }],
-    [{ 'script': 'sub'}, { 'script': 'super' }],
+    [{ 'script': 'sub' }, { 'script': 'super' }],
     [{ 'align': [] }],
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-    [{ 'indent': '-1'}, { 'indent': '+1' }],
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+    [{ 'indent': '-1' }, { 'indent': '+1' }],
     ['link', 'video', 'code-block'],
     ['clean']
   ];
 
   // Enhanced Quill Editor Component
-  const EnhancedQuillEditor = ({ 
-    form, 
-    isClient, 
+  const EnhancedQuillEditor = ({
+    form,
+    isClient,
     placeholder = "Start writing your blog post...",
     maxHeight = 'calc(100vh - 280px)',
     editorClassName = '',
-    onChangeHandler 
+    onChangeHandler
   }) => {
     const modules = useMemo(() => ({
       toolbar: toolbarOptions,
@@ -66,7 +66,7 @@ const CreateBlog = () => {
             name="blogContent"
             control={form.control}
             render={({ field: { onChange, value, ...fieldProps } }) => (
-              <div 
+              <div
                 className={`h-[${maxHeight}] md:h-[calc(100vh-240px)] flex flex-col`}
               >
                 <ReactQuill
@@ -230,13 +230,61 @@ const CreateBlog = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="technology">Technology</SelectItem>
+                  <SelectItem value="programming">Programming</SelectItem>
+                  <SelectItem value="web development">Web Development</SelectItem>
+                  <SelectItem value="mobile development">Mobile Development</SelectItem>
+                  <SelectItem value="data science">Data Science</SelectItem>
+                  <SelectItem value="artificial intelligence">Artificial Intelligence</SelectItem>
+                  <SelectItem value="cloud computing">Cloud Computing</SelectItem>
+                  <SelectItem value="devops">DevOps</SelectItem>
+                  <SelectItem value="cybersecurity">Cybersecurity</SelectItem>
                   <SelectItem value="sports">Sports</SelectItem>
-                  <SelectItem value="entertainment">Entertainment</SelectItem>
-                  <SelectItem value="lifestyle">Lifestyle</SelectItem>
-                  <SelectItem value="education">Education</SelectItem>
                   <SelectItem value="health">Health</SelectItem>
+                  <SelectItem value="fitness">Fitness</SelectItem>
+                  <SelectItem value="nutrition">Nutrition</SelectItem>
+                  <SelectItem value="mental health">Mental Health</SelectItem>
+                  <SelectItem value="lifestyle">Lifestyle</SelectItem>
+                  <SelectItem value="fashion">Fashion</SelectItem>
+                  <SelectItem value="beauty">Beauty</SelectItem>
                   <SelectItem value="travel">Travel</SelectItem>
+                  <SelectItem value="food">Food</SelectItem>
+                  <SelectItem value="recipes">Recipes</SelectItem>
+                  <SelectItem value="parenting">Parenting</SelectItem>
+                  <SelectItem value="relationships">Relationships</SelectItem>
+                  <SelectItem value="finance">Finance</SelectItem>
+                  <SelectItem value="investing">Investing</SelectItem>
+                  <SelectItem value="personal finance">Personal Finance</SelectItem>
+                  <SelectItem value="real estate">Real Estate</SelectItem>
+                  <SelectItem value="education">Education</SelectItem>
+                  <SelectItem value="science">Science</SelectItem>
+                  <SelectItem value="astronomy">Astronomy</SelectItem>
+                  <SelectItem value="physics">Physics</SelectItem>
+                  <SelectItem value="chemistry">Chemistry</SelectItem>
+                  <SelectItem value="biology">Biology</SelectItem>
+                  <SelectItem value="entertainment">Entertainment</SelectItem>
+                  <SelectItem value="movies">Movies</SelectItem>
+                  <SelectItem value="music">Music</SelectItem>
+                  <SelectItem value="tv shows">TV Shows</SelectItem>
+                  <SelectItem value="books">Books</SelectItem>
+                  <SelectItem value="gaming">Gaming</SelectItem>
+                  <SelectItem value="art">Art</SelectItem>
+                  <SelectItem value="photography">Photography</SelectItem>
+                  <SelectItem value="politics">Politics</SelectItem>
+                  <SelectItem value="world news">World News</SelectItem>
+                  <SelectItem value="history">History</SelectItem>
+                  <SelectItem value="environment">Environment</SelectItem>
+                  <SelectItem value="nature">Nature</SelectItem>
+                  <SelectItem value="animals">Animals</SelectItem>
+                  <SelectItem value="business">Business</SelectItem>
+                  <SelectItem value="marketing">Marketing</SelectItem>
+                  <SelectItem value="entrepreneurship">Entrepreneurship</SelectItem>
+                  <SelectItem value="startups">Startups</SelectItem>
+                  <SelectItem value="productivity">Productivity</SelectItem>
+                  <SelectItem value="self improvement">Self Improvement</SelectItem>
+                  <SelectItem value="spirituality">Spirituality</SelectItem>
+                  <SelectItem value="philosophy">Philosophy</SelectItem>
                 </SelectContent>
+
               </Select>
             </div>
 
@@ -276,9 +324,9 @@ const CreateBlog = () => {
 
           {/* Editor with Better Visibility */}
           <div className="lg:col-span-2">
-            <EnhancedQuillEditor 
-              form={form} 
-              isClient={isClient} 
+            <EnhancedQuillEditor
+              form={form}
+              isClient={isClient}
               onChangeHandler={(content, editor) => {
                 console.log('Content updated:', content);
               }}
