@@ -214,7 +214,7 @@ export default function Component() {
             >
               <div className="flex flex-col justify-between sm:flex-row gap-4">
                 <Select onValueChange={setSortBy} value={sortBy}>
-                  <SelectTrigger className="w-full sm:w-[300px] bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700">
+                  <SelectTrigger className="w-full sm:w-[300px] bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent>
@@ -231,7 +231,7 @@ export default function Component() {
                   <Input
                     type="text"
                     placeholder="Search blogs..."
-                    className="pl-10 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700"
+                    className="pl-10 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
@@ -359,7 +359,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog, handleOpenBlogs, isLoading })
 )
 
 const BlogCardSkeleton = () => (
-  <Card className="h-full flex flex-col overflow-hidden bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+  <Card className="h-full flex flex-col overflow-hidden bg-white dark:bg-black border-gray-200 dark:border-gray-700">
     <div className="relative h-48 overflow-hidden">
       <Skeleton className="w-full h-full" />
     </div>

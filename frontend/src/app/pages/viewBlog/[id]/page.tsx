@@ -247,7 +247,12 @@ const Header = ({ blog, user, CurrentUser, id, router }) => (
         </span>
         <span>
           <div className='flex items-center space-x-6 cursor-pointer'>
-            <LikesAndUnlike userId={CurrentUser._id} blogId={id} initialLikeCount={0} />
+            {CurrentUser ? (
+              <LikesAndUnlike userId={CurrentUser._id} blogId={id} initialLikeCount={0} />
+            ) : (
+              <p>Please login to like and comments</p>
+            )}
+            
           </div>
         </span>
       </motion.div>
