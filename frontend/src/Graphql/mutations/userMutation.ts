@@ -41,3 +41,26 @@ export const LOGOUT = gql`
    }
   }
 `
+
+
+export const UPDATE_USER = gql`
+  mutation UpdateUser($input: UpdateUserInput!) {
+    updateUser(input: $input) {
+      firstName
+      lastName
+      email
+      gender
+    }
+  }
+`;
+
+
+
+
+export const DELETE_USER = gql`
+  mutation DeleteUser($password: String!) {
+    deleteUser(password: $password) {
+      message
+    }
+  }
+`;

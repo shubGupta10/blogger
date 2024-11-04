@@ -30,6 +30,8 @@ const userTypeDefs = `#graphql
     signUp(input: SignUpInput): AuthPayload
     login(input: LoginInput): AuthPayload
     logout: LogoutResponse
+    updateUser(input: UpdateUserInput): User!
+    deleteUser(password: String!): DeleteUserResponse!
   }
 
   #Step4: Mutation waale inputs define kro
@@ -39,6 +41,19 @@ const userTypeDefs = `#graphql
     email: String!
     password: String!
     gender: String
+  }
+
+  input UpdateUserInput {
+    userId: ID!
+    firstName: String
+    lastName: String
+    email: String
+    password: String
+    gender: String
+  }
+
+  type DeleteUserResponse {
+    message: String!
   }
 
 

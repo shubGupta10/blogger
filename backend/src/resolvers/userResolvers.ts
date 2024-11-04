@@ -5,39 +5,48 @@ import generateToken from "../utils/jwt.js";
 import { Request, Response } from 'express';
 
 interface SignUpInput {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  profilePicture: string;
-  gender: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    profilePicture: string;
+    gender: string;
 }
 
 interface SignInInput {
-  email: string;
-  password: string;
+    email: string;
+    password: string;
 }
 
+interface UpdateInput {
+    firstName?: string; 
+    lastName?: string; 
+    email?: string; 
+    password?: string; 
+    gender?: string; 
+}
+
+
 interface UserData {
-  _id: string;
+    _id: string;
 }
 
 export interface MyContext {
-  user?: any;
-  req: Request;
-  res: Response;
+    user?: any;
+    req: Request;
+    res: Response;
 }
 
 import { Document } from 'mongoose';
 
 export interface UserInterface extends Document {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  profilePicture: string;
-  gender: string;
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    profilePicture: string;
+    gender: string;
 }
 
 const userResolver = {
@@ -56,7 +65,7 @@ const userResolver = {
         signUp: async (_parent: unknown, { input }: { input: SignUpInput }, context: any) => {
             try {
                 const { firstName, lastName, email, password, gender } = input;
-  
+
                 if (!firstName || !email || !password || !gender) {
                     throw new Error("All required fields must be provided");
                 }
@@ -65,13 +74,13 @@ const userResolver = {
                 if (existingUser) {
                     throw new Error("User already exists");
                 }
-  
+
                 const salt = await bcrypt.genSalt(10);
                 const hashedPassword = await bcrypt.hash(password, salt);
-  
+
                 const boyProfilePic = `https://avatar.iran.liara.run/public/boy?firstname=${firstName}`;
                 const girlProfilePic = `https://avatar.iran.liara.run/public/girl?firstname=${firstName}`;
-  
+
                 const newUser = new User({
                     firstName,
                     lastName,
@@ -80,21 +89,21 @@ const userResolver = {
                     gender,
                     profilePicture: gender === 'male' ? boyProfilePic : girlProfilePic
                 });
-  
+
                 await newUser.save();
-  
+
                 const userData: UserData = {
                     _id: newUser._id.toString(),
                 };
-  
+
                 const token = generateToken(userData);
-  
+
                 return {
                     user: {
                         _id: newUser._id,
                         firstName: newUser.firstName,
                         lastName: newUser.lastName,
-                        email: newUser.email, 
+                        email: newUser.email,
                         profilePicture: newUser.profilePicture,
                         gender: newUser.gender
                     },
@@ -105,41 +114,41 @@ const userResolver = {
                 throw new Error(error.message || "Internal Server error");
             }
         },
-  
+
         login: async (_parent: unknown, { input }: { input: SignInInput }, context: any) => {
             try {
                 const { email, password } = input;
-        
+
                 const user = await User.findOne({ email });
-        
+
                 if (!user) {
                     throw new Error("User not found");
                 }
-        
+
                 const isPasswordMatch = await bcrypt.compare(password, user.password);
-        
+
                 if (!isPasswordMatch) {
                     throw new Error("Password is incorrect");
                 }
-        
+
                 const userData: UserData = {
                     _id: user._id.toString(),
                 };
-        
+
                 const token = generateToken(userData);
-        
+
                 if (!context.res) {
                     throw new Error("Response object is not available");
                 }
-        
+
                 context.res.cookie('token', token, {
-                    httpOnly: true, 
-                    secure: true, 
-                    sameSite: 'None', 
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: 'None',
                 });
-        
+
                 context.res.setHeader('Authorization', `Bearer ${token}`);
-        
+
                 return {
                     user: {
                         _id: user._id,
@@ -156,29 +165,74 @@ const userResolver = {
                 throw new Error(error.message || "Internal Server error");
             }
         },
-        
-      
+
+
         logout: async (_parent: unknown, _args: unknown, context: any) => {
             try {
                 if (!context.res) {
                     throw new Error("Invalid context");
                 }
-                context.res.clearCookie("token"); 
+                context.res.clearCookie("token");
                 return { message: "Logout successful" };
             } catch (error: any) {
                 console.error("Logout failed", error);
                 throw new Error(error.message || "Internal Server error");
             }
+        },
+
+        updateUser: async (_parent: unknown, { input }: {input: UpdateInput}, context: MyContext) => {
+            try {
+                const userId = context.user._id;
+                if (!userId) {
+                    throw new Error("User must be authenticated!");
+                }
+                const updatedUser = await User.findByIdAndUpdate(userId, { ...input }, { new: true, runValidators: true })
+                if (!updatedUser) {
+                    throw new Error("User not found");
+                }
+                return updatedUser;
+            } catch (error) {
+                console.error("Failed to update user", error);
+                throw new Error(error.message || "Internal server error")
+            }
+        },
+
+        deleteUser: async (_parent: unknown, { password }: { password: string }, context: MyContext) => {
+            try {
+                const userId = context.user._id;
+                if (!userId) {
+                    throw new Error("User must be authenticated!");
+                }
+                const user = await User.findById(userId);
+                if (!user) {
+                    throw new Error("User not found");
+                }
+
+                const isPasswordMatch = await bcrypt.compare(password, user.password)
+                if(!isPasswordMatch){
+                    throw new Error("Password is wrong")
+                }
+
+                const deletedUser = await User.findOneAndDelete({ _id: userId });
+                if (!deletedUser) {
+                    throw new Error("User not found or already deleted");
+                }
+                return {
+                    message: "User deleted successfully"
+                };
+            } catch (error: any) {
+                console.error("Failed to delete user", error);
+                throw new Error(error.message || "Internal server error");
+            }
         }
-        
     },
-  
+
     Query: {
         authenticatedUser: async (_parent: unknown, _args: unknown, context: MyContext) => {
             try {
                 const user = await User.findById(context.user._id);
                 console.log("Context wala id", context.user._id);
-                
+
                 if (!user) {
                     throw new Error("User not found");
                 }
@@ -188,7 +242,7 @@ const userResolver = {
                 throw new Error(error.message || "Internal Server error");
             }
         },
-  
+
         user: async (_parent: unknown, _args: unknown, context: MyContext) => {
             try {
                 const userId = context.user?._id;
@@ -215,14 +269,14 @@ const userResolver = {
             }
         },
 
-        fetchUserByID: async (_parent: unknown, {userId}: {userId: string}) => {
+        fetchUserByID: async (_parent: unknown, { userId }: { userId: string }) => {
             try {
-                if(!userId){
+                if (!userId) {
                     throw new Error("User is not authenticated")
                 }
 
                 const user = await User.findById(userId);
-                if(!user){
+                if (!user) {
                     throw new Error("User not found")
                 }
                 return user;
@@ -233,5 +287,5 @@ const userResolver = {
         }
     }
 };
-  
+
 export default userResolver;

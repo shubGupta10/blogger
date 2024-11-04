@@ -23,6 +23,8 @@ const documents = {
     "\n mutation SignUp($input: SignUpInput!){\n    signUp(input: $input){\n        user{\n         _id\n         firstName\n         lastName\n         email\n         profilePicture\n         gender\n        }\n        token\n    }\n }\n": types.SignUpDocument,
     "\n mutation Login($input: LoginInput!){\n   login(input: $input){\n      user {\n      _id\n      firstName\n      lastName\n      email\n      profilePicture\n      gender\n    }\n    token\n  }\n   }\n": types.LoginDocument,
     "\n  mutation Logout{\n   logout{\n      message\n   }\n  }\n": types.LogoutDocument,
+    "\n  mutation UpdateUser($input: UpdateUserInput!) {\n    updateUser(input: $input) {\n      firstName\n      lastName\n      email\n      gender\n    }\n  }\n": types.UpdateUserDocument,
+    "\n  mutation DeleteUser($password: String!) {\n    deleteUser(password: $password) {\n      message\n    }\n  }\n": types.DeleteUserDocument,
     "\n  query GetBlogs {\n    blogs {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      createdAt\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n": types.GetBlogsDocument,
     "\n  query GetBlog($blogId: ID!) {\n    blog(blogId: $blogId) {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      createdAt\n      likeCount\n      likedBy {\n        _id\n      }\n      user {\n        _id\n        firstName\n        lastName\n        email\n        profilePicture\n      }\n    }\n  }\n": types.GetBlogDocument,
     "\n query GetBlogsByUser {\n    blogsByUser {\n        _id\n        title\n        blogImage\n        blogContent\n        blogCategory\n        createdAt\n    }\n}\n": types.GetBlogsByUserDocument,
@@ -83,6 +85,14 @@ export function graphql(source: "\n mutation Login($input: LoginInput!){\n   log
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation Logout{\n   logout{\n      message\n   }\n  }\n"): (typeof documents)["\n  mutation Logout{\n   logout{\n      message\n   }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation UpdateUser($input: UpdateUserInput!) {\n    updateUser(input: $input) {\n      firstName\n      lastName\n      email\n      gender\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateUser($input: UpdateUserInput!) {\n    updateUser(input: $input) {\n      firstName\n      lastName\n      email\n      gender\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation DeleteUser($password: String!) {\n    deleteUser(password: $password) {\n      message\n    }\n  }\n"): (typeof documents)["\n  mutation DeleteUser($password: String!) {\n    deleteUser(password: $password) {\n      message\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

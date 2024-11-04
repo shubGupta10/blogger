@@ -1,15 +1,23 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useMyContext } from '@/context/ContextProvider';
 import { fetchMostViewedPosts } from '@/Firebase/FirebaseViews';
+import { Button } from '@/components/ui/button';
+import { useTheme } from 'next-themes';
+import AccountDeactivation from '@/components/AccountDeactivation';
+import EditProfile from '@/components/EditProfile';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
 
 const Settings = () => {
   const [userId, setUserId] = useState<string | undefined>();
   const { user } = useMyContext();
   const router = useRouter();
+  const [isEditing, setIsEditing] = useState(false);
+  const [selectedSection, setSelectedSection] = useState('profile');
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     if (user && user._id) {
@@ -27,59 +35,106 @@ const Settings = () => {
     router.push("/pages/Contact");
   };
 
-  const handleChangeTheme = () => {
-    router.push("/pages/SelectTheme");
-  };
-
   fetchMostViewedPosts(10)
-  .then(mostViewedPosts => console.log(mostViewedPosts))
-  .catch(error => console.error("Error:", error));
-
+    .then(mostViewedPosts => console.log(mostViewedPosts))
+    .catch(error => console.error("Error:", error));
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black flex flex-col items-center justify-center text-black dark:text-white px-6">
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="text-4xl font-extrabold mb-12"
-      >
-        Settings
-      </motion.div>
+    <div className="min-h-screen bg-background text-foreground p-6 md:p-10">
+      <h1 className="text-4xl font-bold mb-2">Settings</h1>
+      <p className="text-xl text-muted-foreground mb-10">Manage your account settings</p>
 
-      <motion.div
-        className="grid grid-cols-1 md:grid-cols-3 gap-12 w-full max-w-4xl"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2, duration: 0.5 }}
-      >
-        <motion.div
-          onClick={() => handleProfile(userId)}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          className="flex items-center justify-center border border-gray-300 dark:border-gray-600 bg-black text-white dark:bg-white dark:text-black rounded-lg py-8 cursor-pointer transition-all hover:bg-gray-800 dark:hover:bg-gray-300"
-        >
-          <div className="text-xl font-semibold">User Profile</div>
-        </motion.div>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        {/* Sidebar */}
+        <Card className="col-span-1 border-none">
+          <CardContent className="p-4">
+            <nav className="flex flex-col space-y-1">
+              {['profile', 'account', 'appearance', 'contact'].map((section) => (
+                <Button
+                  key={section}
+                  variant={selectedSection === section ? "default" : "ghost"}
+                  className="justify-start"
+                  onClick={() => setSelectedSection(section)}
+                >
+                  {section.charAt(0).toUpperCase() + section.slice(1)}
+                </Button>
+              ))}
+            </nav>
+          </CardContent>
+        </Card>
 
-        <motion.div
-          onClick={handleChangeTheme}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          className="flex items-center justify-center border border-gray-300 dark:border-gray-600 bg-black text-white dark:bg-white dark:text-black rounded-lg py-8 cursor-pointer transition-all hover:bg-gray-800 dark:hover:bg-gray-300"
-        >
-          <div className="text-xl font-semibold">Change Theme</div>
-        </motion.div>
+        {/* Settings Content */}
+        <Card className="col-span-1 md:col-span-3 border-l border-t border-r-0 border-b-0">
+          <CardHeader>
+            <CardTitle>{selectedSection.charAt(0).toUpperCase() + selectedSection.slice(1)}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {selectedSection === 'profile' && (
+              isEditing ? (
+                <EditProfile onCancel={() => setIsEditing(false)} />
+              ) : (
+                <div className="space-y-4">
+                  {['firstName', 'lastName', 'email', 'gender'].map((field) => (
+                    <div key={field} className="space-y-2">
+                      <label className="text-sm font-medium" htmlFor={field}>
+                        {field.charAt(0).toUpperCase() + field.slice(1)}
+                      </label>
+                      <input
+                        type="text"
+                        id={field}
+                        className="w-full p-2 rounded-md border border-input bg-background"
+                        defaultValue={user?.[field]}
+                        readOnly
+                      />
+                    </div>
+                  ))}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium" htmlFor="bio">Bio</label>
+                    <textarea
+                      id="bio"
+                      className="w-full p-2 rounded-md border border-input bg-background"
+                      defaultValue="I own a computer."
+                      rows={3}
+                      readOnly
+                    />
+                  </div>
+                  <Button onClick={() => setIsEditing(true)}>Edit profile</Button>
+                </div>
+              )
+            )}
 
-        <motion.div
-          onClick={handleContact}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          className="flex items-center justify-center border border-gray-300 dark:border-gray-600 bg-black text-white dark:bg-white dark:text-black rounded-lg py-8 cursor-pointer transition-all hover:bg-gray-800 dark:hover:bg-gray-300"
-        >
-          <div className="text-xl font-semibold">Contact Developer</div>
-        </motion.div>
-      </motion.div>
+            {selectedSection === 'account' && <AccountDeactivation />}
+
+            {selectedSection === 'appearance' && (
+              <div className="space-y-4">
+                <h2 className="text-xl font-semibold">Theme Selection</h2>
+                <div className="flex space-x-4">
+                  {['system', 'dark', 'light'].map((mode) => (
+                    <Button
+                      key={mode}
+                      variant={theme === mode ? "default" : "outline"}
+                      onClick={() => setTheme(mode)}
+                    >
+                      {mode.charAt(0).toUpperCase() + mode.slice(1)}
+                    </Button>
+                  ))}
+                </div>
+                <p className="text-sm text-muted-foreground">Current theme: {theme}</p>
+              </div>
+            )}
+
+            {selectedSection === 'contact' && (
+              <div className="space-y-4">
+                <p className="text-muted-foreground">
+                  If you have any questions or need assistance, we'd love to hear from you.
+                  Please fill out the contact form to share your queries.
+                </p>
+                <Button onClick={handleContact}>Start the Conversation</Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
