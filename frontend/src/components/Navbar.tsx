@@ -193,7 +193,7 @@ const Navbar = () => {
                         <Link href="/pages/settings">
                           <button
                             onClick={() => handleNavigation('/pages/settings')}
-                            className={`w-full flex items-center space-x-3 py-2 px-4 rounded-lg ${getLinkStyle('/pages/settings')}`}
+                            className={`w-full flex items-center space-x-3 py-2 px-4 rounded-lg ${getLinkStyleForSideBar('/pages/settings')}`}
                           >
                             <User size={20} />
                             <span>Settings</span>

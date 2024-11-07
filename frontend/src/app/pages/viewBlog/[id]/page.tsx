@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GET_SINGLEBLOG } from '@/Graphql/queries/blogQueries';
 import { GetBlogQuery, GetBlogQueryVariables } from '@/gql/graphql';
-import { ChevronDown, Share2, MessageCircle, Calendar, ArrowLeft } from 'lucide-react';
+import { Share2, MessageCircle, Calendar, ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { addComment, fetchCommentsByPostId } from '@/Firebase/FirebaseComments';
@@ -18,6 +18,7 @@ import { Textarea } from '@/components/ui/textarea';
 import ViewTracker from '@/components/ViewTracker';
 import LikesAndUnlike from '@/components/LikesAndUnlike';
 import Loader from '@/components/Loader';
+import BlogContent from '@/components/BlogContent';
 
 interface User {
   userId: string;
@@ -37,7 +38,6 @@ interface Comment {
 const BlogDetails = ({ params }: { params: { id: string } }) => {
   const { user: CurrentUser } = useMyContext();
   const { id } = params;
-  const [isContentExpanded, setIsContentExpanded] = useState(false);
   const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(false);
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState<string>('');
@@ -111,7 +111,7 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
       <Header blog={blog} user={user} CurrentUser={CurrentUser} id={id} router={router} />
       
       <main className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <BlogContent blog={blog} isContentExpanded={isContentExpanded} setIsContentExpanded={setIsContentExpanded} />
+        <BlogContent blogContent={blog.blogContent} />
         
         <CommentSection 
           isCommentSectionOpen={isCommentSectionOpen} 
@@ -252,7 +252,6 @@ const Header = ({ blog, user, CurrentUser, id, router }) => (
             ) : (
               <p>Please login to like and comments</p>
             )}
-            
           </div>
         </span>
       </motion.div>
@@ -266,31 +265,6 @@ const Header = ({ blog, user, CurrentUser, id, router }) => (
       </div>
     </div>
   </header>
-);
-
-const BlogContent = ({ blog, isContentExpanded, setIsContentExpanded }) => (
-  <>
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="prose prose-lg prose-invert max-w-none mb-12"
-      dangerouslySetInnerHTML={{
-        __html: isContentExpanded
-          ? blog.blogContent
-          : blog.blogContent.slice(0, 500) + '...'
-      }}
-    />
-    <motion.button
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      onClick={() => setIsContentExpanded(!isContentExpanded)}
-      className="flex items-center justify-center w-full py-4 bg-white text-black rounded-lg font-semibold transition-all duration-300 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-    >
-      {isContentExpanded ? 'Read Less' : 'Read More'}
-      <ChevronDown className={`ml-2 transform transition-transform duration-300 ${isContentExpanded ? 'rotate-180' : ''}`} />
-    </motion.button>
-  </>
 );
 
 const CommentSection = ({ isCommentSectionOpen, comments, newComment, setNewComment, handleCommentSubmit }) => (

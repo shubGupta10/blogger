@@ -4,8 +4,9 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Cpu, Edit, Lock, Zap, Type, MessageSquare, FileText, Search, Filter, User, Users2, Share } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
-import axios from 'axios';
 import StatsSection from '@/components/StatsSection';
+import Image from 'next/image';
+import blog from '@/public/blog.png'
 
 const Home = () => {
 
@@ -37,7 +38,7 @@ const Home = () => {
       >
         <div className="absolute inset-0 z-0">
           <motion.div
-            className="absolute top-1/4 left-1/4 w-64 h-64  rounded-full mix-blend-multiply filter blur-xl"
+            className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full mix-blend-multiply filter blur-xl"
             animate={{
               scale: [1, 1.2, 1],
               opacity: [0.3, 0.2, 0.3]
@@ -49,7 +50,7 @@ const Home = () => {
             }}
           />
           <motion.div
-            className="absolute bottom-1/4 right-1/4 w-64 h-64  rounded-full mix-blend-multiply filter blur-xl"
+            className="absolute bottom-1/4 right-1/4 w-64 h-64 rounded-full mix-blend-multiply filter blur-xl"
             animate={{
               scale: [1, 1.1, 1],
               opacity: [0.2, 0.3, 0.2]
@@ -62,21 +63,33 @@ const Home = () => {
           />
         </div>
 
-        <div className="z-10 text-center">
+        <div className="relative z-10 text-center">
+          <div className="flex justify-center items-center bg-white dark:bg-black rounded-full w-52 h-52 mx-auto ">
+            <Image
+              alt="Blog Home image"
+              src={blog}
+              width={200} 
+              height={200} 
+              className="transition-all duration-300 ease-in-out dark:filter dark:invert"
+            />
+          </div>
+
           <motion.h1
-            className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 bg-clip-text  bg-gradient-to-r from-black to-gray-700 leading-snug py-2"
+            className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 bg-clip-text bg-gradient-to-r from-black to-gray-700 leading-snug py-2"
             {...fadeInUp}
           >
             Elevate Your Blogging Experience
           </motion.h1>
+
           <motion.p
-            className="text-lg sm:text-xl mb-8 max-w-2xl mx-auto  leading-relaxed"
+            className="text-lg sm:text-xl mb-8 max-w-2xl mx-auto leading-relaxed"
             {...fadeInUp}
           >
             Seamlessly create and share captivating content that resonates with your audience.
           </motion.p>
+
           <motion.button
-            className=" py-3 px-8 rounded-full text-lg font-semibold shadow-lg hover:bg-gray-800 dark:hover:bg-gray-100 dark:hover:text-black dark:bg-gray-700 transition duration-300 flex items-center mx-auto"
+            className="py-3 px-8 rounded-full text-lg font-semibold shadow-lg hover:bg-gray-800 dark:hover:bg-gray-100 dark:hover:text-black dark:bg-gray-700 transition duration-300 flex items-center mx-auto"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={handleGetStarted}
@@ -85,6 +98,7 @@ const Home = () => {
           </motion.button>
         </div>
       </motion.section>
+
 
 
 
@@ -129,7 +143,7 @@ const Home = () => {
       </section>
 
       <section className='py-20'>
-        <StatsSection/>
+        <StatsSection />
       </section>
 
 
