@@ -9,6 +9,7 @@ const userTypeDefs = `#graphql
     password: String!
     profilePicture: String!
     gender: String!
+    recommendedCategory: [String] 
     blogs: [Blog!]
   }
 
@@ -32,6 +33,7 @@ const userTypeDefs = `#graphql
     logout: LogoutResponse
     updateUser(input: UpdateUserInput): User!
     deleteUser(password: String!): DeleteUserResponse!
+    addCategoriesToUser(categories: [String!]!): User! 
   }
 
   #Step4: Mutation waale inputs define kro

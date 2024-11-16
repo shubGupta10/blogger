@@ -212,7 +212,23 @@ const blogResolver = {
                 console.error("Failed to fetch blogs by user", error);
                 throw new Error(error.message || "Internal server error");
             }
+        },
+
+        blogsByCategories: async (_parent: unknown, { blogCategories }: { blogCategories: string[] }) => {
+            try {
+                const blogs = await Blog.find({ blogCategory: { $in: blogCategories } });
+        
+                if (!blogs || blogs.length === 0) {
+                    throw new Error("No blogs found in these categories");
+                }
+        
+                return blogs;
+            } catch (error: any) {
+                console.error("Failed to fetch blogs by categories", error);
+                throw new Error(error.message || "Internal server error");
+            }
         }
+        
     },
 };
 

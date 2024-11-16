@@ -4,7 +4,7 @@ const nextConfig = {
         ignoreDuringBuilds: true,
     },
     images: {
-        domains: ['img.icons8.com', 'www.flaticon.com'] 
+        domains: ['img.icons8.com', 'www.flaticon.com', 'firebasestorage.googleapis.com'] 
       },
 };
 

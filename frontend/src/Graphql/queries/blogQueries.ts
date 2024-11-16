@@ -64,6 +64,26 @@ export const GET_BLOGS_BY_CATEGORY = gql`
       blogImage
       blogContent
       blogCategory
+      likeCount
+      user {
+        _id
+        firstName
+        lastName
+      }
+    }
+  }
+`;
+
+
+export const GET_BLOGS_BY_CATEGORIES = gql`
+  query blogsByCategories($blogCategories: [String!]!) {
+    blogsByCategories(blogCategories: $blogCategories) {
+      _id
+      title
+      blogImage
+      blogContent
+      blogCategory
+      likeCount
       user {
         _id
         firstName

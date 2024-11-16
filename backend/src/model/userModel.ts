@@ -8,6 +8,7 @@ export interface User extends Document {
     password: string;
     profilePicture?: string;
     gender?: string;
+    recommendedCategory: string[];
 }
 
 const userSchema: Schema<User> = new mongoose.Schema({
@@ -21,9 +22,9 @@ const userSchema: Schema<User> = new mongoose.Schema({
     },
     email: {
         type: String,
-    required: [true, "Email is required"],
-    unique: true,
-    match: [/.+@.+\..+/, "Please enter a valid email address"],
+        required: [true, "Email is required"],
+        unique: true,
+        match: [/.+@.+\..+/, "Please enter a valid email address"],
     },
     password: {
         type: String,
@@ -34,7 +35,11 @@ const userSchema: Schema<User> = new mongoose.Schema({
     },
     gender: {
         type: String,
-    }
+    },
+    recommendedCategory: {
+        type: [String],
+        default: [],
+      },
 }, { timestamps: true });
 
 const User = mongoose.model<User>("User", userSchema);

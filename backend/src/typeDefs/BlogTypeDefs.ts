@@ -17,6 +17,7 @@ const blogTypeDefs = `#graphql
     blog(blogId: ID!): Blog
     blogsByUser: [Blog]
     blogsByCategory(blogCategory: String!): [Blog] 
+    blogsByCategories(blogCategories: [String!]!): [Blog]
  }
 
  type Mutation {

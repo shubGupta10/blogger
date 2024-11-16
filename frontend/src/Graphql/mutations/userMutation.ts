@@ -64,3 +64,14 @@ export const DELETE_USER = gql`
     }
   }
 `;
+
+
+
+export const ADD_CATEGORIES_TO_USER = gql`
+  mutation AddCategoriesToUser($categories: [String!]!) {
+    addCategoriesToUser(categories: $categories) {
+      _id
+      recommendedCategory
+    }
+  }
+`;

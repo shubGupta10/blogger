@@ -44,6 +44,7 @@ export const config = {
     '/pages/settings', 
     '/pages/SummarisePage/:id', 
     '/pages/userProfile/:id', 
-    '/pages/viewBlog/:id'
+    '/pages/viewBlog/:id',
+    '/pages/UserPreferredBlogs'
   ],
 };

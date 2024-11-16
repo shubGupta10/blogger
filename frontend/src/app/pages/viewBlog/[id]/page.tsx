@@ -19,6 +19,7 @@ import ViewTracker from '@/components/ViewTracker';
 import LikesAndUnlike from '@/components/LikesAndUnlike';
 import Loader from '@/components/Loader';
 import BlogContent from '@/components/BlogContent';
+import FetchMoreBlogs from '@/components/FetchMoreBlogs';
 
 interface User {
   userId: string;
@@ -65,6 +66,8 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
   if (blogError || userError) return <ErrorState error={blogError?.message || userError?.message} />;
 
   const blog = blogData?.blog;
+  console.log(blog);
+  
   const user = userData?.fetchUserByID;
 
   if (!blog || !user) return <NotFoundState />;
@@ -120,7 +123,9 @@ const BlogDetails = ({ params }: { params: { id: string } }) => {
           setNewComment={setNewComment} 
           handleCommentSubmit={handleCommentSubmit} 
         />
+     
       </main>
+      <FetchMoreBlogs category={blog.blogCategory} />
     </div>
   );
 };
@@ -320,7 +325,10 @@ const CommentSection = ({ isCommentSectionOpen, comments, newComment, setNewComm
         </div>
       </motion.div>
     )}
+    
   </AnimatePresence>
 );
+
+
 
 export default BlogDetails;

@@ -203,7 +203,7 @@ export default function UserBlogs() {
                         <Button
                           variant="secondary"
                           className="w-full bg-black text-white dark:bg-white dark:text-black"
-                          onClick={() => router.push(`/pages/blogs/${blog._id}`)}
+                          onClick={() => router.push(`/pages/viewBlog/${blog._id}`)}
                         >
                           <Eye className="w-4 h-4 mr-2" /> View
                         </Button>

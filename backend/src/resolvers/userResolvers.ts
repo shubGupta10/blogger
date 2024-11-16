@@ -19,11 +19,11 @@ interface SignInInput {
 }
 
 interface UpdateInput {
-    firstName?: string; 
-    lastName?: string; 
-    email?: string; 
-    password?: string; 
-    gender?: string; 
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    password?: string;
+    gender?: string;
 }
 
 
@@ -47,6 +47,7 @@ export interface UserInterface extends Document {
     password: string;
     profilePicture: string;
     gender: string;
+    recommendedCategory: [string];
 }
 
 const userResolver = {
@@ -180,7 +181,7 @@ const userResolver = {
             }
         },
 
-        updateUser: async (_parent: unknown, { input }: {input: UpdateInput}, context: MyContext) => {
+        updateUser: async (_parent: unknown, { input }: { input: UpdateInput }, context: MyContext) => {
             try {
                 const userId = context.user._id;
                 if (!userId) {
@@ -209,7 +210,7 @@ const userResolver = {
                 }
 
                 const isPasswordMatch = await bcrypt.compare(password, user.password)
-                if(!isPasswordMatch){
+                if (!isPasswordMatch) {
                     throw new Error("Password is wrong")
                 }
 
@@ -224,7 +225,33 @@ const userResolver = {
                 console.error("Failed to delete user", error);
                 throw new Error(error.message || "Internal server error");
             }
-        }
+        },
+
+        addCategoriesToUser: async (_parent: unknown, { categories }: { categories: string[] }, context: MyContext) => {
+            try {
+                const userId = context.user._id;
+                if (!userId) {
+                    throw new Error("User must be authenticated!");
+                }
+
+                const user = await User.findById(userId);
+                if (!user) {
+                    throw new Error("User not found");
+                }
+
+                const updatedUser = await User.findByIdAndUpdate(
+                    userId,
+                    { $addToSet: { recommendedCategory: { $each: categories } } },
+                    { new: true }
+                );
+
+                return updatedUser;
+            } catch (error: any) {
+                console.error("Failed to save recommendation", error);
+                throw new Error(error.message || "Internal server error");
+            }
+        },
+
     },
 
     Query: {

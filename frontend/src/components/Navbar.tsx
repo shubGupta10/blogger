@@ -11,7 +11,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useMyContext } from '@/context/ContextProvider';
 import Cookies from 'js-cookie';
 import ThemeSwitcher from './ThemeSwitcher';
-import { Home, Book, PlusCircle, Mail, User, X, LogOut, LayoutDashboard, TrendingUp } from 'lucide-react';
+import { Home, Book, PlusCircle, Mail, User, X, LogOut, LayoutDashboard, TrendingUp, StarIcon } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
 const Navbar = () => {
@@ -86,6 +86,7 @@ const Navbar = () => {
 
   const navLinks = [
     { href: '/pages/publicBlogs', label: 'Public Blogs', icon: <Book size={20} /> },
+    { href: '/pages/UserPreferredBlogs', label: 'Recommended Blogs', icon: <StarIcon size={20} /> },
     { href: '/pages/Dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
     { href: '/pages/createBlog', label: 'Create Blog', icon: <PlusCircle size={20} /> },
     { href: '/pages/highestViews', label: 'Trending Blogs', icon: <TrendingUp size={20} /> },

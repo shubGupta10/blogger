@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/client'
 import { GET_BLOGS } from '@/Graphql/queries/blogQueries'
 import { GetBlogsQuery } from '@/gql/graphql'
 import { motion, AnimatePresence } from 'framer-motion'
-import { User, ArrowRight, Search, Calendar, Grid, List, BookOpen } from 'lucide-react'
+import { User, ArrowRight, Search, Calendar, Grid, List, BookOpen, Clock, Heart } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
@@ -14,6 +14,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 
 const categories = [
   'technology', 'programming', 'web-development', 'mobile-development', 'data-science',
@@ -283,105 +284,97 @@ export default function Component() {
   )
 }
 
-const BlogCard: React.FC<BlogCardProps> = ({ blog, handleOpenBlogs, isLoading }) => (
-  <motion.div
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  exit={{ opacity: 0, y: -20 }}
->
-  <Card className="h-full flex flex-col overflow-hidden group hover:shadow-lg transition-all duration-200 bg-white dark:bg-black border-gray-200 dark:border-gray-700">
-    <div className="relative h-48 overflow-hidden">
-      {blog.blogImage && (
-        <img
-          src={blog.blogImage}
-          alt={blog.title}
-          className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105"
-        />
-      )}
-    </div>
-    <CardHeader className="flex-none">
-      <CardTitle className="line-clamp-2 text-lg hover:text-primary transition-colors duration-200 text-gray-900 dark:text-gray-100">
-        {blog.title}
-      </CardTitle>
-    </CardHeader>
-    <CardContent className="flex-grow">
-      <div
-        className="text-gray-600 dark:text-gray-300 line-clamp-3 text-sm"
-        dangerouslySetInnerHTML={{ __html: blog.blogContent }}
-      />
-      <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-5 mb-2">
-        <User size={16} className="mr-2" />
-        <span className="truncate">
-          {blog.user.firstName} {blog.user.lastName}
-        </span>
-        <Badge
-          variant="secondary"
-          className="ml-32 bg-gray-800/50 text-white backdrop-blur-sm" 
-        >
-          {blog.blogCategory}
-        </Badge>
-      </div>
-      <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-        <Calendar size={16} className="mr-2" />
-        <span>
-          {new Date(parseInt(blog._id.substring(0, 8), 16) * 1000).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          })}
-        </span>
-      </div>
-    </CardContent>
-    <CardFooter>
-      <Button
-        variant="default"
-        onClick={() => handleOpenBlogs(blog._id)}
-        disabled={isLoading}
-        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
-      >
-        {isLoading ? (
-          <motion.div
-            className="w-5 h-5 border-t-2 border-white rounded-full"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+const BlogCard: React.FC<BlogCardProps> = ({ blog, handleOpenBlogs, isLoading }) => {
+  if (isLoading) return <BlogCardSkeleton />
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      onClick={() => handleOpenBlogs(blog._id)}
+      className="cursor-pointer"
+    >
+      <Card className="group h-full overflow-hidden border border-border/50 rounded-xl transition-all duration-300 hover:border-primary/50 hover:shadow-lg dark:hover:shadow-primary/5 hover:scale-[1.02]">
+        <div className="relative overflow-hidden aspect-[16/9]">
+          <img
+            src={blog.blogImage}
+            alt={blog.title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
-        ) : (
-          <>
-            Read More
-            <ArrowRight size={16} className="ml-2" />
-          </>
-        )}
-      </Button>
-    </CardFooter>
-  </Card>
-</motion.div>
+          <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors duration-300" />
+          <Badge
+            variant="secondary"
+            className="absolute top-4 right-4 backdrop-blur-md bg-background/50"
+          >
+            {blog.blogCategory}
+          </Badge>
+        </div>
 
+        <CardHeader className="relative space-y-4">
+          <CardTitle className="text-2xl font-bold line-clamp-2 transition-colors group-hover:text-primary/90">
+            {blog.title}
+          </CardTitle>
+          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-1">
+              <Clock className="w-4 h-4" />
+              <span>5 min read</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Heart className="w-4 h-4 text-primary" />
+              <span>0 likes</span>
+            </div>
+          </div>
+        </CardHeader>
 
-)
+        <CardContent>
+          <div
+            className="text-muted-foreground line-clamp-3"
+            dangerouslySetInnerHTML={{ __html: blog.blogContent }}
+          />
+        </CardContent>
 
-const BlogCardSkeleton = () => (
-  <Card className="h-full flex flex-col overflow-hidden bg-white dark:bg-black border-gray-200 dark:border-gray-700">
-    <div className="relative h-48 overflow-hidden">
+        <CardFooter className="flex justify-between items-center pt-6 border-t border-border">
+          <div className="flex items-center gap-2">
+            <Avatar className="w-8 h-8">
+              <AvatarFallback className="bg-primary/10 text-primary">
+                {blog.user.firstName.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+            <span className="text-sm font-medium">
+              {blog.user.firstName} {blog.user.lastName}
+            </span>
+          </div>
+          <div className="p-2 rounded-full transition-all duration-300 group-hover:bg-primary/10">
+            <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+          </div>
+        </CardFooter>
+      </Card>
+    </motion.div>
+  )
+}
+
+const BlogCardSkeleton: React.FC = () => (
+  <Card className="overflow-hidden border border-border/50 animate-pulse">
+    <div className="relative aspect-[16/9]">
       <Skeleton className="w-full h-full" />
     </div>
-    <CardHeader className="flex-none">
-      <Skeleton className="h-6 w-3/4" />
+    <CardHeader className="space-y-4">
+      <Skeleton className="h-8 w-3/4" />
+      <div className="flex gap-4">
+        <Skeleton className="h-4 w-20" />
+        <Skeleton className="h-4 w-20" />
+      </div>
     </CardHeader>
-    <CardContent className="flex-grow">
-      <Skeleton className="h-4 w-full mb-2" />
-      <Skeleton className="h-4 w-5/6 mb-2" />
-      <Skeleton className="h-4 w-4/6" />
-      <div className="flex items-center mt-5 mb-2">
-        <Skeleton className="h-4 w-4 mr-2 rounded-full" />
+    <CardContent>
+      <Skeleton className="h-20 w-full" />
+    </CardContent>
+    <CardFooter className="flex justify-between items-center pt-6 border-t border-border">
+      <div className="flex items-center gap-2">
+        <Skeleton className="w-8 h-8 rounded-full" />
         <Skeleton className="h-4 w-24" />
       </div>
-      <div className="flex items-center">
-        <Skeleton className="h-4 w-4 mr-2 rounded-full" />
-        <Skeleton className="h-4 w-32" />
-      </div>
-    </CardContent>
-    <CardFooter>
-      <Skeleton className="h-10 w-full" />
+      <Skeleton className="w-5 h-5" />
     </CardFooter>
   </Card>
 )

@@ -9,6 +9,7 @@ export const GET_AUTHENTICATED_USER = gql`
       email
       profilePicture
       gender
+      recommendedCategory
       blogs {
         _id
         title
