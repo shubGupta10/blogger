@@ -12,7 +12,7 @@ if (!apiKey) {
 const genAI = new GoogleGenerativeAI(apiKey);
 
 const generateContent = async (prompt: string): Promise<string> => {
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
   try {
     const result = await model.generateContent(prompt);
@@ -21,7 +21,7 @@ const generateContent = async (prompt: string): Promise<string> => {
     return generatedText; 
   } catch (error) {
     console.error("Error generating content:", error);
-    throw new Error("Failed to generate content");
+    throw new Error("AI hits its rate limit, Please try after sometime");
   }
 };
 
