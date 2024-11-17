@@ -42,6 +42,8 @@ interface Blog {
   blogImage: string
   blogContent: string
   blogCategory: string
+  likeCount: number
+  createdAt: string
   user: {
     __typename?: "User"
     _id: string
@@ -76,6 +78,7 @@ export default function Component() {
     }
     return counts
   }, [allBlogsData])
+  
 
   const handleCategoryClick = useCallback((category: string) => {
     if (categoryCount[category]) {
@@ -318,11 +321,15 @@ const BlogCard: React.FC<BlogCardProps> = ({ blog, handleOpenBlogs, isLoading })
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
               <Clock className="w-4 h-4" />
-              <span>5 min read</span>
+              {new Date(parseInt(blog?.createdAt)).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                          })}
             </div>
             <div className="flex items-center gap-1">
               <Heart className="w-4 h-4 text-primary" />
-              <span>0 likes</span>
+              <span>{blog.likeCount}</span>
             </div>
           </div>
         </CardHeader>

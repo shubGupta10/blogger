@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardFooter, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Heart, Clock, ArrowRight, StarIcon } from 'lucide-react';
+import { Heart, Clock, ArrowRight, StarIcon, Calendar1Icon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
@@ -62,14 +62,14 @@ const BlogsByPreference = () => {
     // New User or Error State with Enhanced Animation
     if (error || !multipleCategories.length) {
         return (
-            <motion.div 
+            <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
                 className="flex items-center justify-center min-h-[100vh]"
             >
                 <div className="text-center space-y-6 px-4 max-w-2xl mx-auto">
-                    <motion.div 
+                    <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
@@ -77,8 +77,8 @@ const BlogsByPreference = () => {
                     >
                         <StarIcon className="h-16 w-16 text-primary animate-pulse" />
                     </motion.div>
-                    
-                    <motion.h2 
+
+                    <motion.h2
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.4 }}
@@ -86,24 +86,24 @@ const BlogsByPreference = () => {
                     >
                         Welcome to Your Reading Journey!
                     </motion.h2>
-                    
-                    <motion.p 
+
+                    <motion.p
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.6 }}
                         className="text-xl text-muted-foreground"
                     >
-                        {error ? "We encountered an issue loading your preferences." : 
-                        "Let's personalize your reading experience by selecting your favorite topics."}
+                        {error ? "We encountered an issue loading your preferences." :
+                            "Let's personalize your reading experience by selecting your favorite topics."}
                     </motion.p>
 
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.8 }}
                         className="pt-6"
                     >
-                        <Button 
+                        <Button
                             size="lg"
                             className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-8 py-6 text-lg transform transition-all duration-300 hover:scale-105"
                             onClick={() => router.push('/pages/Dashboard')}
@@ -120,7 +120,7 @@ const BlogsByPreference = () => {
     return (
         <ScrollArea className="h-full">
             <div className="container max-w-7xl mx-auto px-4 py-12">
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="text-center space-y-4 mb-16"
@@ -134,7 +134,7 @@ const BlogsByPreference = () => {
                 </motion.div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {data?.blogsByCategories?.map((blog: any, index: number) => (
+                    {data?.blogsByCategories?.slice().reverse().map((blog: any, index: number) => (
                         <motion.div
                             key={blog._id}
                             initial={{ opacity: 0, y: 20 }}
@@ -166,10 +166,6 @@ const BlogsByPreference = () => {
                                             {blog.title}
                                         </CardTitle>
                                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                                            <div className="flex items-center gap-1">
-                                                <Clock className="w-4 h-4" />
-                                                <span>5 min read</span>
-                                            </div>
                                             <div className="flex items-center gap-1">
                                                 <Heart className="w-4 h-4 text-primary" />
                                                 <span>{blog.likeCount} likes</span>

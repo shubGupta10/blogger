@@ -9,6 +9,7 @@ export const GET_BLOGS = gql`
       blogContent
       blogCategory
       createdAt
+      likeCount
       user {
         _id
         firstName

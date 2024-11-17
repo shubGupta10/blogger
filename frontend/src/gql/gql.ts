@@ -26,7 +26,7 @@ const documents = {
     "\n  mutation UpdateUser($input: UpdateUserInput!) {\n    updateUser(input: $input) {\n      firstName\n      lastName\n      email\n      gender\n    }\n  }\n": types.UpdateUserDocument,
     "\n  mutation DeleteUser($password: String!) {\n    deleteUser(password: $password) {\n      message\n    }\n  }\n": types.DeleteUserDocument,
     "\n  mutation AddCategoriesToUser($categories: [String!]!) {\n    addCategoriesToUser(categories: $categories) {\n      _id\n      recommendedCategory\n    }\n  }\n": types.AddCategoriesToUserDocument,
-    "\n  query GetBlogs {\n    blogs {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      createdAt\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n": types.GetBlogsDocument,
+    "\n  query GetBlogs {\n    blogs {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      createdAt\n      likeCount\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n": types.GetBlogsDocument,
     "\n  query GetBlog($blogId: ID!) {\n    blog(blogId: $blogId) {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      createdAt\n      likeCount\n      likedBy {\n        _id\n      }\n      user {\n        _id\n        firstName\n        lastName\n        email\n        profilePicture\n      }\n    }\n  }\n": types.GetBlogDocument,
     "\n query GetBlogsByUser {\n    blogsByUser {\n        _id\n        title\n        blogImage\n        blogContent\n        blogCategory\n        createdAt\n    }\n}\n": types.GetBlogsByUserDocument,
     "\n  query blogsByCategory($blogCategory: String!) {\n    blogsByCategory(blogCategory: $blogCategory) {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      likeCount\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n": types.BlogsByCategoryDocument,
@@ -102,7 +102,7 @@ export function graphql(source: "\n  mutation AddCategoriesToUser($categories: [
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query GetBlogs {\n    blogs {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      createdAt\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetBlogs {\n    blogs {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      createdAt\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query GetBlogs {\n    blogs {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      createdAt\n      likeCount\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetBlogs {\n    blogs {\n      _id\n      title\n      blogImage\n      blogContent\n      blogCategory\n      createdAt\n      likeCount\n      user {\n        _id\n        firstName\n        lastName\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
