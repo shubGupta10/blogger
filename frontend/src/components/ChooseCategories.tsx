@@ -71,7 +71,7 @@ export default function ChooseCategories() {
         variables: { categories: selectedCategories }
       })
       router.push("/pages/publicBlogs")
-      toast.success("Your preferenced saved");
+      toast.success("Your preferences saved");
     } catch (err) {
       toast.error("Something went wrong, Please try again!");
       console.error("Error saving categories:", err)
@@ -82,8 +82,9 @@ export default function ChooseCategories() {
   if (error) return <p>Error saving categories</p>
 
   return (
-    <Card className="w-full max-w-4xl mx-auto border-none shadow-none">
+    <Card className="w-full max-w-4xl mx-auto border-none  shadow-none">
       <CardHeader className="text-center pb-2">
+     
         <CardTitle className="text-3xl font-bold tracking-tight flex items-center justify-center gap-2">
           <Tags className="h-8 w-8" />
           Personalize Your Feed
@@ -92,13 +93,13 @@ export default function ChooseCategories() {
           Choose categories that match your interests
         </CardDescription>
       </CardHeader>
-      <CardContent className="p-6">
-        <ScrollArea className="h-[60vh] pr-4">
+      <CardContent className="p-4 sm:p-6">
+        <ScrollArea className="h-[50vh] pr-4">
           <div className="space-y-6">
             {Object.entries(categories).map(([section, items]) => (
               <div key={section} className="space-y-3">
                 <h3 className="text-lg font-semibold text-muted-foreground">{section}</h3>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                   {items.map((category) => {
                     const isSelected = selectedCategories.includes(category)
                     return (
@@ -106,7 +107,7 @@ export default function ChooseCategories() {
                         key={category}
                         variant={isSelected ? "default" : "outline"}
                         className={cn(
-                          "h-auto py-4 px-4 justify-start text-left space-x-2",
+                          "h-auto py-2 px-3 justify-start text-left space-x-2 w-full",
                           isSelected && "bg-primary text-primary-foreground shadow-inner"
                         )}
                         onClick={() => toggleCategory(category)}
@@ -115,7 +116,7 @@ export default function ChooseCategories() {
                           "h-4 w-4 shrink-0 opacity-0 transition-opacity",
                           isSelected && "opacity-100"
                         )} />
-                        <span className="text-sm font-medium leading-none">
+                        <span className="text-xs sm:text-sm font-medium leading-tight line-clamp-2">
                           {category.split('-').join(' ')}
                         </span>
                       </Button>
@@ -128,13 +129,6 @@ export default function ChooseCategories() {
         </ScrollArea>
       </CardContent>
       <CardFooter className="flex flex-col sm:flex-row justify-between items-center gap-4 px-6 pb-6">
-        <div className="flex flex-wrap gap-2">
-          {selectedCategories.length > 0 && (
-            <Badge variant="secondary" className="text-xs">
-              {selectedCategories.length} {selectedCategories.length === 1 ? 'category' : 'categories'} selected
-            </Badge>
-          )}
-        </div>
         <Button 
           onClick={saveCategories}
           className="w-full sm:w-auto"
@@ -142,6 +136,13 @@ export default function ChooseCategories() {
         >
           Save Preferences
         </Button>
+        <div className="flex flex-wrap gap-2 justify-center">
+          {selectedCategories.length > 0 && (
+            <Badge variant="secondary" className="text-xs">
+              {selectedCategories.length} {selectedCategories.length === 1 ? 'category' : 'categories'} selected
+            </Badge>
+          )}
+        </div>
       </CardFooter>
     </Card>
   )
