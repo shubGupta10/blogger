@@ -12,4 +12,4 @@ jobs:
     steps:
       - name: Ping Render URL
         run: |
-          curl -s https://interview-buddy-server.onrender.com/health
+          curl -s https://blogger-1gb3.onrender.com/graphql
