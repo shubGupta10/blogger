@@ -1,0 +1,15 @@
+name: Keep Backend Awake
+
+on:
+  schedule:
+      - cron: '0,14,28,42,56 * * * *'  # Every 14 minutes
+  workflow_dispatch:        # Optional: allows manual run from Actions tab
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ping Render URL
+        run: |
+          curl -s https://interview-buddy-server.onrender.com/health
